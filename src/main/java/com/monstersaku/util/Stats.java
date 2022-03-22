@@ -1,3 +1,5 @@
+package com.monstersaku.util;
+
 public class Stats {
     private Double healthPoint;
     private Double attack;

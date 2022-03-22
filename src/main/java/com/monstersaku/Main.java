@@ -1,6 +1,11 @@
 package com.monstersaku;
 
 import com.monstersaku.util.CSVReader;
+import com.monstersaku.util.ElementType;
+import com.monstersaku.util.Monster;
+import com.monstersaku.util.Move;
+import com.monstersaku.util.Stats;
+import com.monstersaku.util.Player;
 
 import java.io.File;
 import java.util.Arrays;
