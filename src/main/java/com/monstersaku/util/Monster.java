@@ -1,4 +1,5 @@
-import java.lang.annotation.ElementType;
+package com.monstersaku.util;
+
 import java.util.List;
 
 import javax.lang.model.element.Element;
