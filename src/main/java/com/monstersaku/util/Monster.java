@@ -9,11 +9,11 @@ public class Monster{
     private List<ElementType> elementTypes;
     private Stats baseStats;
     private List<Move> moves;
-    private StatCondition condition;
+    private StatusCondition condition;
 
     //KONSTRUKTOR
-    public Monster(String nama, List<ElementType> elementTypes, Stats baseStats, List<Move> moves, StatCondition condition) {
-        this.name = name;
+    public Monster(String nama, List<ElementType> elementTypes, Stats baseStats, List<Move> moves, StatusCondition condition) {
+        this.nama = nama;
         this.elementTypes = elementTypes;
         this.baseStats = baseStats;
         this.moves = moves;
@@ -33,13 +33,12 @@ public class Monster{
     public List<Move> getMoves() {
         return this.moves;
     }
-    public StatCondition getStatusCondition() {
+    public StatusCondition getStatusCondition() {
         return this.condition;
     }
 
     //SETTER (yang mungkin dibutuhkan aja)
     //asumsi nama dan elType monster gabisa/gaperlu diubah-ubah
-
     public void setBaseStats(Stats newBaseStats) {
         //melakukan set terhadap status HP monster setelah terkena damage
         this.baseStats = newBaseStats;
@@ -49,10 +48,11 @@ public class Monster{
         //mengurangi ammunition move yang digunakan (YANG DIPILIH PLAYER saat melakukan MOVE)
         //iterasi list of move
         //kalau move.getName() sama --> panggil method move (misal setAmmunition(getAmmunition-1) untuk mengurangi nilai ammunition move yang ada dalam list
+        //cek kalau ammunition == 0, dikeluarkan dari list of move
         //asumsi: move berhasil dieksekusi atau ngga, ammunition tetap akan berkurang 1??
     }
 
-    public void setStatusCondition(StatCondition newCondition) {
+    public void setStatusCondition(StatusCondition newCondition) {
         //melakukan set terhadap status condition saat monster terkena status move dari moster lawan
         this.condition = newCondition;
     }
@@ -102,9 +102,13 @@ public class Monster{
 
     public boolean isEliminated() {
         // 
-        // return this.baseStats.getHP() == 0;
+        return this.baseStats.getHealthPoint() == 0;
 
         // catatan: di method fight nanti kalau damage > HP newHP bakal langsung diset 0;
+    }
+
+    public void printMoves() {
+        //print list move yang masih bisa digunakan monster
     }
 
     //sementara segitu dulu
