@@ -1,5 +1,22 @@
 package com.monstersaku.util;
 
+import com.monstersaku.util.CSVReader;
+import com.monstersaku.util.ElementType;
+import com.monstersaku.util.MoveType;
+import com.monstersaku.util.Monster;
+import com.monstersaku.util.Move;
+import com.monstersaku.util.StatusMove;
+import com.monstersaku.util.Stats;
+import com.monstersaku.util.StatusCondition;
+import com.monstersaku.util.Target;
+import com.monstersaku.util.Player;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
+
 public class Move {
     private Integer idMove;
     private MoveType movetype; 
@@ -22,6 +39,17 @@ public class Move {
         target = Target.ENEMY;
         damage = 50.0;
     }
+    public Move(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target){
+        this.idMove = idMove;
+        this.movetype = movetype;
+        this.movename = movename;
+        this.moveelementType = moveelementType;
+        this.accuracy = accuracy;
+        this.priority = priority;
+        this.ammunition = ammunition;
+        this.target = target;   
+    }
+    
     public Move(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, Double damage){
         this.idMove = idMove;
         this.movetype = movetype;
@@ -64,5 +92,15 @@ public class Move {
     public void useammunition(){
         ammunition = ammunition - 1;
     }
-    
+    public void printMove(){
+        System.out.println("ID Move " + idMove);
+        System.out.println("Move Type " + movetype);
+        System.out.println("Move Name" + movename);
+        System.out.println("Move Element Type " + moveelementType);
+        System.out.println("Accuracy " + accuracy);
+        System.out.println("Priority " + priority);
+        System.out.println("Ammunition " + ammunition);
+        System.out.println("Target " + target);
+        System.out.println("Damage " + damage);
+    }
 }
