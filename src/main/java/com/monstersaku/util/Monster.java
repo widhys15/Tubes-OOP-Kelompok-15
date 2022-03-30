@@ -1,6 +1,7 @@
 package com.monstersaku.util;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.lang.model.element.Element;
 
@@ -9,7 +10,7 @@ public class Monster{
     private String nama;
     private List<ElementType> elementTypes;
     private Stats baseStats;
-    private List<Move> moves;
+    private ArrayList<Move> moves;
     private String condition;
 
     //KONSTRUKTOR
@@ -20,7 +21,7 @@ public class Monster{
         this.baseStats = baseStats;
     }
     
-    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats baseStats, List<Move> moves, String condition) {
+    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats baseStats, ArrayList<Move> moves, String condition) {
         this.idmonster = idmonster;
         this.nama = nama;
         this.elementTypes = elementTypes;
@@ -128,8 +129,7 @@ public class Monster{
         System.out.println("Nama = " + nama);
         System.out.println("Element types = " + elementTypes);
         for(Move move : moves){
-             move.printMove();
-             System.out.println();
+             move.printmonsMove();
         }
         baseStats.printStats();
         System.out.println("Status Condition = " + condition);

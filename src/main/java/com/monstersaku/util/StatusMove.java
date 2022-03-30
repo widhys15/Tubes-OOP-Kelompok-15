@@ -12,14 +12,6 @@ import com.monstersaku.util.Target;
 import com.monstersaku.util.Player;
 
 public class StatusMove extends Move{
-    private Integer idMove;
-    private MoveType movetype; 
-    private String movename;
-    private ElementType moveelementType;
-    private Integer accuracy;
-    private Integer priority;
-    private Integer ammunition;
-    private Target target;
     private String moveeffect;
     private Double movehp;
     private Double moveatk;
@@ -29,14 +21,7 @@ public class StatusMove extends Move{
     private Double movespeed;
     
     public StatusMove(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String moveeffect, Double movehp, Double moveatk, Double movedef, Double movespatk, Double movespdef, Double movespeed){
-        this.idMove = idMove;
-        this.movetype = movetype;
-        this.movename = movename;
-        this.moveelementType = moveelementType;
-        this.accuracy = accuracy;
-        this.priority = priority;
-        this.ammunition = ammunition;
-        this.target = target;
+        super(idMove, movetype, movename, moveelementType, accuracy, priority, ammunition, target);
         this.moveeffect = moveeffect;
         this.movehp = movehp;
         this.moveatk = moveatk;
@@ -73,14 +58,7 @@ public class StatusMove extends Move{
         return movespeed;
     }
     public void printMove(){
-        System.out.println("ID Move " + idMove);
-        System.out.println("Move Type " + movetype);
-        System.out.println("Move Name" + movename);
-        System.out.println("Move Element Type " + moveelementType);
-        System.out.println("Accuracy " + accuracy);
-        System.out.println("Priority " + priority);
-        System.out.println("Ammunition " + ammunition);
-        System.out.println("Target " + target);
+        super.printMove();
         System.out.println("Move Effect " + moveeffect);
         System.out.println("Move HP " + movehp);
         System.out.println("Move ATK " + moveatk);

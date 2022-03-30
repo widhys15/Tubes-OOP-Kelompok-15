@@ -28,7 +28,7 @@ public class Move {
     private Target target;
     private Double damage;
 
-    public Move(){
+    public Move(Integer idMove){
         idMove = 0;
         movetype = MoveType.DEFAULT;
         movename = "Normal Move";
@@ -102,5 +102,9 @@ public class Move {
         System.out.println("Ammunition " + ammunition);
         System.out.println("Target " + target);
         System.out.println("Damage " + damage);
+    }
+    public void printmonsMove(){
+        System.out.println("ID Move " + idMove);
+        System.out.println("Ammunition " + ammunition);
     }
 }
