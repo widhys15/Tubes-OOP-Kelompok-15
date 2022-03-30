@@ -1,14 +1,14 @@
 package com.monstersaku.util;
 
-public class Stats {
-    private Double healthPoint;
-    private Double attack;
-    private Double defense;
-    private Double specialAttack;
-    private Double specialDefense;
-    private Double speed;
+public class Stats <S> {
+    private S healthPoint;
+    private S attack;
+    private S defense;
+    private S specialAttack;
+    private S specialDefense;
+    private S speed;
     
-    public Stats(Double healthPoint, Double attack, Double defense, Double specialAttack,Double specialDefense, Double speed) {
+    public Stats(S healthPoint, S attack, S defense, S specialAttack,S specialDefense, S speed) {
         this.healthPoint = healthPoint;
         this.attack = attack;
         this.defense = defense;
@@ -17,57 +17,54 @@ public class Stats {
         this.speed = speed;
     }
 
-    public Double getHealthPoint() {
+    public S getHealthPoint() {
         return this.healthPoint;
     }
 
-    public void setHealthPoint(Double healthPoint) {
+    public void setHealthPoint(S healthPoint) {
         this.healthPoint = healthPoint;
     }
 
-    public Double getAttack() {
+    public S getAttack() {
         return this.attack;
     }
 
-    public void setAttack(Double attack) {
+    public void setAttack(S attack) {
         this.attack = attack;
     }
     
-    public Double getDefense() {
+    public S getDefense() {
         return this.defense;
     }
 
-    public void setDefense(Double defense) {
+    public void setDefense(S defense) {
         this.defense = defense;
     }
     
-    public Double getSpecialAttack() {
+    public S getSpecialAttack() {
         return this.specialAttack;
     }
 
-    public void setSpecialAttack(Double specialAttack) {
+    public void setSpecialAttack(S specialAttack) {
         this.specialAttack = specialAttack;
     }
     
-    public Double getSpecialDefense() {
+    public S getSpecialDefense() {
         return this.specialDefense;
     }
 
-    public void setSpecialDefense(Double specialDefense) {
+    public void setSpecialDefense(S specialDefense) {
         this.specialDefense = specialDefense;
     }
     
-    public Double getSpeed() {
+    public S getSpeed() {
         return this.speed;
     }
 
-    public void setSpeed(Double speed) {
+    public void setSpeed(S speed) {
         this.speed = speed;
     }
 
-    public void decreaseStats(Double amount) {
-
-    }
     public void printStats(){
         System.out.println("HP = " + healthPoint.toString());
         System.out.println("Atk = " + this.attack);
