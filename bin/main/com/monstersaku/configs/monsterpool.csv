@@ -1,3 +1,5 @@
 id;name;elementTypes;baseStats;moves
-1;Charmander;FIRE,NORMAL;39,52,43,60,50,65;1,2
+1;Chairmander;FIRE,NORMAL;100,200,300,400,500,600;1,2
+2;Turtwig;NORMAL,GRASS;200,300,400,500,600,700;1,2
+
 
