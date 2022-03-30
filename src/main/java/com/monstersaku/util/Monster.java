@@ -1,18 +1,28 @@
 package com.monstersaku.util;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.lang.model.element.Element;
 
 public class Monster{
+    private Integer idmonster;
     private String nama;
     private List<ElementType> elementTypes;
     private Stats baseStats;
-    private List<Move> moves;
-    private StatusCondition condition;
+    private ArrayList<Move> moves;
+    private String condition;
 
     //KONSTRUKTOR
-    public Monster(String nama, List<ElementType> elementTypes, Stats baseStats, List<Move> moves, StatusCondition condition) {
+    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats baseStats){
+        this.idmonster = idmonster;
+        this.nama = nama;
+        this.elementTypes = elementTypes;
+        this.baseStats = baseStats;
+    }
+    
+    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats baseStats, ArrayList<Move> moves, String condition) {
+        this.idmonster = idmonster;
         this.nama = nama;
         this.elementTypes = elementTypes;
         this.baseStats = baseStats;
@@ -21,6 +31,9 @@ public class Monster{
     }
 
     //GETTER
+    public Integer getidmonster(){
+        return idmonster;
+    }
     public String getName() {
         return this.nama;
     }
@@ -33,7 +46,7 @@ public class Monster{
     public List<Move> getMoves() {
         return this.moves;
     }
-    public StatusCondition getStatusCondition() {
+    public String getStatusCondition() {
         return this.condition;
     }
 
@@ -52,7 +65,7 @@ public class Monster{
         //asumsi: move berhasil dieksekusi atau ngga, ammunition tetap akan berkurang 1??
     }
 
-    public void setStatusCondition(StatusCondition newCondition) {
+    public void setStatusCondition(String newCondition) {
         //melakukan set terhadap status condition saat monster terkena status move dari moster lawan
         this.condition = newCondition;
     }
@@ -109,6 +122,17 @@ public class Monster{
 
     public void printMoves() {
         //print list move yang masih bisa digunakan monster
+    }
+
+    public void printMonster(){
+        System.out.println("ID Monster = " + idmonster);
+        System.out.println("Nama = " + nama);
+        System.out.println("Element types = " + elementTypes);
+        for(Move move : moves){
+             move.printmonsMove();
+        }
+        baseStats.printStats();
+        System.out.println("Status Condition = " + condition);
     }
 
     //sementara segitu dulu

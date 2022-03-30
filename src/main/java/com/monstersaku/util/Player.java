@@ -1,22 +1,28 @@
 package com.monstersaku.util;
 
 import javax.naming.NameAlreadyBoundException;
+import java.util.Random;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Player {
     private String nama;
-    private List<Monster> listOfMonster;
+    private ArrayList<Monster> listOfMonster;
     private static int numberOfMonster;
 
-    
     //Konstruktor
-    public Player(String nama, List<Monster> listOfMonster){
+    public Player(String nama, ArrayList<Monster> listOfMonster){
         //Secara default ketika permainan dimulai, jumlah monster 6
         this.nama = nama;
         this.listOfMonster = listOfMonster;
         this.numberOfMonster = 6;
     }
 
-    public Player(String nama, List<Monster> listOfMonster, int numberOfMonster){
+    public Player(String nama, ArrayList<Monster> listOfMonster, int numberOfMonster){
         this.nama = nama;
         this.listOfMonster = listOfMonster;
         this.numberOfMonster = numberOfMonster;
@@ -27,7 +33,7 @@ public class Player {
         return this.nama;
     }
 
-    public List<Monster> getListOfMonster(){
+    public ArrayList<Monster> getListOfMonster(){
         return this.listOfMonster;
     }
 
@@ -41,7 +47,7 @@ public class Player {
         this.nama = nama;
     }
 
-    public void setListOfMonster(List<Monster> listOfMonster){
+    public void setListOfMonster(ArrayList<Monster> listOfMonster){
         this.listOfMonster = listOfMonster;
     }
 

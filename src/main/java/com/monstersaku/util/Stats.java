@@ -8,7 +8,7 @@ public class Stats {
     private Double specialDefense;
     private Double speed;
     
-    public Stats() {
+    public Stats(Double healthPoint, Double attack, Double defense, Double specialAttack,Double specialDefense, Double speed) {
         this.healthPoint = healthPoint;
         this.attack = attack;
         this.defense = defense;
@@ -67,5 +67,13 @@ public class Stats {
 
     public void decreaseStats(Double amount) {
 
+    }
+    public void printStats(){
+        System.out.println("HP = " + healthPoint.toString());
+        System.out.println("Atk = " + this.attack);
+        System.out.println("Def = " + defense);
+        System.out.println("Sp.Atk = " + specialAttack);
+        System.out.println("Sp.Def = " + specialDefense);
+        System.out.println("Speed = " + speed);
     }
 }
