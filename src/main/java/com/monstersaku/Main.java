@@ -83,7 +83,7 @@ public class Main {
                 Double d = Double.parseDouble(a);
                 stats.add(d);
             }
-            Stats basestats = new Stats(stats.get(0), stats.get(1),stats.get(2),stats.get(3),stats.get(4),stats.get(5));
+            Stats<Double> basestats = new Stats<Double>(stats.get(0), stats.get(1),stats.get(2),stats.get(3),stats.get(4),stats.get(5));
             // Creating element type arraylist
             ArrayList<ElementType> eltype = new ArrayList<ElementType>();
             String eltaip = line1[2];
@@ -149,12 +149,12 @@ public class Main {
         }
         Player player1 = new Player(player1name, player1monsterarray);
         Player player2 = new Player(player2name, player2monsterarray);
-        System.out.println("List of Monster Player 1");
+        System.out.println("List of Monster Player " + player1name);
         for(int i = 0; i < player1.getNumberOfMonster(); i++){
             player1.getListOfMonster().get(i).printMonster();
             System.out.println();
         }
-        System.out.println("List of Monster Player 2");
+        System.out.println("List of Monster Player " + player2name);
         for(int i = 0; i < player2.getNumberOfMonster(); i++){
             player2.getListOfMonster().get(i).printMonster();
             System.out.println();
@@ -162,4 +162,178 @@ public class Main {
         // Testing akses elemen dari monster di player
         // player2.getListOfMonster().get(0).getMoves().get(0).useammunition();
         // player2.getListOfMonster().get(0).printMonster();
+
+        // for (Monster m : arrmonster) {
+        //     System.out.println(m.getName());
+        // }
+
+        Monster  monsterPlayer1 = player1.getListOfMonster().get(0);
+        Monster  monsterPlayer2 = player2.getListOfMonster().get(0);
+
+        int inputmove2 = 0;
+        int inputmove1 = 0;
+
+        // player1.getListOfMonster().remove(monsterPlayer1);
+
+        // System.out.println("----------------------------------------------------------------");
+        // for(int i = 0; i < player1.getNumberOfMonster(); i++){
+        //     player1.getListOfMonster().get(i).printMonster();
+        //     System.out.println();
+        // }
+
+        while (player1.getNumberOfMonster() != 0 || player2.getNumberOfMonster() !=0) {
+            
+            System.out.printf(("Giliran %s : pilih Move/Switch%n"), player1.getName());
+            String op1 = scan.next();
+            if (op1.equals("Switch")) {
+                System.out.println("Pilih monster yang akan dimainkan (masukkan nomor monster)");
+                for(int i = 0; i < player1.getNumberOfMonster(); i++){
+                    player1.getListOfMonster().get(i).printMonster();
+                    System.out.println();
+                }
+                int switchMonster = scan.nextInt();
+                if (monsterPlayer1 == player1.getListOfMonster().get(switchMonster-1)) {
+                    System.out.println("Tidak valid");
+                } else {
+                    monsterPlayer1 = player1.getListOfMonster().get(switchMonster-1);
+                }
+
+            } else if (op1.equals("Move")) {
+                System.out.println("Pilih move yang akan dipakai (masukkan nomor move)");
+                for(Move move : monsterPlayer1.getMoves()){
+                    move.printmonsMove();
+                    System.out.println();
+                }
+            }
+
+            System.out.printf(("Giliran %s : pilih Move/Switch%n"), player2.getName());
+            String op2 = scan.next();
+            if (op2.equals("Switch")) {
+                System.out.println("Pilih monster yang akan dimainkan (masukkan nomor monster)");
+                for(int i = 0; i < player1.getNumberOfMonster(); i++){
+                    player1.getListOfMonster().get(i).printMonster();
+                    System.out.println();
+                }
+                int switchMonster = scan.nextInt();
+                if (monsterPlayer2 == player2.getListOfMonster().get(switchMonster-1)) {
+                    System.out.println("Tidak valid");
+                } else {
+                    monsterPlayer2 = player2.getListOfMonster().get(switchMonster-1);
+                }
+            } else if (op2.equals("Move")) {
+                System.out.println("Pilih move yang akan dipakai (masukkan nomor move)");
+                for(Move move : monsterPlayer2.getMoves()){
+                    move.printmonsMove();
+                    System.out.println();
+                    //input scan.next();
+
+                }
+            }
+
+            // CEK STATUS CONDITION
+
+            // RESOLUSI DAMAGE CALC
+            if (op1.equals("Switch") && op2.equals("Switch")) {
+                System.out.println("Monster player 1 berubah menjadi "+ monsterPlayer1.getName());
+                System.out.println("Monster player 2 berubah menjadi "+ monsterPlayer2.getName());
+            } else if (op1.equals("Switch") && op2.equals("Move")) {
+                System.out.println("Monster player 1 berubah menjadi "+ monsterPlayer1.getName());
+                if (monsterPlayer2.getMoves().get(inputmove2).gettarget()==Target.ENEMY) {
+                    // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer1);
+                } else {
+                    // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer2);
+                }
+            } else if (op2.equals("Switch") && op1.equals("Move")) {
+                System.out.println("Monster player 2 berubah menjadi "+ monsterPlayer2.getName());
+                if (monsterPlayer1.getMoves().get(inputmove1).gettarget()==Target.ENEMY) {
+                    // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer2);
+                } else {
+                    // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer1);
+                }
+            } else if (op1.equals("Move") && op2.equals("Move")) {
+                if (monsterPlayer1.getMoves().get(inputmove1).getpriority() > monsterPlayer2.getMoves().get(inputmove2).getpriority()) {
+                    if (monsterPlayer1.getMoves().get(inputmove1).gettarget()==Target.ENEMY) {
+                        // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer2);
+                    } else {
+                        // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer1);
+                    }
+
+                    if (monsterPlayer2.getMoves().get(inputmove2).gettarget()==Target.ENEMY) {
+                        // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer1);
+                    } else {
+                        // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer2);
+                    }   
+                }
+                if (monsterPlayer1.getMoves().get(inputmove1).getpriority() < monsterPlayer2.getMoves().get(inputmove2).getpriority()) {
+                    if (monsterPlayer2.getMoves().get(inputmove2).gettarget()==Target.ENEMY) {
+                        // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer1);
+                    } else {
+                        // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer2);
+                    }   
+                    if (monsterPlayer1.getMoves().get(inputmove1).gettarget()==Target.ENEMY) {
+                        // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer2);
+                    } else {
+                        // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer1);
+                    }
+
+                } else {
+                    if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
+                        if (monsterPlayer1.getMoves().get(inputmove1).gettarget()==Target.ENEMY) {
+                            // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer2);
+                        } else {
+                            // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer1);
+                        }
+    
+                        if (monsterPlayer2.getMoves().get(inputmove2).gettarget()==Target.ENEMY) {
+                            // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer1);
+                        } else {
+                            // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer2);
+                        }   
+                    } else {
+                        if (monsterPlayer2.getMoves().get(inputmove2).gettarget()==Target.ENEMY) {
+                            // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer1);
+                        } else {
+                            // damageCalculation(monsterPlayer2.getMoves().get(inputmove2), monsterPlayer2);
+                        }   
+                        if (monsterPlayer1.getMoves().get(inputmove1).gettarget()==Target.ENEMY) {
+                            // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer2);
+                        } else {
+                            // damageCalculation(monsterPlayer1.getMoves().get(inputmove1), monsterPlayer1);
+                        }
+                    }
+                }
+            }
+
+            // AFTER DAMAGE CALC
+            if (monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
+                System.out.printf("Monster %s milik %s kalah, pilih monster lain", monsterPlayer1, player1);
+                player1.getListOfMonster().remove(monsterPlayer1);
+            }
+
+
+
+            /*di dalem move ada 4 kondisi yang mungkin terjadi
+                1. Player1 switch player2 switch 
+                2. player1 switch player2 move -> langsung damage 
+                3. player1 move player2 switch -> langsung damage
+                4. player1 move player2 move -> check prio 
+
+                setiap ada move:
+                cek move status move --> cek target
+                target masukin ke parameter target
+
+                2 player pilih move:
+                cek prio --> cek speed
+                misalnya player1 dulu --> 
+
+
+            */
+
+
+           
+            
+
+
+        }
+
 }}

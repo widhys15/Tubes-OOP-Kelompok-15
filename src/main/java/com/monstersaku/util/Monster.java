@@ -9,7 +9,7 @@ public class Monster{
     private Integer idmonster;
     private String nama;
     private List<ElementType> elementTypes;
-    private Stats baseStats;
+    private Stats<Double> baseStats;
     private ArrayList<Move> moves;
     private String condition;
 
@@ -40,7 +40,7 @@ public class Monster{
     public List<ElementType> getElementTypes() {
         return this.elementTypes;
     }
-    public Stats getBaseStats() {
+    public Stats<Double> getBaseStats() {
         return this.baseStats;
     }
     public List<Move> getMoves() {
