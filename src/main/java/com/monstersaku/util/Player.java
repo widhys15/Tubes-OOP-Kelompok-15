@@ -32,6 +32,12 @@ public class Player {
     public int getNumberOfMonster(){
         return this.listOfMonster.size();
     }
+    public void showListOfMonster(){
+        for(Monster m: listOfMonster){
+            m.printMonster();
+            System.out.println();
+        }
+    }
 
 
     //Setter

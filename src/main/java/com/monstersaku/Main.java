@@ -150,15 +150,9 @@ public class Main {
         Player player1 = new Player(player1name, player1monsterarray);
         Player player2 = new Player(player2name, player2monsterarray);
         System.out.println("List of Monster Player " + player1name);
-        for(int i = 0; i < player1.getNumberOfMonster(); i++){
-            player1.getListOfMonster().get(i).printMonster();
-            System.out.println();
-        }
+        player1.showListOfMonster();
         System.out.println("List of Monster Player " + player2name);
-        for(int i = 0; i < player2.getNumberOfMonster(); i++){
-            player2.getListOfMonster().get(i).printMonster();
-            System.out.println();
-        }
+        player2.showListOfMonster();
         // Testing akses elemen dari monster di player
         // player2.getListOfMonster().get(0).getMoves().get(0).useammunition();
         // player2.getListOfMonster().get(0).printMonster();

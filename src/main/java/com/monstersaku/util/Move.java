@@ -95,7 +95,7 @@ public class Move {
     public void printMove(){
         System.out.println("ID Move " + idMove);
         System.out.println("Move Type " + movetype);
-        System.out.println("Move Name" + movename);
+        System.out.println("Move Name " + movename);
         System.out.println("Move Element Type " + moveelementType);
         System.out.println("Accuracy " + accuracy);
         System.out.println("Priority " + priority);
@@ -104,7 +104,10 @@ public class Move {
         System.out.println("Damage " + damage);
     }
     public void printmonsMove(){
-        System.out.println("ID Move " + idMove);
-        System.out.println("Ammunition " + ammunition);
+        System.out.println("ID Move             : " + idMove);
+        System.out.println("Move Type           : " + movetype);
+        System.out.println("Move Name           : " + movename);
+        System.out.println("Move Element Type   : " + moveelementType);
+        System.out.println("Ammunition          : " + ammunition);
     }
 }

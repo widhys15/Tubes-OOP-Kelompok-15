@@ -14,14 +14,14 @@ public class Monster{
     private String condition;
 
     //KONSTRUKTOR
-    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats baseStats){
+    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats){
         this.idmonster = idmonster;
         this.nama = nama;
         this.elementTypes = elementTypes;
         this.baseStats = baseStats;
     }
     
-    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats baseStats, ArrayList<Move> moves, String condition) {
+    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats, ArrayList<Move> moves, String condition) {
         this.idmonster = idmonster;
         this.nama = nama;
         this.elementTypes = elementTypes;
@@ -52,7 +52,7 @@ public class Monster{
 
     //SETTER (yang mungkin dibutuhkan aja)
     //asumsi nama dan elType monster gabisa/gaperlu diubah-ubah
-    public void setBaseStats(Stats newBaseStats) {
+    public void setBaseStats(Stats<Double> newBaseStats) {
         //melakukan set terhadap status HP monster setelah terkena damage
         this.baseStats = newBaseStats;
     }
@@ -125,14 +125,14 @@ public class Monster{
     }
 
     public void printMonster(){
-        System.out.println("ID Monster = " + idmonster);
-        System.out.println("Nama = " + nama);
-        System.out.println("Element types = " + elementTypes);
+        System.out.println("ID Monster          : " + idmonster);
+        System.out.println("Nama                : " + nama);
+        System.out.println("Element types       : " + elementTypes);
         for(Move move : moves){
              move.printmonsMove();
         }
         baseStats.printStats();
-        System.out.println("Status Condition = " + condition);
+        System.out.println("Status Condition    : " + condition);
     }
 
     //sementara segitu dulu
