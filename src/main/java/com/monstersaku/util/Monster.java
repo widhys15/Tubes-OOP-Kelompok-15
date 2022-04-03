@@ -11,7 +11,7 @@ public class Monster {
     private String nama;
     private List<ElementType> elementTypes;
     private Stats<Double> baseStats;
-    private ArrayList<Move> moves;
+    private ArrayList<AbsMove> moves;
     private String condition;
 
     // KONSTRUKTOR
@@ -23,7 +23,7 @@ public class Monster {
     }
 
     public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats,
-            ArrayList<Move> moves, String condition) {
+            ArrayList<AbsMove> moves, String condition) {
         this.idmonster = idmonster;
         this.nama = nama;
         this.elementTypes = elementTypes;
@@ -49,7 +49,7 @@ public class Monster {
         return this.baseStats;
     }
 
-    public List<Move> getMoves() {
+    public List<AbsMove> getMoves() {
         return this.moves;
     }
 
@@ -132,7 +132,7 @@ public class Monster {
         System.out.println("ID Monster          : " + idmonster);
         System.out.println("Nama                : " + nama);
         System.out.println("Element types       : " + elementTypes);
-        for (Move move : moves) {
+        for (AbsMove move : moves) {
             move.printmonsMove();
         }
         baseStats.printStats();
@@ -144,7 +144,7 @@ public class Monster {
     }
 
     public void showListOfMoves() {
-        for (Move m : this.moves) {
+        for (AbsMove m : this.moves) {
             m.printmonsMove();
         }
     }

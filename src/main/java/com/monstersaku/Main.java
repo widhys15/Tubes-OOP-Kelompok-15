@@ -1,14 +1,19 @@
 package com.monstersaku;
 
+import com.monstersaku.util.AbsMove;
 import com.monstersaku.util.CSVReader;
+import com.monstersaku.util.DefaultMove;
 import com.monstersaku.util.ElementType;
 import com.monstersaku.util.Monster;
 import com.monstersaku.util.Move;
 import com.monstersaku.util.MoveType;
+import com.monstersaku.util.NormalMove;
 import com.monstersaku.util.Target;
 import com.monstersaku.util.StatusMove;
 import com.monstersaku.util.Stats;
+import com.monstersaku.util.StatsMove;
 import com.monstersaku.util.Player;
+import com.monstersaku.util.SpecialMove;
 
 import java.util.Random;
 import java.io.File;
@@ -26,7 +31,7 @@ public class Main {
 
     public static void main(String[] args) {
         // Creating ArrayList Move and Monster
-        ArrayList<Move> arrmove = new ArrayList<Move>();
+        ArrayList<AbsMove> arrmove = new ArrayList<AbsMove>();
         ArrayList<Monster> arrmonster = new ArrayList<Monster>();
 
         // ============================================ TRY READING MONSTER POOL AND
@@ -48,27 +53,29 @@ public class Main {
                 Integer priority = Integer.parseInt(line[5]);
                 Integer ammunition = Integer.parseInt(line[6]);
                 Target target = Target.valueOf(line[7]);
-                if (movetaip.equals(MoveType.STATUS)) {
-                    String moveeffect = line[8];
-                    String movestats = line[9];
-                    String[] arrofmovestats = movestats.split(",", 6);
-                    Double hp = Double.parseDouble(arrofmovestats[0]);
-                    Double atk = Double.parseDouble(arrofmovestats[1]);
-                    Double def = Double.parseDouble(arrofmovestats[2]);
-                    Double spcatk = Double.parseDouble(arrofmovestats[3]);
-                    Double spcdef = Double.parseDouble(arrofmovestats[4]);
-                    Double speed = Double.parseDouble(arrofmovestats[5]);
-                    StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority,
-                            ammunition, target, moveeffect, hp, atk, def, spcatk, spcdef, speed);
+                if (movetaip.equals(MoveType.NORMAL)) {
+                    Double damage = Double.parseDouble(line[8]);
+                    NormalMove mov = new NormalMove(idmove, movetaip, movename, moveelementType, accuracy, priority,ammunition, target, damage);
                     arrmove.add(mov);
                     mov.printMove();
-
-                } else {
+                } else if (movetaip.equals(MoveType.SPECIAL)) {
                     Double damage = Double.parseDouble(line[8]);
-                    Move mov = new Move(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition,
+                    SpecialMove mov = new SpecialMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition,
                             target, damage);
                     arrmove.add(mov);
                     mov.printMove();
+                } else if (movetaip.equals(MoveType.STATUS)){
+                    if(line[8].equals("BURN") ||line[8].equals("PARALYZE") ||line[8].equals("POISON") ||line[8].equals("SLEEP") ){
+                        String condition = line[8];
+                        StatsMove mov = new StatsMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, condition);
+                        arrmove.add(mov);
+                        mov.printMoveCondition();
+                    } else{
+                        Double effect = Double.parseDouble(line[8]);
+                        StatsMove mov = new StatsMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, effect);
+                        arrmove.add(mov);
+                        mov.printMoveEffect();
+                    }
                 }
                 System.out.println();
             }
@@ -114,7 +121,9 @@ public class Main {
                     String mov = line1[4];
                     String[] arrofmov = mov.split(",", 7);
                     // Adding move object to listofmove monster
-                    ArrayList<Move> monsmove = new ArrayList<Move>();
+                    ArrayList<AbsMove> monsmove = new ArrayList<AbsMove>();
+                    DefaultMove defmove = new DefaultMove();
+                    monsmove.add(defmove);
                     for (int i = 0; i < arrofmov.length; i++) {
                         monsmove.add(arrmove.get(Integer.valueOf(arrofmov[i]) - 1));
                     }
@@ -294,7 +303,7 @@ public class Main {
                     monsterPlayer2 = player2.getListOfMonster().get(switchMonster - 1);
 
                 } else if (op2 == 2) {
-                    inputmove1idx = monsterPlayer2.moveIdx();
+                    inputmove2idx = monsterPlayer2.moveIdx();
                 }
 
 
