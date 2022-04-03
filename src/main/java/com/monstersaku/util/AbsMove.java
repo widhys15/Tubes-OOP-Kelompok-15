@@ -1,4 +1,5 @@
 package com.monstersaku.util;
+import java.util.ArrayList;
 
 public abstract class AbsMove {
     protected Integer idMove;
@@ -34,6 +35,17 @@ public abstract class AbsMove {
     public Target gettarget(){
         return target;
     }
+    public float findEffectivity(Monster target, ArrayList<ElementEffectivity> arreffectivity){
+        float effectivity = (float) 1.0;
+        for(ElementEffectivity ef: arreffectivity){
+            for(int i = 0; i < target.getElementTypes().size(); i++){
+                if((moveelementType.equals(ef.getElementattacker())) && (target.getElementTypes().get(i).equals(ef.getElementattacker()))){
+                    effectivity = (float) (effectivity * ef.getEffectivity());
+                }
+            }
+        }
+        return effectivity;
+    }
 
     public void printMove(){
         System.out.println("ID Move             : " + idMove);
@@ -51,5 +63,18 @@ public abstract class AbsMove {
         System.out.println("Move Name           : " + movename);
         System.out.println("Move Element Type   : " + moveelementType);
         System.out.println("Ammunition          : " + ammunition);
+    }
+    public void useDefaultMove(Monster monsterPlayer2, Monster monsterPlayer1,
+            ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster) {
+    }
+    public void useNormalMove(Monster monsterPlayer2, Monster monsterPlayer1,
+            ArrayList<ElementEffectivity> arreffectivity) {
+    }
+    public void useSpecialMove(Monster monsterPlayer2, Monster monsterPlayer1,
+            ArrayList<ElementEffectivity> arreffectivity) {
+    }
+    public void changeCondition(Monster monsterPlayer1) {
+    }
+    public void changeHP(Monster monsterPlayer2) {
     }
 }

@@ -44,4 +44,13 @@ public class StatsMove extends AbsMove {
         super.printMove();
         System.out.println("Move Effect         : " + effect);
     }
+
+    public void changeCondition(Monster enemy){
+        enemy.setStatusCondition(conditon);
+        ammunition--;
+    }
+    public void changeHP(Monster monster){
+        monster.getBaseStats().setHealthPoint(monster.getBaseStats().getHealthPoint() + effect);
+        ammunition--;
+    }
 }

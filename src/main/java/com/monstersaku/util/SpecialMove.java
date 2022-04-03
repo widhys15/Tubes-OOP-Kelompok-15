@@ -1,5 +1,7 @@
 package com.monstersaku.util;
 
+import java.util.ArrayList;
+
 public class SpecialMove extends AbsMove {
     protected Double damage;
     
@@ -13,6 +15,12 @@ public class SpecialMove extends AbsMove {
         this.ammunition = ammunition;
         this.target = target;
         this.damage = damage;
+    }
+
+    public void useSpecialMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity){
+        float damagecalculation = (float)Math.floor((((attacker.getBaseStats().getSpecialAttack()) / (enemy.getBaseStats().getSpecialDefense())) + 2 ) * Math.floor(Math.random()*(1-0.85+1)+0.85) * findEffectivity(enemy, arreffectivity));
+        enemy.getBaseStats().setHealthPoint(enemy.getBaseStats().getHealthPoint()-damagecalculation);
+        ammunition--;
     }
 
     public void printMove(){

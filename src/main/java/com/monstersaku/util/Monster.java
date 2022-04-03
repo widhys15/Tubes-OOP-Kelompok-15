@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import javax.lang.model.element.Element;
 
 public class Monster {
-    private Integer idmonster;
-    private String nama;
-    private List<ElementType> elementTypes;
-    private Stats<Double> baseStats;
-    private ArrayList<AbsMove> moves;
-    private String condition;
+    protected Integer idmonster;
+    protected String nama;
+    protected List<ElementType> elementTypes;
+    protected Stats<Double> baseStats;
+    protected ArrayList<AbsMove> moves;
+    protected String condition;
 
     // KONSTRUKTOR
     public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats) {
@@ -151,7 +151,7 @@ public class Monster {
 
     public void monsterMovement(int moveIdx) {
         if (this.getMoves().get(moveIdx).gettarget() == Target.ENEMY) {
-            // damageCalculation(monsterPlayer2.getMoves().get(moveIdx), monsterPlayer1);
+            // 
         } else {
             // damageCalculation(monsterPlayer2.getMoves().get(moveIdx), monsterPlayer2);
         }
