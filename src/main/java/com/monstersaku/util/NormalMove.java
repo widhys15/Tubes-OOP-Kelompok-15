@@ -19,10 +19,11 @@ public class NormalMove extends AbsMove {
     }
 
     public void useNormalMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity){
-        float damagecalculation = (float)Math.floor((((attacker.getBaseStats().getAttack()) / (enemy.getBaseStats().getDefense())) + 2 ) * Math.floor(Math.random()*(1-0.85+1)+0.85) * findEffectivity(enemy, arreffectivity));
-        System.out.println("Damagenya sebesar " + damagecalculation);
-        Double finalhp = enemy.getBaseStats().getHealthPoint() - (double) damagecalculation;
-        enemy.getBaseStats().setHealthPoint(finalhp);
+        Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity);
+        System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + damagecalculation);
+        Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;
+        System.out.println("HP " + enemy.getName() + " berubah menjadi " + finaldamage);
+        enemy.getBaseStats().setHealthPoint(finaldamage);
         this.ammunition = this.ammunition - 1;
     }
 

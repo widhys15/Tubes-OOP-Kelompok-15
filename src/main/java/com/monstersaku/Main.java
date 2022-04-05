@@ -288,7 +288,8 @@ public class Main {
                     monsterPlayer1 = player1.getListOfMonster().get(switchMonster - 1);
 
                 } else if (op1 == 2) {
-                    inputmove1idx = monsterPlayer1.moveIdx();
+                    inputmove1idx = scan.nextInt()-1;
+                    System.out.println("MOVEEEEEEEEEEEEE");
                 }
 
 
@@ -322,7 +323,8 @@ public class Main {
                     monsterPlayer2 = player2.getListOfMonster().get(switchMonster - 1);
 
                 } else if (op2 == 2) {
-                    inputmove2idx = monsterPlayer2.moveIdx();
+                    inputmove2idx = scan.nextInt()-1;
+                    System.out.println("MOVEEEEEEEEEEEEE");
                 }
 
 
@@ -339,40 +341,50 @@ public class Main {
                     System.out.printf("%s mengganti monster yang dimainkan menjadi %d.%s%n", player1.getName(), switchMonster, monsterPlayer1.getName());
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), monsterPlayer2.getMoves().get(inputmove2idx).getmovename());
                     System.out.println("Calculating...");
-                    if(monsterPlayer2.getMoves().get(inputmove2idx).equals(MoveType.DEFAULT)){
-                        monsterPlayer2.getMoves().get(inputmove2idx).useDefaultMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
-                    } else if (monsterPlayer2.getMoves().get(inputmove2idx).equals(MoveType.NORMAL)){
-                        monsterPlayer2.getMoves().get(inputmove2idx).useNormalMove(monsterPlayer2, monsterPlayer1, arreffectivity);
-                    } else if (monsterPlayer2.getMoves().get(inputmove2idx).equals(MoveType.SPECIAL)){
-                        monsterPlayer2.getMoves().get(inputmove2idx).useSpecialMove(monsterPlayer2, monsterPlayer1, arreffectivity);
-                    } else if (monsterPlayer2.getMoves().get(inputmove2idx).equals(MoveType.STATUS)){
-                        if(monsterPlayer2.getMoves().get(inputmove2idx).gettarget().equals(Target.ENEMY)){
-                            monsterPlayer2.getMoves().get(inputmove2idx).changeCondition(monsterPlayer1);
-                        }
-                        else{
-                            monsterPlayer2.getMoves().get(inputmove2idx).changeHP(monsterPlayer2);
-                        }
+                    if(monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.DEFAULT)){
+                        System.out.println("INI DEFAULT MOVE");
                     }
-                    monsterPlayer2.monsterMovement(inputmove2idx);
+                    // if(monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.DEFAULT)){
+                    //     System.out.println("INI DEFAULT MOVE AJG");
+                    //     monsterPlayer2.getMoves().get(inputmove2idx).useDefaultMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                    // } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.NORMAL)){
+                    //     System.out.println("INI NORMAL MOVE AJG");
+                    //     monsterPlayer2.getMoves().get(inputmove2idx).useNormalMove(monsterPlayer2, monsterPlayer1, arreffectivity);
+                    // } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.SPECIAL)){
+                    //     System.out.println("INI SPECIAL MOVE AJG");
+                    //     monsterPlayer2.getMoves().get(inputmove2idx).useSpecialMove(monsterPlayer2, monsterPlayer1, arreffectivity);
+                    // } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.STATUS)){
+                    //     System.out.println("INI STATUS MOVE AJG");
+                    //     if(monsterPlayer2.getMoves().get(inputmove2idx).gettarget().equals(Target.ENEMY)){
+                    //         monsterPlayer2.getMoves().get(inputmove2idx).changeCondition(monsterPlayer1);
+                    //     }
+                    //     else{
+                    //         monsterPlayer2.getMoves().get(inputmove2idx).changeHP(monsterPlayer2);
+                    //     }
+                    // }
+                    // monsterPlayer2.monsterMovement(inputmove2idx);
                 } else if (op2 == 1 && op1 == 2) {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), monsterPlayer1.getMoves().get(inputmove1idx).getmovename());
                     System.out.printf("%s mengganti monster yang dimainkan menjadi %d.%s%n", player2.getName(), switchMonster, monsterPlayer2.getName());
                     System.out.println("Calculating...");
-                    if(monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.DEFAULT)){
-                        monsterPlayer1.getMoves().get(inputmove1idx).useDefaultMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
-                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.NORMAL)){
-                        monsterPlayer1.getMoves().get(inputmove1idx).useNormalMove(monsterPlayer1, monsterPlayer2, arreffectivity);
-                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.SPECIAL)){
-                        monsterPlayer1.getMoves().get(inputmove1idx).useSpecialMove(monsterPlayer1, monsterPlayer2, arreffectivity);
-                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.STATUS)){
-                        if(monsterPlayer1.getMoves().get(inputmove1idx).gettarget().equals(Target.ENEMY)){
-                            monsterPlayer1.getMoves().get(inputmove1idx).changeCondition(monsterPlayer2);
-                        }
-                        else{
-                            monsterPlayer1.getMoves().get(inputmove1idx).changeHP(monsterPlayer1);
-                        }
+                    if(monsterPlayer1.getMoves().get(inputmove1idx).getmovetype().equals(MoveType.DEFAULT)){
+                        System.out.println("INI DEFAULT MOVE");
                     }
-                    monsterPlayer1.monsterMovement(inputmove1idx);
+                    // if(monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.DEFAULT)){
+                    //     monsterPlayer1.getMoves().get(inputmove1idx).useDefaultMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.NORMAL)){
+                    //     monsterPlayer1.getMoves().get(inputmove1idx).useNormalMove(monsterPlayer1, monsterPlayer2, arreffectivity);
+                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.SPECIAL)){
+                    //     monsterPlayer1.getMoves().get(inputmove1idx).useSpecialMove(monsterPlayer1, monsterPlayer2, arreffectivity);
+                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.STATUS)){
+                    //     if(monsterPlayer1.getMoves().get(inputmove1idx).gettarget().equals(Target.ENEMY)){
+                    //         monsterPlayer1.getMoves().get(inputmove1idx).changeCondition(monsterPlayer2);
+                    //     }
+                    //     else{
+                    //         monsterPlayer1.getMoves().get(inputmove1idx).changeHP(monsterPlayer1);
+                    //     }
+                    // }
+                    // monsterPlayer1.monsterMovement(inputmove1idx);
                 } else if (op1 == 2 && op2 == 2) {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), monsterPlayer1.getMoves().get(inputmove1idx).getmovename());
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), monsterPlayer2.getMoves().get(inputmove2idx).getmovename());
@@ -380,22 +392,22 @@ public class Main {
                     if (monsterPlayer1.getMoves().get(inputmove1idx).getpriority() > monsterPlayer2.getMoves()
                             .get(inputmove2idx)
                             .getpriority()) {
-                        monsterPlayer1.monsterMovement(inputmove1idx);
-                        monsterPlayer2.monsterMovement(inputmove2idx);
+                        // monsterPlayer1.monsterMovement(inputmove1idx);
+                        // monsterPlayer2.monsterMovement(inputmove2idx);
 
                     } else if (monsterPlayer1.getMoves().get(inputmove1idx).getpriority() < monsterPlayer2.getMoves()
                             .get(inputmove2idx)
                             .getpriority()) {
-                        monsterPlayer2.monsterMovement(inputmove2idx);
-                        monsterPlayer1.monsterMovement(inputmove1idx);
+                        // monsterPlayer2.monsterMovement(inputmove2idx);
+                        // monsterPlayer1.monsterMovement(inputmove1idx);
 
                     } else {
                         if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
-                            monsterPlayer1.monsterMovement(inputmove1idx);
-                            monsterPlayer2.monsterMovement(inputmove2idx);
+                            // monsterPlayer1.monsterMovement(inputmove1idx);
+                            // monsterPlayer2.monsterMovement(inputmove2idx);
                         } else {
-                            monsterPlayer2.monsterMovement(inputmove2idx);
-                            monsterPlayer1.monsterMovement(inputmove1idx);
+                            // monsterPlayer2.monsterMovement(inputmove2idx);
+                            // monsterPlayer1.monsterMovement(inputmove1idx);
                         }
                     }
                     if(monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.DEFAULT)){

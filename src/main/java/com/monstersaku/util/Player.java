@@ -48,7 +48,4 @@ public class Player {
     public void setListOfMonster(ArrayList<Monster> listOfMonster){
         this.listOfMonster = listOfMonster;
     }
-
 }
-
-

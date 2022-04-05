@@ -18,9 +18,12 @@ public class SpecialMove extends AbsMove {
     }
 
     public void useSpecialMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity){
-        float damagecalculation = (float)Math.floor((((attacker.getBaseStats().getSpecialAttack()) / (enemy.getBaseStats().getSpecialDefense())) + 2 ) * Math.floor(Math.random()*(1-0.85+1)+0.85) * findEffectivity(enemy, arreffectivity));
-        enemy.getBaseStats().setHealthPoint(enemy.getBaseStats().getHealthPoint()-damagecalculation);
-        ammunition--;
+        Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getSpecialAttack()/enemy.getBaseStats().getSpecialDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity);
+        System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + damagecalculation);
+        Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;
+        System.out.println("HP " + enemy.getName() + " berubah menjadi " + finaldamage);
+        enemy.getBaseStats().setHealthPoint(finaldamage);
+        this.ammunition = this.ammunition - 1;
     }
 
     public void printMove(){

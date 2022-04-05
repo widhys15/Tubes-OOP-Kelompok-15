@@ -47,7 +47,7 @@ public class TestMoveAbstract{
         lists.add(ElementType.WATER);
         ArrayList<AbsMove> moves = new ArrayList<>();
         ArrayList<AbsMove> moves1 = new ArrayList<>();
-        moves.add(normalmove);
+        moves.add(defmove);
         moves1.add(normalmove);
         moves.add(statusmove2);
         moves.add(statusmove);
@@ -70,13 +70,18 @@ public class TestMoveAbstract{
                     arreffectivity.add(eleffectivity); 
                     }
         
-        Monster mons = new Monster(1, "Vincent", lists, stats, moves, "-");
-        Monster mons1 = new Monster(2, "AAAA", lists1, stats1, moves1, "-");
-
+        Monster mons = new Monster(1, "AAAAAA", lists, stats, moves, "-");
+        Monster mons1 = new Monster(2, "BBBBBB", lists1, stats1, moves1, "-");
+        
+        ArrayList<Monster> arrmonster = new ArrayList<>();
+        arrmonster.add(mons);
+        arrmonster.add(mons1);
         mons.getMoves().get(0).printMove();
-        mons.getMoves().get(0).useNormalMove(mons1, mons, arreffectivity);
+        mons.getMoves().get(0).useDefaultMove(mons, mons1, arreffectivity, arrmonster);
         mons1.printMonster();
-        mons1.getBaseStats().setHealthPoint(mons1.getBaseStats().getHealthPoint()-50.0);
-        mons1.printMonster();
+        mons.getMoves().get(1).changeHP(mons);
+        mons.getMoves().get(0).printMove();
+        mons.getMoves().get(1).printMove();
+        mons.printMonster();
     }
 }
