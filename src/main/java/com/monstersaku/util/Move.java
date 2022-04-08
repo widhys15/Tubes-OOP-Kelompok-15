@@ -1,69 +1,63 @@
 package com.monstersaku.util;
-
-import com.monstersaku.util.CSVReader;
-import com.monstersaku.util.ElementType;
-import com.monstersaku.util.MoveType;
-import com.monstersaku.util.Monster;
-import com.monstersaku.util.Move;
-import com.monstersaku.util.StatusMove;
-import com.monstersaku.util.Stats;
-import com.monstersaku.util.StatusCondition;
-import com.monstersaku.util.Target;
-import com.monstersaku.util.Player;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.ArrayList;
 
-public class Move {
-    private Integer idMove;
-    private MoveType movetype; 
-    private String movename;
-    private ElementType moveelementType;
-    private Integer accuracy;
-    private Integer priority;
-    private Integer ammunition;
-    private Target target;
-    private Double damage;
+public abstract class Move {
+    protected Integer idmove;
+    protected MoveType movetype; 
+    protected String movename;
+    protected ElementType moveelementType;
+    protected Integer accuracy;
+    protected Integer priority;
+    protected Integer ammunition;
+    protected Target target;
 
-    public Move(Integer idMove){
-        idMove = 0;
-        movetype = MoveType.DEFAULT;
-        movename = "Normal Move";
-        moveelementType = ElementType.NORMAL;
-        accuracy = 100;
-        priority = 0;
-        ammunition = 999999;
-        target = Target.ENEMY;
-        damage = 50.0;
-    }
-    public Move(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target){
-        this.idMove = idMove;
+    public Move (Integer idmove, MoveType movetype, ElementType elementType, String name, Integer accuracy, Integer priority, Integer ammunition, Target target){
+        this.idmove = idmove;
         this.movetype = movetype;
-        this.movename = movename;
-        this.moveelementType = moveelementType;
-        this.accuracy = accuracy;
-        this.priority = priority;
-        this.ammunition = ammunition;
-        this.target = target;   
-    }
-    
-    public Move(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, Double damage){
-        this.idMove = idMove;
-        this.movetype = movetype;
-        this.movename = movename;
-        this.moveelementType = moveelementType;
+        this.moveelementType = elementType;
+        this.movename = name;
         this.accuracy = accuracy;
         this.priority = priority;
         this.ammunition = ammunition;
         this.target = target;
-        this.damage = damage;     
     }
-    
+
+    public Move(){}
+
+    public void setidMove(Integer idmove){
+        this.idmove = idmove;
+    }
+
+    public void setmovetype(MoveType movetype){
+        this.movetype = movetype;
+    }
+
+    public void setmovename(String movename){
+        this.movename = movename;
+    }
+
+    public void setelementtype(ElementType moveelementtype){
+        this.moveelementType = moveelementtype;
+    }
+
+    public void setaccuracy(Integer accuracy){
+        this.accuracy = accuracy;
+    }
+
+    public void setpriority(Integer priority){
+        this.priority = priority;
+    }
+
+    public void setammunition(Integer ammunition){
+        this.ammunition = ammunition;
+    }
+
+    public void settarget(Target target){
+        this.target = target;
+    }
+
     public Integer getidMove(){
-        return this.idMove;
+        return this.idmove;
     }
     public MoveType getmovetype(){
         return movetype;
@@ -86,28 +80,53 @@ public class Move {
     public Target gettarget(){
         return target;
     }
-    public Double getdamage(){
-        return damage;
+    public Double findEffectivity(Monster target, ArrayList<ElementEffectivity> arreffectivity){
+        Double effectivity = 1.0;
+        for(ElementEffectivity ef: arreffectivity){
+            System.out.println(ef);
+            for(int i = 0; i < target.getElementTypes().size(); i++){
+                System.out.println("Hadeuh");
+                if((moveelementType.equals(ef.getElementattacker())) && (target.getElementTypes().get(i).equals(ef.getElementattacker()))){
+                    effectivity = (effectivity * ef.getEffectivity());
+                }
+            }
+        }
+        System.out.println("Effectivity adalah " + effectivity);
+        return effectivity;
     }
-    public void useammunition(){
-        ammunition = ammunition - 1;
-    }
+
     public void printMove(){
-        System.out.println("ID Move " + idMove);
-        System.out.println("Move Type " + movetype);
-        System.out.println("Move Name " + movename);
-        System.out.println("Move Element Type " + moveelementType);
-        System.out.println("Accuracy " + accuracy);
-        System.out.println("Priority " + priority);
-        System.out.println("Ammunition " + ammunition);
-        System.out.println("Target " + target);
-        System.out.println("Damage " + damage);
+        System.out.println("ID Move             : " + idmove);
+        System.out.println("Move Type           : " + movetype);
+        System.out.println("Move Name           : " + movename);
+        System.out.println("Move Element Type   : " + moveelementType);
+        System.out.println("Accuracy            : " + accuracy);
+        System.out.println("Priority            : " + priority);
+        System.out.println("Ammunition          : " + ammunition);
+        System.out.println("Target              : " + target);
     }
     public void printmonsMove(){
-        System.out.println("ID Move             : " + idMove);
+        System.out.println("ID Move             : " + idmove);
         System.out.println("Move Type           : " + movetype);
         System.out.println("Move Name           : " + movename);
         System.out.println("Move Element Type   : " + moveelementType);
         System.out.println("Ammunition          : " + ammunition);
     }
+    public void useDefaultMove(Monster attacker, Monster enemy,
+            ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster) {
+    }
+    public void useNormalMove(Monster attacker, Monster enemy,
+            ArrayList<ElementEffectivity> arreffectivity) {
+    }
+    public void useSpecialMove(Monster attacker, Monster enemy,
+            ArrayList<ElementEffectivity> arreffectivity) {
+    }
+    public void changeCondition(Monster monsterPlayer1) {
+    }
+    public void changeHP(Monster monsterPlayer2) {
+    }
+
+    public abstract void copymove(Move move);
+
+    public abstract void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity);
 }

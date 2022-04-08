@@ -5,7 +5,7 @@ import com.monstersaku.util.ElementType;
 import com.monstersaku.util.MoveType;
 import com.monstersaku.util.Monster;
 import com.monstersaku.util.Move;
-import com.monstersaku.util.StatusMove;
+import com.monstersaku.util.StatusMoveLama;
 import com.monstersaku.util.Stats;
 import com.monstersaku.util.StatusCondition;
 import com.monstersaku.util.Target;
@@ -58,7 +58,7 @@ public class Bacamove{
                 Double spcatk = Double.parseDouble(arrofmovestats[3]);
                 Double spcdef = Double.parseDouble(arrofmovestats[4]);
                 Double speed = Double.parseDouble(arrofmovestats[5]);
-                StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, moveeffect, hp, atk, def, spcatk, spcdef, speed);
+                StatusMoveLama mov = new StatusMoveLama(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, moveeffect, hp, atk, def, spcatk, spcdef, speed);
                 arrmove.add(mov);
                 mov.printMove();
                 

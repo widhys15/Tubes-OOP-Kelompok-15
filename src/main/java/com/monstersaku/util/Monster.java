@@ -11,28 +11,82 @@ public class Monster {
     protected String nama;
     protected List<ElementType> elementTypes;
     protected Stats<Double> baseStats;
-    protected ArrayList<AbsMove> moves;
+    protected ArrayList<Integer> movesid;
+    protected ArrayList<Move> moves;
     protected String condition;
 
     // KONSTRUKTOR
-    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats) {
+    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats, ArrayList<Integer> movesid) {
         this.idmonster = idmonster;
         this.nama = nama;
         this.elementTypes = elementTypes;
         this.baseStats = baseStats;
+        this.movesid = movesid;
+        this.condition = "-";
+    }
+    
+	public Monster(Monster monster, Stats<Double> stats) {
+        this.idmonster = monster.getidmonster();
+        this.nama = monster.getName();
+        this.elementTypes = monster.getElementTypes();
+        this.baseStats = stats;
+        this.movesid = monster.getmovesid();
+        this.moves = new ArrayList<Move>();
+        this.condition = monster.getStatusCondition();
+	}
+
+    // public Monster(Integer idmonster, String nama, List<ElementType> elementTypes) {
+    //     this.idmonster = idmonster;
+    //     this.nama = nama;
+    //     this.elementTypes = elementTypes;
+    //     this.condition = "-";
+    // }
+
+
+
+    public Monster() {
+	}
+
+	// Copy Monster
+    public void copyMonster(Monster monster){
+        setidmonster(monster.getidmonster());
+        setmonstername(monster.getName());
+        seteltype(monster.getElementTypes());
+        setBaseStats(monster.getBaseStats());
+        setMoves(monster.getMoves());
+        setCondition(monster.condition);
     }
 
-    public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats,
-            ArrayList<AbsMove> moves, String condition) {
+    // Setter
+    public void setidmonster(Integer idmonster){
         this.idmonster = idmonster;
-        this.nama = nama;
-        this.elementTypes = elementTypes;
-        this.baseStats = baseStats;
+    }
+
+    public void setmonstername(String name){
+        this.nama = name;
+    }
+
+    public void seteltype(List<ElementType> listeltype){
+        this.elementTypes = listeltype;
+    }
+
+    public void setStats(Stats<Double> stats){
+        this.baseStats = stats;
+    }
+
+    public void setMoves(ArrayList<Move> moves){
         this.moves = moves;
+    }
+
+    public void setCondition(String condition){
         this.condition = condition;
     }
 
-    // GETTER
+    public void setmovesid(ArrayList<Integer> movesid){
+        this.movesid = movesid;
+    }
+
+	// GETTER
     public Integer getidmonster() {
         return idmonster;
     }
@@ -49,12 +103,16 @@ public class Monster {
         return this.baseStats;
     }
 
-    public List<AbsMove> getMoves() {
+    public ArrayList<Move> getMoves() {
         return this.moves;
     }
 
     public String getStatusCondition() {
         return this.condition;
+    }
+
+    public ArrayList<Integer> getmovesid(){
+        return this.movesid;
     }
 
     // SETTER (yang mungkin dibutuhkan aja)
@@ -132,9 +190,6 @@ public class Monster {
         System.out.println("ID Monster          : " + idmonster);
         System.out.println("Nama                : " + nama);
         System.out.println("Element types       : " + elementTypes);
-        for (AbsMove move : moves) {
-            move.printmonsMove();
-        }
         baseStats.printStats();
         System.out.println("Status Condition    : " + condition);
     }
@@ -144,7 +199,7 @@ public class Monster {
     }
 
     public void showListOfMoves() {
-        for (AbsMove m : this.moves) {
+        for (Move m : this.moves) {
             m.printmonsMove();
         }
     }

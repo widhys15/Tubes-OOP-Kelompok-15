@@ -1,29 +1,29 @@
 package com.monstersaku.util;
 import java.util.*;
 
-public class DefaultMove extends AbsMove {
+public class DefaultMove extends Move {
     protected Double damage;
     private Double basehp;
     
     public DefaultMove(){
-        idMove = 0;
-        movetype = MoveType.DEFAULT;
-        movename = "Default Move";
-        moveelementType = ElementType.NORMAL;
-        accuracy = 100;
-        priority = 0;
-        ammunition = 999999;
-        target = Target.ENEMY;
-        damage = 50.0;
+        super(0, MoveType.DEFAULT, ElementType.NORMAL, "Default Move", 100, 0, 9999, Target.ENEMY);
+    }
+
+    public Double getdamage(){
+        return damage;
+    }
+
+    public void setdamage(Double damage){
+        this.damage = damage;
     }
 
     public void useDefaultMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){
         
         Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity);
-        System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + damagecalculation);
+        System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + Math.round(damagecalculation));
         Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;
-        System.out.println("HP " + enemy.getName() + " berubah menjadi " + finaldamage);
-        enemy.getBaseStats().setHealthPoint(finaldamage);
+        System.out.println("HP " + enemy.getName() + " berubah menjadi " + Math.round(finaldamage));
+        enemy.getBaseStats().setHealthPoint((double) Math.round(finaldamage));
 
         for(Monster m: arrmonster){
             if(m.getidmonster() == attacker.getidmonster()){
@@ -39,5 +39,24 @@ public class DefaultMove extends AbsMove {
     public void printMove(){
         super.printMove();
         System.out.println("Damage              : " + damage);
+    }
+
+    @Override
+    public void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void copymove(Move move) {
+        // TODO Auto-generated method stub
+        setidMove(move.getidMove());
+        setmovetype(move.getmovetype());
+        setmovename(move.getmovename());
+        setelementtype(move.getmoveelementtype());
+        setaccuracy(move.getaccuracy());
+        setpriority(move.getpriority());
+        settarget(move.gettarget());
+        setdamage(((DefaultMove) move).getdamage());
     }
 }

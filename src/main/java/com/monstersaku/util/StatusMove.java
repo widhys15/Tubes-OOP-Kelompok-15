@@ -1,70 +1,77 @@
 package com.monstersaku.util;
 
-import com.monstersaku.util.CSVReader;
-import com.monstersaku.util.ElementType;
-import com.monstersaku.util.MoveType;
-import com.monstersaku.util.Monster;
-import com.monstersaku.util.Move;
-import com.monstersaku.util.StatusMove;
-import com.monstersaku.util.Stats;
-import com.monstersaku.util.StatusCondition;
-import com.monstersaku.util.Target;
-import com.monstersaku.util.Player;
-
-public class StatusMove extends Move{
-    private String moveeffect;
-    private Double movehp;
-    private Double moveatk;
-    private Double movedef;
-    private Double movespatk;
-    private Double movespdef;
-    private Double movespeed;
+public class StatusMove extends Move {
+    protected String condition;
+    protected Double effect;
     
-    public StatusMove(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String moveeffect, Double movehp, Double moveatk, Double movedef, Double movespatk, Double movespdef, Double movespeed){
-        super(idMove, movetype, movename, moveelementType, accuracy, priority, ammunition, target);
-        this.moveeffect = moveeffect;
-        this.movehp = movehp;
-        this.moveatk = moveatk;
-        this.movedef = movedef;
-        this.movespatk = movespatk;
-        this.movespdef = movespdef;
-        this.movespeed = movespeed;    
+    public StatusMove(Integer idmove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String condition, Double effect){
+        super(idmove, movetype, moveelementType, movename, accuracy, priority, ammunition, target);
+        this.condition = condition;     
+        this.effect = effect;
     }
 
-    public String getmoveeffect(){
-        return moveeffect;
+    public StatusMove(StatusMove move, Integer ammunition){
+        setidMove(move.getidMove());
+        setmovetype(move.getmovetype());
+        setmovename(move.getmovename());
+        setelementtype(move.getmoveelementtype());
+        setaccuracy(move.getaccuracy());
+        setpriority(move.getpriority());
+        this.ammunition = ammunition;
+        settarget(move.gettarget());
+        setmovecondition(move.getmovecondition());
+        setmoveeffect(move.getmoveeffect());
     }
-    public Double getmovehp(){
-        return movehp;
+
+    public StatusMove() {
     }
-    
-    public Double getmoveatk(){
-        return moveatk;
-    }
-    
-    public Double getmovedef(){
-        return movedef;
-    }
-    
-    public Double getmovespatk(){
-        return movespatk;
-    }
-    
-    public Double getmovespdef(){
-        return movespdef;
+
+    public String getmovecondition(){
+        return condition;
     }
     
-    public Double getmovespeed(){
-        return movespeed;
+    public Double getmoveeffect(){
+        return effect;
     }
+
+    public void setmovecondition(String condition){
+        this.condition = condition;
+    }
+
+    public void setmoveeffect(Double effect){
+        this.effect = effect;
+    }
+    
     public void printMove(){
         super.printMove();
-        System.out.println("Move Effect " + moveeffect);
-        System.out.println("Move HP " + movehp);
-        System.out.println("Move ATK " + moveatk);
-        System.out.println("Move DEF " + movedef);
-        System.out.println("Move SPCATK " + movespatk);
-        System.out.println("Move SPDEF " + movespdef);
-        System.out.println("Move Speed " + movespeed);
+        System.out.println("Move Condition      : " + condition);
+        System.out.println("Move Effect         : " + effect);
+    }
+
+    public void useDefaultMove(Monster attacker, Monster target){
+        attacker.getBaseStats().setHealthPoint(attacker.getBaseStats().getHealthPoint() + effect);
+        target.setStatusCondition(condition);
+        this.ammunition--;
+    }
+
+    @Override
+    public void copymove(Move move) {
+        // TODO Auto-generated method stub
+        setidMove(move.getidMove());
+        setmovetype(move.getmovetype());
+        setmovename(move.getmovename());
+        setelementtype(move.getmoveelementtype());
+        setaccuracy(move.getaccuracy());
+        setpriority(move.getpriority());
+        setammunition(move.getammunition());
+        settarget(move.gettarget());
+        setmovecondition(((StatusMove) move).getmovecondition());
+        setmoveeffect(((StatusMove) move).getmoveeffect());
+    }
+
+    @Override
+    public void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity) {
+        // TODO Auto-generated method stub
+        
     }
 }

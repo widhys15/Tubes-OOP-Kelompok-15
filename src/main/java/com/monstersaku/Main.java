@@ -1,21 +1,6 @@
 package com.monstersaku;
 
-import com.monstersaku.util.AbsMove;
-import com.monstersaku.util.CSVReader;
-import com.monstersaku.util.DefaultMove;
-import com.monstersaku.util.ElementEffectivity;
-import com.monstersaku.util.ElementType;
-import com.monstersaku.util.Monster;
-import com.monstersaku.util.Move;
-import com.monstersaku.util.MoveType;
-import com.monstersaku.util.NormalMove;
-import com.monstersaku.util.Target;
-import com.monstersaku.util.StatusMove;
-import com.monstersaku.util.Stats;
-import com.monstersaku.util.StatsMove;
-import com.monstersaku.util.Player;
-import com.monstersaku.util.SpecialMove;
-
+import com.monstersaku.util.*;
 import java.util.Random;
 import java.io.File;
 import java.util.Arrays;
@@ -32,79 +17,54 @@ public class Main {
 
     public static void main(String[] args) {
         // Creating ArrayList Move, Monster, and Effectivity
-        ArrayList<AbsMove> arrmove = new ArrayList<AbsMove>();
+        ArrayList<Move> arrmove = new ArrayList<Move>();
         ArrayList<Monster> arrmonster = new ArrayList<Monster>();
-        ArrayList<ElementEffectivity> arreffectivity = new ArrayList<ElementEffectivity>();
 
         // ============================================ TRY READING MONSTER POOL AND
         // MOVE POOL ============================================
         try {
-            System.out.printf("Filename: %s\n", "configs/movepool.csv");
-            CSVReader reader = new CSVReader(new File(Main.class.getResource("configs/movepool.csv").toURI()), ";");
-            reader.setSkipHeader(true);
-            List<String[]> lines = reader.read();
-            System.out.println("=========== CONTENT START ===========");
-            for (String[] line : lines) {
-                // Parsing for move constructor, creating move object and adding to arraylist
-                // move
-                Integer idmove = Integer.parseInt(line[0]);
-                MoveType movetaip = MoveType.valueOf(line[1]);
-                String movename = line[2];
-                ElementType moveelementType = ElementType.valueOf(line[3]);
-                Integer accuracy = Integer.parseInt(line[4]);
-                Integer priority = Integer.parseInt(line[5]);
-                Integer ammunition = Integer.parseInt(line[6]);
-                Target target = Target.valueOf(line[7]);
+            System.out.println("READING FILE");
+            CSVReader monreader = new CSVReader(new File(Main.class.getResource("configs/monsterpool.csv").toURI()), ";");
+            CSVReader movreader = new CSVReader(new File(Main.class.getResource("configs/movepool.csv").toURI()), ";");
+            monreader.setSkipHeader(true);
+            movreader.setSkipHeader(true);
+            List<String[]> monlines = monreader.read();
+            List<String[]> movlines = movreader.read();
+            System.out.println("Srat");
+            // Creating Move Pool
+            for(String[] movline : movlines){
+                System.out.println("SAT");
+                Integer idmove = Integer.parseInt(movline[0]);
+                MoveType movetaip = MoveType.valueOf(movline[1]);
+                String movename = movline[2];
+                ElementType moveelementType = ElementType.valueOf(movline[3]);
+                Integer accuracy = Integer.parseInt(movline[4]);
+                Integer priority = Integer.parseInt(movline[5]);
+                Integer ammunition = Integer.parseInt(movline[6]);
+                Target target = Target.valueOf(movline[7]);
                 if (movetaip.equals(MoveType.NORMAL)) {
-                    Double damage = Double.parseDouble(line[8]);
-                    NormalMove mov = new NormalMove(idmove, movetaip, movename, moveelementType, accuracy, priority,ammunition, target, damage);
+                    Double damage = Double.parseDouble(movline[8]);
+                    NormalMove mov = new NormalMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, damage);
                     arrmove.add(mov);
-                    mov.printMove();
                 } else if (movetaip.equals(MoveType.SPECIAL)) {
-                    Double damage = Double.parseDouble(line[8]);
-                    SpecialMove mov = new SpecialMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition,
-                            target, damage);
+                    Double damage = Double.parseDouble(movline[8]);
+                    SpecialMove mov = new SpecialMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, damage);
                     arrmove.add(mov);
-                    mov.printMove();
                 } else if (movetaip.equals(MoveType.STATUS)){
-                    if(line[8].equals("BURN") ||line[8].equals("PARALYZE") ||line[8].equals("POISON") ||line[8].equals("SLEEP") ){
-                        String condition = line[8];
-                        StatsMove mov = new StatsMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, condition);
-                        arrmove.add(mov);
-                        mov.printMoveCondition();
-                    } else{
-                        Double effect = Double.parseDouble(line[8]);
-                        StatsMove mov = new StatsMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, effect);
-                        arrmove.add(mov);
-                        mov.printMoveEffect();
-                    }
+                    String condition = movline[8];
+                    Double effect = Double.parseDouble(movline[9]);
+                    StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, condition, effect);
+                    arrmove.add(mov);
                 }
-                System.out.println();
             }
-
-            System.out.printf("Filename: %s\n", "configs/monsterpool.csv");
-                CSVReader reader1 = new CSVReader(new File(Main.class.getResource("configs/monsterpool.csv").toURI()),
-                        ";");
-                reader1.setSkipHeader(true);
-                List<String[]> lines1 = reader1.read();
-                // System.out.println("=========== CONTENT START ===========");
-
-                for (String[] line1 : lines1) {
+            
+            for (String[] monline : monlines) {
                     // Parsing for monster constructor, creating monster object and adding to
                     // arraylist monster
-                    String stat = line1[3];
-                    String[] arrofstats = stat.split(",", 7);
-                    ArrayList<Double> stats = new ArrayList<Double>();
-                    // Parsing for stats
-                    for (String a : arrofstats) {
-                        Double d = Double.parseDouble(a);
-                        stats.add(d);
-                    }
-                    Stats<Double> basestats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3),
-                            stats.get(4), stats.get(5));
-                    // Creating element type arraylist
+                    Integer idmonster = Integer.parseInt(monline[0]);
+                    String monstername = monline[1];
                     ArrayList<ElementType> eltype = new ArrayList<ElementType>();
-                    String eltaip = line1[2];
+                    String eltaip = monline[2];
                     String[] arrofeltaip = eltaip.split(",", 7);
                     for (String a : arrofeltaip) {
                         if (a.equals("FIRE")) {
@@ -120,35 +80,130 @@ public class Main {
                             eltype.add(ElementType.WATER);
                         }
                     }
-                    String mov = line1[4];
-                    String[] arrofmov = mov.split(",", 7);
-                    // Adding move object to listofmove monster
-                    ArrayList<AbsMove> monsmove = new ArrayList<AbsMove>();
-                    DefaultMove defmove = new DefaultMove();
-                    monsmove.add(defmove);
-                    for (int i = 0; i < arrofmov.length; i++) {
-                        monsmove.add(arrmove.get(Integer.valueOf(arrofmov[i]) - 1));
+                    String stat = monline[3];
+                    String[] arrofstats = stat.split(",", 7);
+                    ArrayList<Double> stats = new ArrayList<Double>();
+                    // Parsing for stats
+                    for (String a : arrofstats) {
+                        Double d = Double.parseDouble(a);
+                        stats.add(d);
                     }
-                    Integer idmons = Integer.parseInt(line1[0]);
-                    Monster mons = new Monster(idmons, line1[1], eltype, basestats, monsmove, "-");
+                    Stats<Double> basestats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3),
+                            stats.get(4), stats.get(5));
+                    // Creating element type arraylist
+                    
+                    String mov = monline[4];
+                    String[] arrofmov = mov.split(",");
+                    ArrayList<Integer> movesid = new ArrayList<>();
+                    // Adding move object to listofmove monster
+                    for(String a: arrofmov){
+                        Integer i = Integer.parseInt(a);
+                        movesid.add(i);
+                    }
+                    Monster mons = new Monster(idmonster, monstername, eltype, basestats, movesid);
                     arrmonster.add(mons);
             }
-            System.out.printf("Filename: %s\n", "configs/elementeffectivity.csv");
-                CSVReader reader2 = new CSVReader(new File(Main.class.getResource("configs/elementeffectivity.csv").toURI()),
-                        ";");
-                reader2.setSkipHeader(true);
-                List<String[]> lines2 = reader2.read();
+        } catch (Exception e) {
+        }
+        Random rand = new Random();
+        ArrayList<Monster> player1mons = new ArrayList<Monster>();
+        ArrayList<Monster> player2mons = new ArrayList<Monster>();
+        System.out.println("JUMLAH MONSTER :" + arrmonster.size());
+        try {
+            System.out.println("READING FILE");
+            CSVReader monreader = new CSVReader(new File(Main.class.getResource("configs/monsterpool.csv").toURI()), ";");
+            CSVReader movreader = new CSVReader(new File(Main.class.getResource("configs/movepool.csv").toURI()), ";");
+            monreader.setSkipHeader(true);
+            movreader.setSkipHeader(true);
+            List<String[]> monlines = monreader.read();
+            List<String[]> movlines = movreader.read();
+            // Random Monster
+            for (int i = 0; i < 6; i++) {
+                int id1 = rand.nextInt(arrmonster.size()) ;
+                int id2 = rand.nextInt(arrmonster.size()) ;
 
-                for (String[] line2 : lines2) {
-                    // Parsing for element effectivity constructor
-                    Double effectivity = Double.parseDouble(line2[2]);
-                    ElementType atk = ElementType.valueOf(line2[0]);
-                    ElementType tar = ElementType.valueOf(line2[1]);
-                    ElementEffectivity eleffectivity = new ElementEffectivity(atk, tar, effectivity);
-                    // Adding elementeffectivity object to arraylist elementeffectivity
-                    eleffectivity.printeffectivity();
-                    arreffectivity.add(eleffectivity); 
+                int j = 0 ;
+                for (String[] monline : monlines) {
+                    if (j == id1) {
+                        String stat = monline[3];
+                        String[] arrofstats = stat.split(",");
+                        ArrayList<Double> stats = new ArrayList<Double>();
+                        // Parsing for stats
+                        for (String a : arrofstats) {
+                            Double d = Double.parseDouble(a);
+                            stats.add(d);
+                        }
+                        Stats<Double> newstats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3), stats.get(4), stats.get(5));
+
+                        Monster monster1 = new Monster(arrmonster.get(id1), newstats);
+
+                        player1mons.add(monster1) ;
+
+                        for (int move : monster1.getmovesid()) {
+
+                            for (String[] movline : movlines) {
+                                if (move == Integer.parseInt(movline[0]) - 1) {
+
+                                    int ammunition = Integer.parseInt(movline[6]) ;
+
+                                    if (movline[1].equals("NORMAL")) {
+                                        NormalMove normalMove = new NormalMove((NormalMove)arrmove.get(move), ammunition);
+                                        monster1.getMoves().add(normalMove);
+                                    }
+                                    else if (movline[1].equals("SPECIAL")) {
+                                        SpecialMove specialMove = new SpecialMove((SpecialMove)arrmove.get(move), ammunition);
+                                        monster1.getMoves().add(specialMove);
+                                    }
+                                    else if (movline[1].equals("STATUS")){ 
+                                        StatusMove statusMove = new StatusMove((StatusMove)arrmove.get(move), ammunition);
+                                        monster1.getMoves().add(statusMove);
+                                    }
+                                }
+                            }
+                        }
                     }
+                    if (j == id2) {
+                        String stat = monline[3];
+                        String[] arrofstats = stat.split(",");
+                        ArrayList<Double> stats = new ArrayList<Double>();
+                        // Parsing for stats
+                        for (String a : arrofstats) {
+                            Double d = Double.parseDouble(a);
+                            stats.add(d);
+                        }
+                        Stats<Double> newstats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3), stats.get(4), stats.get(5));
+                        
+                        Monster monster2 = new Monster(arrmonster.get(id2), newstats) ;
+                        
+                        player2mons.add(monster2) ;
+
+                        for (int move : monster2.getmovesid()) {
+    
+                            for (String[] movline : movlines) {
+                                if (move == Integer.parseInt(movline[0]) - 1) {
+    
+                                    int ammunition = Integer.parseInt(movline[6]) ;
+    
+                                    if (movline[1].equals("NORMAL")) {
+                                        NormalMove normalMove = new NormalMove((NormalMove)arrmove.get(move), ammunition) ;
+                                        monster2.getMoves().add(normalMove) ;
+                                    }
+                                    else if (movline[1].equals("SPECIAL")) {
+                                        SpecialMove specialMove = new SpecialMove((SpecialMove)arrmove.get(move), ammunition) ;
+                                        monster2.getMoves().add(specialMove) ;
+                                    }
+                                    else {  // TAMBAH EXCEPTION
+                                        StatusMove statusMove = new StatusMove((StatusMove)arrmove.get(move), ammunition) ;
+                                        monster2.getMoves().add(statusMove) ;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    j++ ;
+                }
+            }
         } catch (Exception e) {
         }
         // for(Move mov : arrmove){
@@ -192,21 +247,9 @@ public class Main {
             System.out.println("============== MONSTER ==============");
             // System.out.println("Player 1 name: " + player1name);
             // System.out.println("Player 2 name: " + player2name);
-            Random rand = new Random();
-            Integer upperbound = arrmonster.size();
-            ArrayList<Monster> player1monsterarray = new ArrayList<Monster>();
-            for (int i = 0; i < 6; i++) {
-                Integer randommonster = rand.nextInt(upperbound);
-                player1monsterarray.add(arrmonster.get(randommonster));
-            }
-            ArrayList<Monster> player2monsterarray = new ArrayList<Monster>();
-            for (int i = 0; i < 6; i++) {
-                Integer randommonster = rand.nextInt(upperbound);
-                player2monsterarray.add(arrmonster.get(randommonster));
-            }
 
-            Player player1 = new Player(player1name, player1monsterarray);
-            Player player2 = new Player(player2name, player2monsterarray);
+            Player player1 = new Player(player1name, player1mons);
+            Player player2 = new Player(player2name, player2mons);
             System.out.println("List of Monster Player " + player1name);
             player1.showListOfMonster();
             System.out.println("=====================================");
@@ -221,9 +264,9 @@ public class Main {
             // System.out.println(m.getName());
             // }
 
-            Monster monsterPlayer1 = player1.getListOfMonster().get(0);
+            Monster monsterPlayer1 = player1.getListOfMonster().get(1);
             System.out.printf("%s akan memainkan Monster 1.%s di awal permainan%n", player1.getName(), monsterPlayer1.getName());
-            Monster monsterPlayer2 = player2.getListOfMonster().get(0);
+            Monster monsterPlayer2 = player2.getListOfMonster().get(1);
             System.out.printf("%s akan memainkan Monster 1.%s di awal permainan%n", player2.getName(), monsterPlayer2.getName());
 
             int inputmove2idx = 0;
@@ -410,20 +453,20 @@ public class Main {
                             // monsterPlayer1.monsterMovement(inputmove1idx);
                         }
                     }
-                    if(monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.DEFAULT)){
-                        monsterPlayer1.getMoves().get(inputmove1idx).useDefaultMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
-                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.NORMAL)){
-                        monsterPlayer1.getMoves().get(inputmove1idx).useNormalMove(monsterPlayer1, monsterPlayer2, arreffectivity);
-                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.SPECIAL)){
-                        monsterPlayer1.getMoves().get(inputmove1idx).useSpecialMove(monsterPlayer1, monsterPlayer2, arreffectivity);
-                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.STATUS)){
-                        if(monsterPlayer1.getMoves().get(inputmove1idx).gettarget().equals(Target.ENEMY)){
-                            monsterPlayer1.getMoves().get(inputmove1idx).changeCondition(monsterPlayer2);
-                        }
-                        else{
-                            monsterPlayer1.getMoves().get(inputmove1idx).changeHP(monsterPlayer1);
-                        }
-                    }
+                    // if(monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.DEFAULT)){
+                    //     monsterPlayer1.getMoves().get(inputmove1idx).useDefaultMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.NORMAL)){
+                    //     monsterPlayer1.getMoves().get(inputmove1idx).useNormalMove(monsterPlayer1, monsterPlayer2, arreffectivity);
+                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.SPECIAL)){
+                    //     monsterPlayer1.getMoves().get(inputmove1idx).useSpecialMove(monsterPlayer1, monsterPlayer2, arreffectivity);
+                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.STATUS)){
+                    //     if(monsterPlayer1.getMoves().get(inputmove1idx).gettarget().equals(Target.ENEMY)){
+                    //         monsterPlayer1.getMoves().get(inputmove1idx).changeCondition(monsterPlayer2);
+                    //     }
+                    //     else{
+                    //         monsterPlayer1.getMoves().get(inputmove1idx).changeHP(monsterPlayer1);
+                    //     }
+                    // }
                     
                 }
 
