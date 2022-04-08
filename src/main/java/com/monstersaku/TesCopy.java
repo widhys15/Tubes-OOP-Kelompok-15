@@ -82,7 +82,7 @@ public class TesCopy {
                         }
                     }
                     String stat = monline[3];
-                    String[] arrofstats = stat.split(",", 7);
+                    String[] arrofstats = stat.split(",");
                     ArrayList<Double> stats = new ArrayList<Double>();
                     // Parsing for stats
                     for (String a : arrofstats) {
@@ -98,7 +98,7 @@ public class TesCopy {
                     ArrayList<Integer> movesid = new ArrayList<>();
                     // Adding move object to listofmove monster
                     for(String a: arrofmov){
-                        Integer i = Integer.parseInt(a);
+                        Integer i = Integer.parseInt(a) - 1;
                         movesid.add(i);
                     }
                     Monster mons = new Monster(idmonster, monstername, eltype, basestats, movesid);
@@ -140,8 +140,11 @@ public class TesCopy {
 
                         player1mons.add(monster1) ;
 
-                        for (int move : monster1.getmovesid()) {
+                        DefaultMove defaultMove = new DefaultMove();
+                        monster1.getMoves().add(defaultMove);
 
+                        for (int move : monster1.getmovesid()) {
+                            
                             for (String[] movline : movlines) {
                                 if (move == Integer.parseInt(movline[0]) - 1) {
 
@@ -178,6 +181,9 @@ public class TesCopy {
                         
                         player2mons.add(monster2) ;
 
+                        DefaultMove defaultMove = new DefaultMove();
+                        monster2.getMoves().add(defaultMove);
+
                         for (int move : monster2.getmovesid()) {
     
                             for (String[] movline : movlines) {
@@ -193,7 +199,7 @@ public class TesCopy {
                                         SpecialMove specialMove = new SpecialMove((SpecialMove)arrmove.get(move), ammunition) ;
                                         monster2.getMoves().add(specialMove) ;
                                     }
-                                    else {  // TAMBAH EXCEPTION
+                                    else {  
                                         StatusMove statusMove = new StatusMove((StatusMove)arrmove.get(move), ammunition) ;
                                         monster2.getMoves().add(statusMove) ;
                                     }
@@ -217,14 +223,12 @@ public class TesCopy {
         System.out.println("------------------------------------");
         player1mons.get(0).getBaseStats().setHealthPoint(40.0);
         // player1.get(0).getMoves().get(1).setammunition(1);
+        System.out.println(player1mons.get(0).getmovesid()); 
         player1mons.get(0).printMonster();
         System.out.println("Jumlah monster = " + player1mons.size());
         // arrmonster.get(0).printMonster();
         System.out.println("------------------------------------");
-        for(Monster mo: arrmonster){
-            mo.printMonster();
-            System.out.println();
-        }
+        
         // for(Monster m: player1mons){
         //     m.printMonster();
         //     System.out.println("aaaaaaaaaaaaaa");

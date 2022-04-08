@@ -85,7 +85,6 @@ public abstract class Move {
         for(ElementEffectivity ef: arreffectivity){
             System.out.println(ef);
             for(int i = 0; i < target.getElementTypes().size(); i++){
-                System.out.println("Hadeuh");
                 if((moveelementType.equals(ef.getElementattacker())) && (target.getElementTypes().get(i).equals(ef.getElementattacker()))){
                     effectivity = (effectivity * ef.getEffectivity());
                 }
@@ -129,4 +128,7 @@ public abstract class Move {
     public abstract void copymove(Move move);
 
     public abstract void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity);
+
+    public void useStatusMove(Monster monsterPlayer2, Monster monsterPlayer1) {
+    }
 }

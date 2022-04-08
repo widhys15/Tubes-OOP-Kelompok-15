@@ -190,6 +190,9 @@ public class Monster {
         System.out.println("ID Monster          : " + idmonster);
         System.out.println("Nama                : " + nama);
         System.out.println("Element types       : " + elementTypes);
+        for(Move m : moves){
+            m.printmonsMove();
+        }
         baseStats.printStats();
         System.out.println("Status Condition    : " + condition);
     }

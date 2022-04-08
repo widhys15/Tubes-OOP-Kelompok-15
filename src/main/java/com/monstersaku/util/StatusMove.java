@@ -48,7 +48,7 @@ public class StatusMove extends Move {
         System.out.println("Move Effect         : " + effect);
     }
 
-    public void useDefaultMove(Monster attacker, Monster target){
+    public void useStatusMove(Monster attacker, Monster target){
         attacker.getBaseStats().setHealthPoint(attacker.getBaseStats().getHealthPoint() + effect);
         target.setStatusCondition(condition);
         this.ammunition--;

@@ -19,11 +19,27 @@ public class Main {
         // Creating ArrayList Move, Monster, and Effectivity
         ArrayList<Move> arrmove = new ArrayList<Move>();
         ArrayList<Monster> arrmonster = new ArrayList<Monster>();
+        ArrayList<ElementEffectivity> arreffectivity = new ArrayList<ElementEffectivity>();
 
         // ============================================ TRY READING MONSTER POOL AND
         // MOVE POOL ============================================
         try {
             System.out.println("READING FILE");
+            CSVReader reader2 = new CSVReader(new File(Main.class.getResource("configs/elementeffectivity.csv").toURI()),
+                        ";");
+                reader2.setSkipHeader(true);
+                List<String[]> lines2 = reader2.read();
+
+                for (String[] line2 : lines2) {
+                    // Parsing for element effectivity constructor
+                    Double effectivity = Double.parseDouble(line2[2]);
+                    ElementType atk = ElementType.valueOf(line2[0]);
+                    ElementType tar = ElementType.valueOf(line2[1]);
+                    ElementEffectivity eleffectivity = new ElementEffectivity(atk, tar, effectivity);
+                    // Adding elementeffectivity object to arraylist elementeffectivity
+                    eleffectivity.printeffectivity();
+                    arreffectivity.add(eleffectivity); 
+                    }
             CSVReader monreader = new CSVReader(new File(Main.class.getResource("configs/monsterpool.csv").toURI()), ";");
             CSVReader movreader = new CSVReader(new File(Main.class.getResource("configs/movepool.csv").toURI()), ";");
             monreader.setSkipHeader(true);
@@ -59,49 +75,49 @@ public class Main {
             }
             
             for (String[] monline : monlines) {
-                    // Parsing for monster constructor, creating monster object and adding to
-                    // arraylist monster
-                    Integer idmonster = Integer.parseInt(monline[0]);
-                    String monstername = monline[1];
-                    ArrayList<ElementType> eltype = new ArrayList<ElementType>();
-                    String eltaip = monline[2];
-                    String[] arrofeltaip = eltaip.split(",", 7);
-                    for (String a : arrofeltaip) {
-                        if (a.equals("FIRE")) {
-                            eltype.add(ElementType.FIRE);
-                        }
-                        if (a.equals("NORMAL")) {
-                            eltype.add(ElementType.NORMAL);
-                        }
-                        if (a.equals("GRASS")) {
-                            eltype.add(ElementType.GRASS);
-                        }
-                        if (a.equals("WATER")) {
-                            eltype.add(ElementType.WATER);
-                        }
+                // Parsing for monster constructor, creating monster object and adding to
+                // arraylist monster
+                Integer idmonster = Integer.parseInt(monline[0]);
+                String monstername = monline[1];
+                ArrayList<ElementType> eltype = new ArrayList<ElementType>();
+                String eltaip = monline[2];
+                String[] arrofeltaip = eltaip.split(",", 7);
+                for (String a : arrofeltaip) {
+                    if (a.equals("FIRE")) {
+                        eltype.add(ElementType.FIRE);
                     }
-                    String stat = monline[3];
-                    String[] arrofstats = stat.split(",", 7);
-                    ArrayList<Double> stats = new ArrayList<Double>();
-                    // Parsing for stats
-                    for (String a : arrofstats) {
-                        Double d = Double.parseDouble(a);
-                        stats.add(d);
+                    if (a.equals("NORMAL")) {
+                        eltype.add(ElementType.NORMAL);
                     }
-                    Stats<Double> basestats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3),
-                            stats.get(4), stats.get(5));
-                    // Creating element type arraylist
-                    
-                    String mov = monline[4];
-                    String[] arrofmov = mov.split(",");
-                    ArrayList<Integer> movesid = new ArrayList<>();
-                    // Adding move object to listofmove monster
-                    for(String a: arrofmov){
-                        Integer i = Integer.parseInt(a);
-                        movesid.add(i);
+                    if (a.equals("GRASS")) {
+                        eltype.add(ElementType.GRASS);
                     }
-                    Monster mons = new Monster(idmonster, monstername, eltype, basestats, movesid);
-                    arrmonster.add(mons);
+                    if (a.equals("WATER")) {
+                        eltype.add(ElementType.WATER);
+                    }
+                }
+                String stat = monline[3];
+                String[] arrofstats = stat.split(",");
+                ArrayList<Double> stats = new ArrayList<Double>();
+                // Parsing for stats
+                for (String a : arrofstats) {
+                    Double d = Double.parseDouble(a);
+                    stats.add(d);
+                }
+                Stats<Double> basestats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3),
+                        stats.get(4), stats.get(5));
+                // Creating element type arraylist
+                
+                String mov = monline[4];
+                String[] arrofmov = mov.split(",");
+                ArrayList<Integer> movesid = new ArrayList<>();
+                // Adding move object to listofmove monster
+                for(String a: arrofmov){
+                    Integer i = Integer.parseInt(a) - 1;
+                    movesid.add(i);
+                }
+                Monster mons = new Monster(idmonster, monstername, eltype, basestats, movesid);
+                arrmonster.add(mons);
             }
         } catch (Exception e) {
         }
@@ -385,49 +401,34 @@ public class Main {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), monsterPlayer2.getMoves().get(inputmove2idx).getmovename());
                     System.out.println("Calculating...");
                     if(monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.DEFAULT)){
-                        System.out.println("INI DEFAULT MOVE");
+                        System.out.println("INI DEFAULT MOVE AJG");
+                        monsterPlayer2.getMoves().get(inputmove2idx).useDefaultMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                    } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.NORMAL)){
+                        System.out.println("INI NORMAL MOVE AJG");
+                        monsterPlayer2.getMoves().get(inputmove2idx).useNormalMove(monsterPlayer2, monsterPlayer1, arreffectivity);
+                    } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.SPECIAL)){
+                        System.out.println("INI SPECIAL MOVE AJG");
+                        monsterPlayer2.getMoves().get(inputmove2idx).useSpecialMove(monsterPlayer2, monsterPlayer1, arreffectivity);
+                    } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.STATUS)){
+                        System.out.println("INI STATUS MOVE AJG");
+                        monsterPlayer2.getMoves().get(inputmove2idx).useStatusMove(monsterPlayer2, monsterPlayer1);
                     }
-                    // if(monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.DEFAULT)){
-                    //     System.out.println("INI DEFAULT MOVE AJG");
-                    //     monsterPlayer2.getMoves().get(inputmove2idx).useDefaultMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
-                    // } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.NORMAL)){
-                    //     System.out.println("INI NORMAL MOVE AJG");
-                    //     monsterPlayer2.getMoves().get(inputmove2idx).useNormalMove(monsterPlayer2, monsterPlayer1, arreffectivity);
-                    // } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.SPECIAL)){
-                    //     System.out.println("INI SPECIAL MOVE AJG");
-                    //     monsterPlayer2.getMoves().get(inputmove2idx).useSpecialMove(monsterPlayer2, monsterPlayer1, arreffectivity);
-                    // } else if (monsterPlayer2.getMoves().get(inputmove2idx).getmovetype().equals(MoveType.STATUS)){
-                    //     System.out.println("INI STATUS MOVE AJG");
-                    //     if(monsterPlayer2.getMoves().get(inputmove2idx).gettarget().equals(Target.ENEMY)){
-                    //         monsterPlayer2.getMoves().get(inputmove2idx).changeCondition(monsterPlayer1);
-                    //     }
-                    //     else{
-                    //         monsterPlayer2.getMoves().get(inputmove2idx).changeHP(monsterPlayer2);
-                    //     }
-                    // }
-                    // monsterPlayer2.monsterMovement(inputmove2idx);
+                    monsterPlayer2.monsterMovement(inputmove2idx);
                 } else if (op2 == 1 && op1 == 2) {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), monsterPlayer1.getMoves().get(inputmove1idx).getmovename());
                     System.out.printf("%s mengganti monster yang dimainkan menjadi %d.%s%n", player2.getName(), switchMonster, monsterPlayer2.getName());
                     System.out.println("Calculating...");
-                    if(monsterPlayer1.getMoves().get(inputmove1idx).getmovetype().equals(MoveType.DEFAULT)){
-                        System.out.println("INI DEFAULT MOVE");
+                    if(monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.DEFAULT)){
+                        monsterPlayer1.getMoves().get(inputmove1idx).useDefaultMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.NORMAL)){
+                        monsterPlayer1.getMoves().get(inputmove1idx).useNormalMove(monsterPlayer1, monsterPlayer2, arreffectivity);
+                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.SPECIAL)){
+                        monsterPlayer1.getMoves().get(inputmove1idx).useSpecialMove(monsterPlayer1, monsterPlayer2, arreffectivity);
+                    } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.STATUS)){
+                        System.out.println("INI STATUS MOVE AJG");
+                        monsterPlayer2.getMoves().get(inputmove2idx).useStatusMove(monsterPlayer1,monsterPlayer2);
                     }
-                    // if(monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.DEFAULT)){
-                    //     monsterPlayer1.getMoves().get(inputmove1idx).useDefaultMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
-                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.NORMAL)){
-                    //     monsterPlayer1.getMoves().get(inputmove1idx).useNormalMove(monsterPlayer1, monsterPlayer2, arreffectivity);
-                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.SPECIAL)){
-                    //     monsterPlayer1.getMoves().get(inputmove1idx).useSpecialMove(monsterPlayer1, monsterPlayer2, arreffectivity);
-                    // } else if (monsterPlayer1.getMoves().get(inputmove1idx).equals(MoveType.STATUS)){
-                    //     if(monsterPlayer1.getMoves().get(inputmove1idx).gettarget().equals(Target.ENEMY)){
-                    //         monsterPlayer1.getMoves().get(inputmove1idx).changeCondition(monsterPlayer2);
-                    //     }
-                    //     else{
-                    //         monsterPlayer1.getMoves().get(inputmove1idx).changeHP(monsterPlayer1);
-                    //     }
-                    // }
-                    // monsterPlayer1.monsterMovement(inputmove1idx);
+                    monsterPlayer1.monsterMovement(inputmove1idx);
                 } else if (op1 == 2 && op2 == 2) {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), monsterPlayer1.getMoves().get(inputmove1idx).getmovename());
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), monsterPlayer2.getMoves().get(inputmove2idx).getmovename());
@@ -435,20 +436,24 @@ public class Main {
                     if (monsterPlayer1.getMoves().get(inputmove1idx).getpriority() > monsterPlayer2.getMoves()
                             .get(inputmove2idx)
                             .getpriority()) {
+                            System.out.println("Player 1 DULUAN YA");
                         // monsterPlayer1.monsterMovement(inputmove1idx);
                         // monsterPlayer2.monsterMovement(inputmove2idx);
 
                     } else if (monsterPlayer1.getMoves().get(inputmove1idx).getpriority() < monsterPlayer2.getMoves()
                             .get(inputmove2idx)
                             .getpriority()) {
+                                System.out.println("Player 2 DULUAN YA");
                         // monsterPlayer2.monsterMovement(inputmove2idx);
                         // monsterPlayer1.monsterMovement(inputmove1idx);
 
                     } else {
                         if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
+                            System.out.println("Player 1 DULUAN YA");
                             // monsterPlayer1.monsterMovement(inputmove1idx);
                             // monsterPlayer2.monsterMovement(inputmove2idx);
                         } else {
+                            System.out.println("Player 2 DULUAN YA");
                             // monsterPlayer2.monsterMovement(inputmove2idx);
                             // monsterPlayer1.monsterMovement(inputmove1idx);
                         }
