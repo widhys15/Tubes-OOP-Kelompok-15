@@ -209,7 +209,10 @@ public class Main {
                     SpecialMove mov = new SpecialMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, damage);
                     arrmove.add(mov);
                 } else if (movetaip.equals(MoveType.STATUS)){
-                    String condition = movline[8];
+                    StatusCondition condition = null;
+                    if (!movline[8].equals("-")) {
+                        condition = StatusCondition.valueOf(movline[8]);
+                    }
                     Double effect = Double.parseDouble(movline[9]);
                     StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, condition, effect);
                     arrmove.add(mov);
@@ -516,7 +519,16 @@ public class Main {
                     System.out.println();
                     System.out.println("Damage Calculation");
                     System.out.println("Calculating...");
-                    moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                    if (conditionMonster2!=null) {
+                        if (conditionMonster2.equals(StatusCondition.SLEEP)) {
+                            System.out.println("tidur");
+                        } else if (conditionMonster2.equals(StatusCondition.PARALYZE) && monsterPlayer2.getExtendCondition()==1) {
+                            System.out.println("tidak bisa move (paralized 1 round)");
+                            monsterPlayer2.setExtendCondition(0);
+                        } 
+                    } else {
+                        moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                    }
                 } else if (op2 == 1 && op1 == 2) {
                     Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
@@ -524,7 +536,16 @@ public class Main {
                     System.out.println();
                     System.out.println("Damage Calculation");
                     System.out.println("Calculating...");
-                    moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                    if (conditionMonster1!=null) {
+                        if (conditionMonster1.equals(StatusCondition.SLEEP)) {
+                            System.out.println("tidur");
+                        } else if (conditionMonster1.equals(StatusCondition.PARALYZE) && monsterPlayer1.getExtendCondition()==1) {
+                            System.out.println("tidak bisa move (paralized 1 round)");
+                            monsterPlayer1.setExtendCondition(0);
+                        } 
+                    } else {
+                        moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                    }
                 } else if (op1 == 2 && op2 == 2) {
                     Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
                     Move moveMonster2 = monsterPlayer2.getMoves().get(inputmove2idx);
@@ -534,22 +555,94 @@ public class Main {
                     System.out.println("Damage Calculation");
                     System.out.println("Calculating...");
                     if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
-                        moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
-                        moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                        if (conditionMonster1!=null) {
+                            if (conditionMonster1.equals(StatusCondition.SLEEP)) {
+                                System.out.println("tidur");
+                            } else if (conditionMonster1.equals(StatusCondition.PARALYZE) && monsterPlayer1.getExtendCondition()==1) {
+                                System.out.println("tidak bisa move (paralized 1 round)");
+                                monsterPlayer1.setExtendCondition(0);
+                            } 
+                        } else {
+                            moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                        }
+                        if (conditionMonster2!=null) {
+                            if (conditionMonster2.equals(StatusCondition.SLEEP)) {
+                                System.out.println("tidur");
+                            } else if (conditionMonster2.equals(StatusCondition.PARALYZE) && monsterPlayer2.getExtendCondition()==1) {
+                                System.out.println("tidak bisa move (paralized 1 round)");
+                                monsterPlayer2.setExtendCondition(0);
+                            } 
+                        } else {
+                            moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                        }
                     } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {
-                        moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
-                        moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                        if (conditionMonster2!=null) {
+                            if (conditionMonster2.equals(StatusCondition.SLEEP)) {
+                                System.out.println("tidur");
+                            } else if (conditionMonster2.equals(StatusCondition.PARALYZE) && monsterPlayer2.getExtendCondition()==1) {
+                                System.out.println("tidak bisa move (paralized 1 round)");
+                                monsterPlayer2.setExtendCondition(0);
+                            } 
+                        } else {
+                            moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                        }
+                        if (conditionMonster1!=null) {
+                            if (conditionMonster1.equals(StatusCondition.SLEEP)) {
+                                System.out.println("tidur");
+                            } else if (conditionMonster1.equals(StatusCondition.PARALYZE) && monsterPlayer1.getExtendCondition()==1) {
+                                System.out.println("tidak bisa move (paralized 1 round)");
+                                monsterPlayer1.setExtendCondition(0);
+                            } 
+                        } else {
+                            moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                        }
                     } else {
                         if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
-                            System.out.println(monsterPlayer1.getName());
-                            System.out.println(monsterPlayer2.getName());
-                            moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
-                            moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                            // System.out.println(monsterPlayer1.getName());
+                            // System.out.println(monsterPlayer2.getName());
+                            if (conditionMonster1!=null) {
+                                if (conditionMonster1.equals(StatusCondition.SLEEP)) {
+                                    System.out.println("tidur");
+                                } else if (conditionMonster1.equals(StatusCondition.PARALYZE) && monsterPlayer1.getExtendCondition()==1) {
+                                    System.out.println("tidak bisa move (paralized 1 round)");
+                                    monsterPlayer1.setExtendCondition(0);
+                                } 
+                            } else {
+                                moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                            }
+                            if (conditionMonster2!=null) {
+                                if (conditionMonster2.equals(StatusCondition.SLEEP)) {
+                                    System.out.println("tidur");
+                                } else if (conditionMonster2.equals(StatusCondition.PARALYZE) && monsterPlayer2.getExtendCondition()==1) {
+                                    System.out.println("tidak bisa move (paralized 1 round)");
+                                    monsterPlayer2.setExtendCondition(0);
+                                } 
+                            } else {
+                                moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                            }
                         } else {
-                            System.out.println(monsterPlayer1.getName());
-                            System.out.println(monsterPlayer2.getName());
-                            moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
-                            moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                            // System.out.println(monsterPlayer1.getName());
+                            // System.out.println(monsterPlayer2.getName());
+                            if (conditionMonster2!=null) {
+                                if (conditionMonster2.equals(StatusCondition.SLEEP)) {
+                                    System.out.println("tidur");
+                                } else if (conditionMonster2.equals(StatusCondition.PARALYZE) && monsterPlayer2.getExtendCondition()==1) {
+                                    System.out.println("tidak bisa move (paralized 1 round)");
+                                    monsterPlayer2.setExtendCondition(0);
+                                } 
+                            } else {
+                                moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
+                            }
+                            if (conditionMonster1!=null) {
+                                if (conditionMonster1.equals(StatusCondition.SLEEP)) {
+                                    System.out.println("tidur");
+                                } else if (conditionMonster1.equals(StatusCondition.PARALYZE) && monsterPlayer1.getExtendCondition()==1) {
+                                    System.out.println("tidak bisa move (paralized 1 round)");
+                                    monsterPlayer1.setExtendCondition(0);
+                                } 
+                            } else {
+                                moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
+                            }
                         }
                     }
                 }
@@ -561,13 +654,19 @@ public class Main {
                 if (!monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
                     if (!monsterPlayer1.isStatusConditionNull()) {
                         monsterPlayer1.afterDamage(arrmonster);
-                    } 
+                    } else {
+                        System.out.println("Tidak ada after damage");
+                    }
                     if (!monsterPlayer2.isStatusConditionNull()) {
                         monsterPlayer2.afterDamage(arrmonster);
+                    } else {
+                        System.out.println("Tidak ada after damage");
                     }
                 } else if (!monsterPlayer1.isEliminated() && monsterPlayer2.isEliminated()) {
                     if (!monsterPlayer1.isStatusConditionNull()) {
                         monsterPlayer1.afterDamage(arrmonster);
+                    } else {
+                        System.out.println("Tidak ada after damage");
                     }
                     System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer2, player2);
                     player2.getListOfMonster().remove(monsterPlayer2);
@@ -576,6 +675,8 @@ public class Main {
                 } else if (monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
                     if (!monsterPlayer2.isStatusConditionNull()) {
                         monsterPlayer2.afterDamage(arrmonster);
+                    } else {
+                        System.out.println("Tidak ada after damage");
                     }
                     System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain", monsterPlayer1, player1);
                     player1.getListOfMonster().remove(monsterPlayer1);

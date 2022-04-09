@@ -14,6 +14,7 @@ public class Monster {
     protected ArrayList<Integer> movesid;
     protected ArrayList<Move> moves;
     protected StatusCondition condition;
+    protected Integer extendCondition;
 
     // KONSTRUKTOR
     public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats, ArrayList<Integer> movesid) {
@@ -23,6 +24,7 @@ public class Monster {
         this.baseStats = baseStats;
         this.movesid = movesid;
         this.condition = null;
+        this.extendCondition = 0;
     }
     
 	public Monster(Monster monster, Stats<Double> stats) {
@@ -33,8 +35,11 @@ public class Monster {
         this.movesid = monster.getmovesid();
         this.moves = new ArrayList<Move>();
         this.condition = monster.getStatusCondition();
+        this.extendCondition = monster.getExtendCondition();
 	}
 
+    public Monster() {
+    }
     // public Monster(Integer idmonster, String nama, List<ElementType> elementTypes) {
     //     this.idmonster = idmonster;
     //     this.nama = nama;
@@ -43,16 +48,12 @@ public class Monster {
     // }
 
 
-
-    public Monster() {
-	}
-
 	// Copy Monster
     public void copyMonster(Monster monster){
         setidmonster(monster.getidmonster());
         setmonstername(monster.getName());
         seteltype(monster.getElementTypes());
-        setBaseStats(monster.getBaseStats());
+        setStats(monster.getBaseStats());
         setMoves(monster.getMoves());
         setCondition(monster.condition);
     }
@@ -86,6 +87,10 @@ public class Monster {
         this.movesid = movesid;
     }
 
+    public void setExtendCondition(Integer num) {
+        this.extendCondition = num;
+    }
+
 	// GETTER
     public Integer getidmonster() {
         return idmonster;
@@ -115,14 +120,8 @@ public class Monster {
         return this.movesid;
     }
 
-    // SETTER (yang mungkin dibutuhkan aja)
-    // asumsi nama dan elType monster gabisa/gaperlu diubah-ubah
-    public void setBaseStats(Stats<Double> newBaseStats) {
-        this.baseStats = newBaseStats;
-    }
-
-    public void setStatusCondition(StatusCondition newCondition) {
-        this.condition = newCondition;
+    public Integer getExtendCondition() {
+        return this.extendCondition;
     }
 
     // OTHER METHOD
@@ -166,14 +165,24 @@ public class Monster {
         Double afterdamage = 0.0;
         if (getStatusCondition()==StatusCondition.BURN) {
             afterdamage = basehp*0.125;
+            Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
+            this.getBaseStats().setHealthPoint(finalhp);
+            System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
+            System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
         } else if (getStatusCondition()==StatusCondition.POISON) {
             afterdamage = basehp*0.0625;
-            System.out.println(afterdamage);
+            Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
+            this.getBaseStats().setHealthPoint(finalhp);
+            System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
+            System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
+        } else if (getStatusCondition()==StatusCondition.SLEEP) {
+            this.extendCondition--;
+            System.out.printf("Monster %s memiliki sisa sleep sebanyak %d%n", this.getName(), this.getExtendCondition());
+            if (extendCondition == 0) {
+                this.setCondition(null);
+                System.out.printf("Sleep monster %s sudah habis, status condition monster kembali normal%n", this.getName());
+            }
         }
-        Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
-        this.getBaseStats().setHealthPoint(finalhp);
-        System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
-        System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
         System.out.println();
     }
 

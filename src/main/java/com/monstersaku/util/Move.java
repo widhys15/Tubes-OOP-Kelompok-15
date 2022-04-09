@@ -111,15 +111,7 @@ public abstract class Move {
         System.out.println("Move Element Type   : " + moveelementType);
         System.out.println("Ammunition          : " + ammunition);
     }
-    public void useDefaultMove(Monster attacker, Monster enemy,
-            ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster) {
-    }
-    public void useNormalMove(Monster attacker, Monster enemy,
-            ArrayList<ElementEffectivity> arreffectivity) {
-    }
-    public void useSpecialMove(Monster attacker, Monster enemy,
-            ArrayList<ElementEffectivity> arreffectivity) {
-    }
+    
     public void changeCondition(Monster monsterPlayer1) {
     }
     public void changeHP(Monster monsterPlayer2) {

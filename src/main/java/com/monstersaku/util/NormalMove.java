@@ -1,7 +1,7 @@
 package com.monstersaku.util;
 
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class NormalMove extends Move {
     protected Double damage;
@@ -37,11 +37,26 @@ public class NormalMove extends Move {
     @Override
     public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
         // System.out.println("MASUK METHOD NORMAL MOVE");
-        Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity);
-        System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + damagecalculation);
-        Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;
-        System.out.println("HP " + enemy.getName() + " berubah menjadi " + finaldamage);
-        enemy.getBaseStats().setHealthPoint(finaldamage);
+        Random rand = new Random();
+        int accuracy = rand.nextInt(100)+1;
+        if (accuracy > this.getaccuracy()) {
+            System.out.printf("Move %s miss", this.getmovename());
+        } else {
+            Double burn = 1.0;
+            if (attacker.getStatusCondition()==null) {
+                burn = 1.0;
+            } else if (attacker.getStatusCondition().equals(StatusCondition.BURN)) {
+                burn = 0.5;
+            }
+            Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity) *burn;
+            System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + damagecalculation);
+            Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;
+            if (finaldamage < 0) {
+                finaldamage = 0.0;
+            }
+            System.out.println("HP " + enemy.getName() + " berubah menjadi " + finaldamage);
+            enemy.getBaseStats().setHealthPoint(finaldamage);
+        }        
         this.ammunition = this.ammunition - 1;
     }
 
