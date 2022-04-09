@@ -1,13 +1,8 @@
 package com.monstersaku;
 
 import com.monstersaku.util.*;
-import java.util.Random;
+import java.util.*;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Main {
     private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(

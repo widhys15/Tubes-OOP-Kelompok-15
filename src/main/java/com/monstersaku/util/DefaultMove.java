@@ -4,23 +4,26 @@ import java.util.*;
 public class DefaultMove extends Move {
     private Double damage;
     private Double basehp;
-    
+
+    //Konstruktor    
     public DefaultMove(){
         super(0, MoveType.DEFAULT, ElementType.NORMAL, "Default Move", 100, 0, 9999, Target.ENEMY);
         this.damage = 10.0;
     }
 
+    //Getter
     public Double getdamage(){
         return damage;
     }
 
+    //Setter
     public void setdamage(Double damage){
         this.damage = damage;
     }
-        
+    
+    //Method
     @Override
     public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
-        // System.out.println("MASUK METHOD DEFAULT MOVE");
         Random rand = new Random();
         int accuracy = rand.nextInt(100)+1;
         if (accuracy > this.getaccuracy()) {
@@ -60,24 +63,5 @@ public class DefaultMove extends Move {
     public void printMove(){
         super.printMove();
         System.out.println("Damage              : " + damage);
-    }
-
-    @Override
-    public void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void copymove(Move move) {
-        // TODO Auto-generated method stub
-        setidMove(move.getidMove());
-        setmovetype(move.getmovetype());
-        setmovename(move.getmovename());
-        setelementtype(move.getmoveelementtype());
-        setaccuracy(move.getaccuracy());
-        setpriority(move.getpriority());
-        settarget(move.gettarget());
-        setdamage(((DefaultMove) move).getdamage());
     }
 }

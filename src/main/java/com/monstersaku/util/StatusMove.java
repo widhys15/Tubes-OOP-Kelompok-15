@@ -7,6 +7,7 @@ public class StatusMove extends Move {
     protected String condition;
     protected Double effect;
     
+    //Konstruktor
     public StatusMove(Integer idmove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String condition, Double effect){
         super(idmove, movetype, moveelementType, movename, accuracy, priority, ammunition, target);
         this.condition = condition;     
@@ -26,9 +27,7 @@ public class StatusMove extends Move {
         setmoveeffect(move.getmoveeffect());
     }
 
-    public StatusMove() {
-    }
-
+    //Getter
     public String getmovecondition(){
         return condition;
     }
@@ -37,6 +36,7 @@ public class StatusMove extends Move {
         return effect;
     }
 
+    //Setter
     public void setmovecondition(String condition){
         this.condition = condition;
     }
@@ -45,11 +45,11 @@ public class StatusMove extends Move {
         this.effect = effect;
     }
     
+    //Method
     public void changeCondition(Monster monster) {
         monster.setCondition(condition);
     }
     
-
     public void printMove(){
         super.printMove();
         System.out.println("Move Condition      : " + condition);
@@ -87,26 +87,5 @@ public class StatusMove extends Move {
             attacker.getBaseStats().setHealthPoint(finalhp);
             System.out.printf("HP monster %s bertambah menjadi %f%n", attacker.getName(), finalhp);
         }
-    }
-
-    @Override
-    public void copymove(Move move) {
-        // TODO Auto-generated method stub
-        setidMove(move.getidMove());
-        setmovetype(move.getmovetype());
-        setmovename(move.getmovename());
-        setelementtype(move.getmoveelementtype());
-        setaccuracy(move.getaccuracy());
-        setpriority(move.getpriority());
-        setammunition(move.getammunition());
-        settarget(move.gettarget());
-        setmovecondition(((StatusMove) move).getmovecondition());
-        setmoveeffect(((StatusMove) move).getmoveeffect());
-    }
-
-    @Override
-    public void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity) {
-        // TODO Auto-generated method stub
-        
     }
 }

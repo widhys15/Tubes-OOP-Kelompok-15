@@ -1,10 +1,6 @@
 package com.monstersaku.util;
 
-import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
-
-import javax.lang.model.element.Element;
+import java.util.*;
 
 public class Monster {
     protected Integer idmonster;
@@ -37,26 +33,6 @@ public class Monster {
         this.condition = monster.getStatusCondition();
         this.extendCondition = monster.getExtendCondition();
 	}
-
-    public Monster() {
-    }
-    // public Monster(Integer idmonster, String nama, List<ElementType> elementTypes) {
-    //     this.idmonster = idmonster;
-    //     this.nama = nama;
-    //     this.elementTypes = elementTypes;
-    //     this.condition = "-";
-    // }
-
-
-	// Copy Monster
-    public void copyMonster(Monster monster){
-        setidmonster(monster.getidmonster());
-        setmonstername(monster.getName());
-        seteltype(monster.getElementTypes());
-        setStats(monster.getBaseStats());
-        setMoves(monster.getMoves());
-        setCondition(monster.condition);
-    }
 
     // Setter
     public void setidmonster(Integer idmonster){
@@ -124,31 +100,10 @@ public class Monster {
         return this.extendCondition;
     }
 
-    // OTHER METHOD
+    //METHOD
     public boolean isStatusConditionNull() {
         return this.condition.equals("-");
     }
-
-    // bertarung
-
-    // cek salah satu monster move null atau tidak, if null:
-    // cek prioritas , speed, dll
-
-    // EKSEKUSI MOVE
-    // normal move --> damageCalculation()
-    // special move --> damageCalculation()
-    // status move --> ubah status condition (setStatusCondition()) + langsung
-    // eksekusi effect dari status conditionnya?
-
-    // AFTER DAMAGE
-    // cek monster yang diserang isEliminated()
-    // kalau belum mati, cek status condition monster yang diserang
-    // BURN, POISSON --> pengurangan HP
-    // SLEEP, PARALYZED??? masih bingung
-
-    // AFTER EFFECT
-    // cek monster yang diserang isEliminated()
-    // kalau udah mati, player pilih monster lain
 
     public Double getBaseHP(ArrayList<Monster> arrmonster) {
         Double basehp = 0.0;

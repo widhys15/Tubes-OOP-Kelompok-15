@@ -1,7 +1,5 @@
 package com.monstersaku.util;
 
-import java.util.ArrayList;
-
 public class ElementEffectivity {
     ElementType attacker;
     ElementType target;
@@ -24,7 +22,8 @@ public class ElementEffectivity {
     public Double getEffectivity(){
         return effectivity;
     }
-
+    
+    //Method
     public void printeffectivity(){
         System.out.println("Attacker type: " + attacker);
         System.out.println("Target type: " + target);

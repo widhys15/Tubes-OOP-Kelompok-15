@@ -1,5 +1,6 @@
-package com.monstersaku;
+package com.monstersaku.tester;
 
+import com.monstersaku.Main;
 import com.monstersaku.util.CSVReader;
 import com.monstersaku.util.ElementType;
 import com.monstersaku.util.MoveType;

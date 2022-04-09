@@ -11,6 +11,7 @@ public abstract class Move {
     protected Integer ammunition;
     protected Target target;
 
+    //Konstruktor
     public Move (Integer idmove, MoveType movetype, ElementType elementType, String name, Integer accuracy, Integer priority, Integer ammunition, Target target){
         this.idmove = idmove;
         this.movetype = movetype;
@@ -21,9 +22,36 @@ public abstract class Move {
         this.ammunition = ammunition;
         this.target = target;
     }
+    public Move(){
+    }
 
-    public Move(){}
+    //Getter
+    public Integer getidMove(){
+        return this.idmove;
+    }
+    public MoveType getmovetype(){
+        return movetype;
+    } 
+    public String getmovename(){
+        return movename;
+    }
+    public ElementType getmoveelementtype(){
+        return moveelementType;
+    }
+    public Integer getaccuracy(){
+        return accuracy;
+    }
+    public Integer getpriority(){
+        return priority;
+    }
+    public Integer getammunition(){
+        return ammunition;
+    }
+    public Target gettarget(){
+        return target;
+    }
 
+    //Setter
     public void setidMove(Integer idmove){
         this.idmove = idmove;
     }
@@ -56,30 +84,7 @@ public abstract class Move {
         this.target = target;
     }
 
-    public Integer getidMove(){
-        return this.idmove;
-    }
-    public MoveType getmovetype(){
-        return movetype;
-    } 
-    public String getmovename(){
-        return movename;
-    }
-    public ElementType getmoveelementtype(){
-        return moveelementType;
-    }
-    public Integer getaccuracy(){
-        return accuracy;
-    }
-    public Integer getpriority(){
-        return priority;
-    }
-    public Integer getammunition(){
-        return ammunition;
-    }
-    public Target gettarget(){
-        return target;
-    }
+    //Method
     public Double findEffectivity(Monster target, ArrayList<ElementEffectivity> arreffectivity){
         Double effectivity = 1.0;
         for(int i = 0; i < arreffectivity.size(); i++){
@@ -112,18 +117,7 @@ public abstract class Move {
         System.out.println("Ammunition          : " + ammunition);
     }
     
-    public void changeCondition(Monster monsterPlayer1) {
-    }
-    public void changeHP(Monster monsterPlayer2) {
-    }
-
-    public abstract void copymove(Move move);
-
-    public abstract void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity);
-
-    public void useStatusMove(Monster monsterPlayer2, Monster monsterPlayer1) {
-    }
-
+    //Abstract Method
     public abstract void useMove (Monster monsterPlayer2, Monster monsterPlayer1,
             ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster);
 }

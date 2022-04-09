@@ -6,6 +6,7 @@ import java.util.*;
 public class NormalMove extends Move {
     protected Double damage;
 
+    //Konstruktor
     public NormalMove(Integer idmove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, Double damage){
         super(idmove, movetype, moveelementType, movename, accuracy, priority, ammunition, target);
         this.damage = damage;   
@@ -23,17 +24,17 @@ public class NormalMove extends Move {
         setdamage(move.getdamage());
     }
 
-    public NormalMove() {
-    }
-
+    //Getter
     public Double getdamage(){
         return damage;
     }
 
+    //Setter
     public void setdamage(Double damage){
         this.damage = damage;
     }
 
+    //Method
     @Override
     public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
         // System.out.println("MASUK METHOD NORMAL MOVE");
@@ -63,23 +64,5 @@ public class NormalMove extends Move {
     public void printMove(){
         super.printMove();
         System.out.println("Damage              : " + damage);
-    }
-    @Override
-    public void applyDamage(Monster attacker, Monster target, ElementEffectivity findEffectivity) {
-        // TODO Auto-generated method stub
-        
-    }
-    @Override
-    public void copymove(Move move) {
-        // TODO Auto-generated method stub
-        setidMove(move.getidMove());
-        setmovetype(move.getmovetype());
-        setmovename(move.getmovename());
-        setelementtype(move.getmoveelementtype());
-        setaccuracy(move.getaccuracy());
-        setpriority(move.getpriority());
-        setammunition(move.getammunition());
-        settarget(move.gettarget());
-        setdamage(((NormalMove) move).getdamage());
     }
 }
