@@ -1,10 +1,12 @@
 package com.monstersaku.util;
 
+import java.util.ArrayList;
+
 public class StatsMove extends AbsMove {
-    private String conditon;
+    private StatusCondition conditon;
     private Double effect;
     
-    public StatsMove(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String condition){
+    public StatsMove(Integer idMove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, StatusCondition condition){
         this.idMove = idMove;
         this.movetype = movetype;
         this.movename = movename;
@@ -28,7 +30,7 @@ public class StatsMove extends AbsMove {
         this.effect = effect;     
     }
 
-    public String getmovecondition(){
+    public StatusCondition getmovecondition(){
         return conditon;
     }
     
@@ -52,5 +54,17 @@ public class StatsMove extends AbsMove {
     public void changeHP(Monster monster){
         monster.getBaseStats().setHealthPoint(monster.getBaseStats().getHealthPoint() + effect);
         ammunition--;
+    }
+    
+    @Override
+    public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
+        // System.out.println("MASUK METHOD STATUS MOVE");
+        if(this.gettarget().equals(Target.ENEMY)){
+            this.changeCondition(enemy);
+            System.out.printf("Status condition monster %s menjadi %s%n", enemy.getName(), this.getmovecondition());
+        }else{
+            this.changeHP(attacker);
+            System.out.printf("HP monster %s bertambah menjadi %.2f%n", attacker.getName(), this.getmoveeffect());
+        }
     }
 }

@@ -18,7 +18,9 @@ public class NormalMove extends AbsMove {
         this.damage = damage;   
     }
 
-    public void useNormalMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity){
+    @Override
+    public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
+        // System.out.println("MASUK METHOD NORMAL MOVE");
         Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity);
         System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + damagecalculation);
         Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;

@@ -17,7 +17,9 @@ public class SpecialMove extends AbsMove {
         this.damage = damage;
     }
 
-    public void useSpecialMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity){
+    @Override
+    public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){
+        // System.out.println("MASUK METHOD SPECIAL MOVE");
         Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getSpecialAttack()/enemy.getBaseStats().getSpecialDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity);
         System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + damagecalculation);
         Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;

@@ -58,21 +58,28 @@ public abstract class AbsMove {
         System.out.println("Target              : " + target);
     }
     public void printmonsMove(){
-        System.out.println("ID Move             : " + idMove);
+        //ID ga usah ya? biar gak salah masukin nomor move 
+        // System.out.println("ID Move             : " + idMove);
         System.out.println("Move Type           : " + movetype);
         System.out.println("Move Name           : " + movename);
         System.out.println("Move Element Type   : " + moveelementType);
         System.out.println("Ammunition          : " + ammunition);
     }
-    public void useDefaultMove(Monster monsterPlayer2, Monster monsterPlayer1,
+    public void useMove (Monster monsterPlayer2, Monster monsterPlayer1,
             ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster) {
     }
-    public void useNormalMove(Monster monsterPlayer2, Monster monsterPlayer1,
-            ArrayList<ElementEffectivity> arreffectivity) {
-    }
-    public void useSpecialMove(Monster monsterPlayer2, Monster monsterPlayer1,
-            ArrayList<ElementEffectivity> arreffectivity) {
-    }
+
+    // public void useNormalMove(Monster monsterPlayer2, Monster monsterPlayer1,
+    //         ArrayList<ElementEffectivity> arreffectivity) {
+    // }
+    // public void useSpecialMove(Monster monsterPlayer2, Monster monsterPlayer1,
+    //         ArrayList<ElementEffectivity> arreffectivity) {
+    // }
+
+    // public void useMove(Monster monster, Monster enemy,
+    //         ArrayList<ElementEffectivity> arreffectivity) {
+    // }
+
     public void changeCondition(Monster monsterPlayer1) {
     }
     public void changeHP(Monster monsterPlayer2) {
