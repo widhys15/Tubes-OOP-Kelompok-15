@@ -131,4 +131,7 @@ public abstract class Move {
 
     public void useStatusMove(Monster monsterPlayer2, Monster monsterPlayer1) {
     }
+
+    public abstract void useMove (Monster monsterPlayer2, Monster monsterPlayer1,
+            ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster);
 }

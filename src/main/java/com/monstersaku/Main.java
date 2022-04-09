@@ -280,9 +280,9 @@ public class Main {
             // System.out.println(m.getName());
             // }
 
-            Monster monsterPlayer1 = player1.getListOfMonster().get(1);
+            Monster monsterPlayer1 = player1.getListOfMonster().get(0);
             System.out.printf("%s akan memainkan Monster 1.%s di awal permainan%n", player1.getName(), monsterPlayer1.getName());
-            Monster monsterPlayer2 = player2.getListOfMonster().get(1);
+            Monster monsterPlayer2 = player2.getListOfMonster().get(0);
             System.out.printf("%s akan memainkan Monster 1.%s di awal permainan%n", player2.getName(), monsterPlayer2.getName());
 
             int inputmove2idx = 0;
@@ -413,7 +413,6 @@ public class Main {
                         System.out.println("INI STATUS MOVE AJG");
                         monsterPlayer2.getMoves().get(inputmove2idx).useStatusMove(monsterPlayer2, monsterPlayer1);
                     }
-                    monsterPlayer2.monsterMovement(inputmove2idx);
                 } else if (op2 == 1 && op1 == 2) {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), monsterPlayer1.getMoves().get(inputmove1idx).getmovename());
                     System.out.printf("%s mengganti monster yang dimainkan menjadi %d.%s%n", player2.getName(), switchMonster, monsterPlayer2.getName());
@@ -428,7 +427,6 @@ public class Main {
                         System.out.println("INI STATUS MOVE AJG");
                         monsterPlayer2.getMoves().get(inputmove2idx).useStatusMove(monsterPlayer1,monsterPlayer2);
                     }
-                    monsterPlayer1.monsterMovement(inputmove1idx);
                 } else if (op1 == 2 && op2 == 2) {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), monsterPlayer1.getMoves().get(inputmove1idx).getmovename());
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), monsterPlayer2.getMoves().get(inputmove2idx).getmovename());

@@ -1,5 +1,7 @@
 package com.monstersaku.util;
 
+import java.util.*;
+
 public class StatusMove extends Move {
     protected String condition;
     protected Double effect;
@@ -48,10 +50,16 @@ public class StatusMove extends Move {
         System.out.println("Move Effect         : " + effect);
     }
 
-    public void useStatusMove(Monster attacker, Monster target){
-        attacker.getBaseStats().setHealthPoint(attacker.getBaseStats().getHealthPoint() + effect);
-        target.setStatusCondition(condition);
-        this.ammunition--;
+    @Override
+    public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
+        // System.out.println("MASUK METHOD STATUS MOVE");
+        if(this.gettarget().equals(Target.ENEMY)){
+            this.changeCondition(enemy);
+            System.out.printf("Status condition monster %s menjadi %s%n", enemy.getName(), this.getmovecondition());
+        }else{
+            this.changeHP(attacker);
+            System.out.printf("HP monster %s bertambah menjadi %f%n", attacker.getName(), this.getmoveeffect());
+        }
     }
 
     @Override

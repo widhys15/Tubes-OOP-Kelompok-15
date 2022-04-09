@@ -13,7 +13,7 @@ public class Monster {
     protected Stats<Double> baseStats;
     protected ArrayList<Integer> movesid;
     protected ArrayList<Move> moves;
-    protected String condition;
+    protected StatusCondition condition;
 
     // KONSTRUKTOR
     public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats, ArrayList<Integer> movesid) {
@@ -22,7 +22,7 @@ public class Monster {
         this.elementTypes = elementTypes;
         this.baseStats = baseStats;
         this.movesid = movesid;
-        this.condition = "-";
+        this.condition = null;
     }
     
 	public Monster(Monster monster, Stats<Double> stats) {
@@ -78,7 +78,7 @@ public class Monster {
         this.moves = moves;
     }
 
-    public void setCondition(String condition){
+    public void setCondition(StatusCondition condition){
         this.condition = condition;
     }
 
@@ -107,7 +107,7 @@ public class Monster {
         return this.moves;
     }
 
-    public String getStatusCondition() {
+    public StatusCondition getStatusCondition() {
         return this.condition;
     }
 
@@ -132,12 +132,6 @@ public class Monster {
         // cek kalau ammunition == 0, dikeluarkan dari list of move
         // asumsi: move berhasil dieksekusi atau ngga, ammunition tetap akan berkurang
         // 1??
-    }
-
-    public void setStatusCondition(String newCondition) {
-        // melakukan set terhadap status condition saat monster terkena status move dari
-        // moster lawan
-        this.condition = newCondition;
     }
 
     // OTHER METHOD
@@ -172,13 +166,30 @@ public class Monster {
     // cek monster yang diserang isEliminated()
     // kalau udah mati, player pilih monster lain
 
-    public void damageCalculation(Monster attacker, Move move) {
-        // menghitung damage
-        // **data yang dibutuhin
-        // sourceattack, targetdeffence, burnstatus : dari monster
-        // power: effect dari move pool??
+    public Double getBaseHP(ArrayList<Monster> arrmonster) {
+        Double basehp = 0.0;
+        for(Monster m: arrmonster){
+            if(m.getidmonster() == this.getidmonster()){
+                basehp = m.getBaseStats().getHealthPoint();
+            }
+        }
+        return basehp;
+    }
 
-        // setHP monster yang diserang (this.)
+    public void afterDamage(ArrayList<Monster> arrmonster) {
+        Double basehp = getBaseHP(arrmonster);
+        Double afterdamage = 0.0;
+        if (getStatusCondition()==StatusCondition.BURN) {
+            afterdamage = basehp*0.125;
+        } else if (getStatusCondition()==StatusCondition.POISON) {
+            afterdamage = basehp*0.0625;
+            System.out.println(afterdamage);
+        }
+        Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
+        this.getBaseStats().setHealthPoint(finalhp);
+        System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
+        System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
+        System.out.println();
     }
 
     public boolean isEliminated() {
@@ -205,33 +216,6 @@ public class Monster {
         for (Move m : this.moves) {
             m.printmonsMove();
         }
-    }
-
-    public void monsterMovement(int moveIdx) {
-        if (this.getMoves().get(moveIdx).gettarget() == Target.ENEMY) {
-            // 
-        } else {
-            // damageCalculation(monsterPlayer2.getMoves().get(moveIdx), monsterPlayer2);
-        }
-    }
-
-    public int moveIdx() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("== Pilih move yang akan digunakan ==\n");
-        for (int i = 0; i <= this.getMoves().size()-1; i++) {
-            System.out.println("Move Nomor " + (i + 1));
-            this.getMoves().get(i).printmonsMove();
-            System.out.println();
-        }
-        System.out.print("Masukkan nomor move: ");
-        int monsterMove = scan.nextInt();
-        while (monsterMove > this.getMoves().size() || monsterMove < 1) {
-            System.out.println("ERROR: Input di luar range!");
-            System.out.println();
-            System.out.print("Silakan masukan ulang nomor: ");
-            monsterMove = scan.nextInt();
-        }
-        return monsterMove-1;
     }
 
 }
