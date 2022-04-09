@@ -90,12 +90,12 @@ public abstract class Move {
         for(int i = 0; i < arreffectivity.size(); i++){
             for(int j = 0; j < target.getElementTypes().size(); j++){
                 if(arreffectivity.get(i).getElementattacker().equals(moveelementType) && arreffectivity.get(i).getElementtarget().equals(target.getElementTypes().get(j))){
-                    System.out.println("Effect :" + arreffectivity.get(i).getEffectivity());
+                    // System.out.println("Effect :" + arreffectivity.get(i).getEffectivity());
                     effectivity = effectivity * arreffectivity.get(i).getEffectivity();
                 }
             }
         }
-        System.out.println("Effectivity adalah " + effectivity);
+        // System.out.println("Effectivity adalah " + effectivity);
         return effectivity;
     }
 
@@ -110,7 +110,6 @@ public abstract class Move {
         System.out.println("Target              : " + target);
     }
     public void printmonsMove(){
-        System.out.println("ID Move             : " + idmove);
         System.out.println("Move Type           : " + movetype);
         System.out.println("Move Name           : " + movename);
         System.out.println("Move Element Type   : " + moveelementType);

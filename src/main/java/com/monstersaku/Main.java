@@ -70,21 +70,28 @@ public class Main {
     }
 
     private static int chooseMove(Monster monster) {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("== Pilih move yang akan digunakan ==\n");
-        for (int i = 0; i <= monster.getMoves().size()-1; i++) {
-            System.out.println("MOVE NOMOR " + (i + 1));
-            monster.getMoves().get(i).printmonsMove();
-            System.out.println();
-        }
-        System.out.print("Masukkan nomor move: ");
-        int monsterMove = scan.nextInt();
-        while (monsterMove > monster.getMoves().size() || monsterMove < 1) {
-            System.out.println("ERROR: Input di luar range!");
+        try {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("== Pilih move yang akan digunakan ==\n");
+            for (int i = 0; i <= monster.getMoves().size()-1; i++) {
+                System.out.println("MOVE NOMOR " + (i + 1));
+                monster.getMoves().get(i).printmonsMove();
+                System.out.println();
+            }
             System.out.print("Masukkan nomor move: ");
-            monsterMove = scan.nextInt();
+            String input = scan.next();
+            int monsterMove = Integer.parseInt(input);
+            while (monsterMove > monster.getMoves().size() || monsterMove < 1) {
+                System.out.println("ERROR: Input di luar range!");
+                System.out.print("Masukkan nomor move: ");
+                monsterMove = scan.nextInt();
+            }
+            return monsterMove-1;
+        } catch (NumberFormatException e) {
+            System.out.println("ERROR: INPUT TIDAK VALID!");
+            System.out.println("MASUKIN ANGKA");
         }
-        return monsterMove-1;
+        return 0;
     }
 
     private static void menuInGame(Player player, Monster monster, int turn) {
@@ -160,9 +167,9 @@ public class Main {
 
     private static void monstermovement(Move move, Monster attacker, Monster enemy, String condition, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster) {
         if (condition.equals("SLEEP")) {
-            System.out.println("tidur");
+            System.out.printf("Monster %s gagal mengeksekusi Move karena sedang dalam status condition SLEEP%n", attacker.getName());
         } else if (condition.equals("PARALYZE") && attacker.getExtendCondition()==1) {
-            System.out.println("tidak bisa move (paralized 1 round)");
+            System.out.printf("Monster %s gagal mengeksekusi Move karena tidak bisa bergerak satu round akibat status condition PARALIZE%n", attacker.getName());
             attacker.setExtendCondition(0);
         } else {
             if (attacker.getBaseStats().getHealthPoint() !=0) {
@@ -477,7 +484,6 @@ public class Main {
                     monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
                 } else if (op1 == 2) {
                     inputmove1idx = chooseMove(monsterPlayer1);
-                    // System.out.println("MOVEEEEEEEEEEEEE");
                 }
 
 
@@ -499,7 +505,6 @@ public class Main {
                     monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
                 } else if (op2 == 2) {
                     inputmove2idx = chooseMove(monsterPlayer2);
-                    // System.out.println("MOVEEEEEEEEEEEEE");
                 }
 
 
@@ -542,81 +547,53 @@ public class Main {
                     System.out.println("Damage Calculation");
                     System.out.println("Calculating...");
                     if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
+                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
                         monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
                         monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
                     } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {
+                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
                         monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
                         monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
                     } else {
                         if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
-                            // System.out.println(monsterPlayer1.getName());
-                            // System.out.println(monsterPlayer2.getName());
+                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
                             monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
                             monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
                         } else {
-                            // System.out.println(monsterPlayer1.getName());
-                            // System.out.println(monsterPlayer2.getName());
+                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
                             monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
                             monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
                         }
                     }
                 }
-                System.out.println();
 
                 // ================================================== AFTER DAMAGE CALCULATION ===================================================
+                System.out.println();
                 System.out.println("After Damage Calculation");
                 System.out.println("Calculating...");
-                if (!monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
+                if (!monsterPlayer1.isEliminated()) {
                     if (!monsterPlayer1.isStatusConditionNull()) {
+                        System.out.printf("After damage untuk Monster %s milik %s: %n", monsterPlayer1.getName(), player1.getName());
                         monsterPlayer1.afterDamage(arrmonster);
                     } else {
-                        System.out.println("Tidak ada after damage");
-                    }
+                        System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal)%n", monsterPlayer1.getName(), player1.getName());
+                    } 
+                }
+                if (!monsterPlayer2.isEliminated()) {
                     if (!monsterPlayer2.isStatusConditionNull()) {
+                        System.out.printf("After damage untuk Monster %s milik %s: %n", monsterPlayer2.getName(), player2.getName());
                         monsterPlayer2.afterDamage(arrmonster);
                     } else {
-                        System.out.println("Tidak ada after damage");
-                    }
-                } else if (!monsterPlayer1.isEliminated() && monsterPlayer2.isEliminated()) {
-                    if (!monsterPlayer1.isStatusConditionNull()) {
-                        monsterPlayer1.afterDamage(arrmonster);
-                    } else {
-                        System.out.println("Tidak ada after damage");
-                    }
-                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer2.getName(), player2.getName());
-                    player2.getListOfMonster().remove(monsterPlayer2);
-                    if (player2.getListOfMonster().size()!=0) {
-                        switchMonster = chooseMonster(player2, null);
-                        monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
-                    }
-                } else if (monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
-                    if (!monsterPlayer2.isStatusConditionNull()) {
-                        monsterPlayer2.afterDamage(arrmonster);
-                    } else {
-                        System.out.println("Tidak ada after damage");
-                    }
-                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain", monsterPlayer1.getName(), player1.getName());
-                    player1.getListOfMonster().remove(monsterPlayer1);
-                    if (player1.getListOfMonster().size()!=0) {
-                        switchMonster = chooseMonster(player1, null);
-                        monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
-                    }
-                } else {
-                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain", monsterPlayer1.getName(), player1.getName());
-                    player1.getListOfMonster().remove(monsterPlayer1);
-                    if (player1.getListOfMonster().size()!=0) {
-                        switchMonster = chooseMonster(player1, null);
-                        monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
-                    }
-                    System.out.println();
-                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer2.getName(), player2.getName());
-                    player2.getListOfMonster().remove(monsterPlayer2);
-                    if (player2.getListOfMonster().size()!=0) {
-                        switchMonster = chooseMonster(player2, null);
-                        monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
+                        System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal)%n", monsterPlayer2.getName(), player2.getName());
                     }
                 }
 
+                // ================================================== AFTER EFFECT ===================================================
+                System.out.println();
                 if (monsterPlayer1.isEliminated()) {
                     System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer1.getName(), player1.getName());
                     player1.getListOfMonster().remove(monsterPlayer1);
@@ -634,16 +611,19 @@ public class Main {
                     }
                 }
 
-                // CEK STATUS CONDITION
-
                 turn++;
                 System.out.println();
-                System.out.println("============= END OF TURN ===========");
+                if (player1.getListOfMonster().size()!=0 && player2.getListOfMonster().size()!=0) {
+                    System.out.println("============= END OF TURN ===========");
+                }
             }
+            System.out.println("============== GAME OVER ============");
             if (player1.getListOfMonster().size()!=0) {
-                System.out.println("player1 menang yey");
+                System.out.printf("Player1: %s menang yey%n", player1.getName());
+            } else if (player2.getListOfMonster().size()!=0){
+                System.out.printf("Player2: %s menang yey%n", player2.getName());
             } else {
-                System.out.println("player2 menang yey");
+                System.out.println("Semua monster milik kedua player tereliminasi -- hasil akhir game DRAW");
             }
 
         } else {

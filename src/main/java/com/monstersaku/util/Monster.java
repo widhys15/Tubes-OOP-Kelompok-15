@@ -144,7 +144,6 @@ public class Monster {
                 System.out.printf("Sleep monster %s sudah habis, status condition monster kembali normal%n", this.getName());
             }
         }
-        System.out.println();
     }
 
     public boolean isEliminated() {
