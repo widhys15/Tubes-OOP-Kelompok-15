@@ -60,7 +60,7 @@ public class StatusMove extends Move {
     public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
         // System.out.println("MASUK METHOD STATUS MOVE");
         if(this.gettarget().equals(Target.ENEMY)){
-            if (!enemy.isStatusConditionNull()) {
+            if (enemy.isStatusConditionNull()) {
                 this.changeCondition(enemy);
                 System.out.printf("Status condition monster %s menjadi %s%n", enemy.getName(), this.getmovecondition());
     

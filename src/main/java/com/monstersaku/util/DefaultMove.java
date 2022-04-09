@@ -36,6 +36,9 @@ public class DefaultMove extends Move {
             Double calculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * eff * burn;
             System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + Math.round(calculation));
             Double finaldamage = enemy.getBaseStats().getHealthPoint() - calculation;
+            if (finaldamage <0) {
+                finaldamage = 0.0;
+            }
             System.out.println("HP " + enemy.getName() + " berubah menjadi " + Math.round(finaldamage));
             enemy.getBaseStats().setHealthPoint((double) Math.round(finaldamage));
     

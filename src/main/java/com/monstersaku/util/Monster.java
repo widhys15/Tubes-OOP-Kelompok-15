@@ -126,7 +126,7 @@ public class Monster {
 
     // OTHER METHOD
     public boolean isStatusConditionNull() {
-        return this.condition == null;
+        return this.condition.equals("-");
     }
 
     // bertarung
@@ -166,12 +166,18 @@ public class Monster {
         if (getStatusCondition().equals("BURN")) {
             afterdamage = basehp*0.125;
             Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
+            if (finalhp <0 ) {
+                finalhp = 0.0;
+            }
             this.getBaseStats().setHealthPoint(finalhp);
             System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
             System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
         } else if (getStatusCondition().equals("POISON")) {
             afterdamage = basehp*0.0625;
             Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
+            if (finalhp <0 ) {
+                finalhp = 0.0;
+            }
             this.getBaseStats().setHealthPoint(finalhp);
             System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
             System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
@@ -179,7 +185,7 @@ public class Monster {
             this.extendCondition--;
             System.out.printf("Monster %s memiliki sisa sleep sebanyak %d%n", this.getName(), this.getExtendCondition());
             if (extendCondition == 0) {
-                this.setCondition(null);
+                this.setCondition("-");
                 System.out.printf("Sleep monster %s sudah habis, status condition monster kembali normal%n", this.getName());
             }
         }
