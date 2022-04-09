@@ -1,13 +1,6 @@
 package com.monstersaku.util;
 
-import javax.naming.NameAlreadyBoundException;
-import java.util.Random;
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Player {
     private String nama;

@@ -4,10 +4,10 @@ import com.monstersaku.util.*;
 import java.util.*;
 
 public class StatusMove extends Move {
-    protected StatusCondition condition;
+    protected String condition;
     protected Double effect;
     
-    public StatusMove(Integer idmove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, StatusCondition condition, Double effect){
+    public StatusMove(Integer idmove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String condition, Double effect){
         super(idmove, movetype, moveelementType, movename, accuracy, priority, ammunition, target);
         this.condition = condition;     
         this.effect = effect;
@@ -29,7 +29,7 @@ public class StatusMove extends Move {
     public StatusMove() {
     }
 
-    public StatusCondition getmovecondition(){
+    public String getmovecondition(){
         return condition;
     }
     
@@ -37,7 +37,7 @@ public class StatusMove extends Move {
         return effect;
     }
 
-    public void setmovecondition(StatusCondition condition){
+    public void setmovecondition(String condition){
         this.condition = condition;
     }
 
@@ -64,14 +64,14 @@ public class StatusMove extends Move {
                 this.changeCondition(enemy);
                 System.out.printf("Status condition monster %s menjadi %s%n", enemy.getName(), this.getmovecondition());
     
-                if (this.getmovecondition().equals(StatusCondition.PARALYZE)) {
+                if (this.getmovecondition().equals("PARALYZE")) {
                     Random rand = new Random();
                     int chance = rand.nextInt(100)+1;
                     if (chance>=1 && chance <=25) {
                         enemy.setExtendCondition(1);
                     }
                     enemy.getBaseStats().setSpeed(enemy.getBaseStats().getSpeed()*0.5);
-                } else if (this.getmovecondition().equals(StatusCondition.SLEEP)) {
+                } else if (this.getmovecondition().equals("SLEEP")) {
                     Random rand = new Random();
                     int num = rand.nextInt(7)+1;
                     enemy.setExtendCondition(num);
