@@ -2,11 +2,12 @@ package com.monstersaku.util;
 import java.util.*;
 
 public class DefaultMove extends Move {
-    protected Double damage;
+    private Double damage;
     private Double basehp;
     
     public DefaultMove(){
         super(0, MoveType.DEFAULT, ElementType.NORMAL, "Default Move", 100, 0, 9999, Target.ENEMY);
+        this.damage = 10.0;
     }
 
     public Double getdamage(){
@@ -20,9 +21,10 @@ public class DefaultMove extends Move {
     @Override
     public void useMove (Monster attacker, Monster enemy, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster){ 
         // System.out.println("MASUK METHOD DEFAULT MOVE");
-        Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity);
-        System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + Math.round(damagecalculation));
-        Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;
+        Double eff = findEffectivity(enemy, arreffectivity);
+        Double calculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * eff;
+        System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + Math.round(calculation));
+        Double finaldamage = enemy.getBaseStats().getHealthPoint() - calculation;
         System.out.println("HP " + enemy.getName() + " berubah menjadi " + Math.round(finaldamage));
         enemy.getBaseStats().setHealthPoint((double) Math.round(finaldamage));
 

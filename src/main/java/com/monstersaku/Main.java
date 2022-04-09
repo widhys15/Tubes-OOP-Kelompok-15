@@ -172,31 +172,26 @@ public class Main {
         // ============================================ TRY READING MONSTER POOL AND MOVE POOL ============================================
         try {
             System.out.println("READING FILE");
-            CSVReader reader2 = new CSVReader(new File(Main.class.getResource("configs/elementeffectivity.csv").toURI()),
-                        ";");
-                reader2.setSkipHeader(true);
-                List<String[]> lines2 = reader2.read();
-
-                for (String[] line2 : lines2) {
+            CSVReader efreader = new CSVReader(new File(Main.class.getResource("configs/elementeffectivity.csv").toURI()),";");
+                efreader.setSkipHeader(true);
+                List<String[]> eflines = efreader.read();
+                for (String[] efline : eflines) {
                     // Parsing for element effectivity constructor
-                    Double effectivity = Double.parseDouble(line2[2]);
-                    ElementType atk = ElementType.valueOf(line2[0]);
-                    ElementType tar = ElementType.valueOf(line2[1]);
-                    ElementEffectivity eleffectivity = new ElementEffectivity(atk, tar, effectivity);
+                    Double ef = Double.parseDouble(efline[2]);
+                    ElementType atk = ElementType.valueOf(efline[0]);
+                    ElementType tar = ElementType.valueOf(efline[1]);
+                    ElementEffectivity eleffectivity = new ElementEffectivity(atk, tar, ef);
                     // Adding elementeffectivity object to arraylist elementeffectivity
-                    eleffectivity.printeffectivity();
                     arreffectivity.add(eleffectivity); 
-                    }
+                }
             CSVReader monreader = new CSVReader(new File(Main.class.getResource("configs/monsterpool.csv").toURI()), ";");
             CSVReader movreader = new CSVReader(new File(Main.class.getResource("configs/movepool.csv").toURI()), ";");
             monreader.setSkipHeader(true);
             movreader.setSkipHeader(true);
             List<String[]> monlines = monreader.read();
             List<String[]> movlines = movreader.read();
-            System.out.println("Srat");
             // Creating Move Pool
             for(String[] movline : movlines){
-                System.out.println("SAT");
                 Integer idmove = Integer.parseInt(movline[0]);
                 MoveType movetaip = MoveType.valueOf(movline[1]);
                 String movename = movline[2];
@@ -302,6 +297,9 @@ public class Main {
 
                         player1mons.add(monster1) ;
 
+                        DefaultMove mov = new DefaultMove();
+                        monster1.getMoves().add(mov);
+
                         for (int move : monster1.getmovesid()) {
 
                             for (String[] movline : movlines) {
@@ -338,7 +336,10 @@ public class Main {
                         
                         Monster monster2 = new Monster(arrmonster.get(id2), newstats) ;
                         
-                        player2mons.add(monster2) ;
+                        player2mons.add(monster2);
+
+                        DefaultMove mov = new DefaultMove();
+                        monster2.getMoves().add(mov);
 
                         for (int move : monster2.getmovesid()) {
     
@@ -540,9 +541,13 @@ public class Main {
                         moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
                     } else {
                         if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
+                            System.out.println(monsterPlayer1.getName());
+                            System.out.println(monsterPlayer2.getName());
                             moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
                             moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
                         } else {
+                            System.out.println(monsterPlayer1.getName());
+                            System.out.println(monsterPlayer2.getName());
                             moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
                             moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
                         }

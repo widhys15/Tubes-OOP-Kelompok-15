@@ -82,11 +82,11 @@ public abstract class Move {
     }
     public Double findEffectivity(Monster target, ArrayList<ElementEffectivity> arreffectivity){
         Double effectivity = 1.0;
-        for(ElementEffectivity ef: arreffectivity){
-            System.out.println(ef);
-            for(int i = 0; i < target.getElementTypes().size(); i++){
-                if((moveelementType.equals(ef.getElementattacker())) && (target.getElementTypes().get(i).equals(ef.getElementattacker()))){
-                    effectivity = (effectivity * ef.getEffectivity());
+        for(int i = 0; i < arreffectivity.size(); i++){
+            for(int j = 0; j < target.getElementTypes().size(); j++){
+                if(arreffectivity.get(i).getElementattacker().equals(moveelementType) && arreffectivity.get(i).getElementtarget().equals(target.getElementTypes().get(j))){
+                    System.out.println("Effect :" + arreffectivity.get(i).getEffectivity());
+                    effectivity = effectivity * arreffectivity.get(i).getEffectivity();
                 }
             }
         }
