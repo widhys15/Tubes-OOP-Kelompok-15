@@ -115,4 +115,30 @@ public class Monster {
             m.printmonsMove();
         }
     }
+
+    public Double getBaseHP(ArrayList<Monster> arrmonster) {
+        Double basehp = 0.0;
+        for(Monster m: arrmonster){
+            if(m.getidmonster() == this.getidmonster()){
+                basehp = m.getBaseStats().getHealthPoint();
+            }
+        }
+        return basehp;
+    }
+
+    public void afterDamage(ArrayList<Monster> arrmonster) {
+        Double basehp = getBaseHP(arrmonster);
+        Double afterdamage = 0.0;
+        if (getStatusCondition()==StatusCondition.BURN) {
+            afterdamage = basehp*0.125;
+        } else if (getStatusCondition()==StatusCondition.POISON) {
+            afterdamage = basehp*0.0625;
+            System.out.println(afterdamage);
+        }
+        Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
+        this.getBaseStats().setHealthPoint(finalhp);
+        System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
+        System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
+        System.out.println();
+    }
 }

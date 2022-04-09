@@ -459,6 +459,7 @@ public class Main {
                     System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player1.getName(), monsterPlayer1.getName());
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), moveMonster2.getmovename());
                     System.out.println();
+                    System.out.println("Damage Calculation");
                     System.out.println("Calculating...");
                     moveMonster2.useMove(monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster);
                 } else if (op2 == 1 && op1 == 2) {
@@ -466,6 +467,7 @@ public class Main {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
                     System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player2.getName(), monsterPlayer2.getName());
                     System.out.println();
+                    System.out.println("Damage Calculation");
                     System.out.println("Calculating...");
                     moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
                 } else if (op1 == 2 && op2 == 2) {
@@ -474,6 +476,7 @@ public class Main {
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
                     System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), moveMonster2.getmovename());
                     System.out.println();
+                    System.out.println("Damage Calculation");
                     System.out.println("Calculating...");
                     if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
                         moveMonster1.useMove(monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster);
@@ -494,30 +497,45 @@ public class Main {
                 System.out.println();
 
                 // ================================================== AFTER DAMAGE CALCULATION ===================================================
-                if (monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
+                System.out.println("After Damage Calculation");
+                System.out.println("Calculating...");
+                if (!monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
+                    if (!monsterPlayer1.isStatusConditionNull()) {
+                        monsterPlayer1.afterDamage(arrmonster);
+                    } 
+                    if (!monsterPlayer2.isStatusConditionNull()) {
+                        monsterPlayer2.afterDamage(arrmonster);
+                    }
+                } else if (!monsterPlayer1.isEliminated() && monsterPlayer2.isEliminated()) {
+                    if (!monsterPlayer1.isStatusConditionNull()) {
+                        monsterPlayer1.afterDamage(arrmonster);
+                    }
+                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer2, player2);
+                    player2.getListOfMonster().remove(monsterPlayer2);
+                    switchMonster = chooseMonster(player2, null);
+                    monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
+                } else if (monsterPlayer1.isEliminated() && !monsterPlayer2.isEliminated()) {
+                    if (!monsterPlayer2.isStatusConditionNull()) {
+                        monsterPlayer2.afterDamage(arrmonster);
+                    }
                     System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain", monsterPlayer1, player1);
                     player1.getListOfMonster().remove(monsterPlayer1);
+                    switchMonster = chooseMonster(player1, null);
+                    monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
                 } else {
-
+                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain", monsterPlayer1, player1);
+                    player1.getListOfMonster().remove(monsterPlayer1);
+                    switchMonster = chooseMonster(player1, null);
+                    monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
+                    System.out.println();
+                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer2, player2);
+                    player2.getListOfMonster().remove(monsterPlayer2);
+                    switchMonster = chooseMonster(player2, null);
+                    monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
                 }
+                System.out.println();
 
-                /*
-                 * di dalem move ada 4 kondisi yang mungkin terjadi
-                 * 1. Player1 switch player2 switch
-                 * 2. player1 switch player2 move -> langsung damage
-                 * 3. player1 move player2 switch -> langsung damage
-                 * 4. player1 move player2 move -> check prio
-                 * 
-                 * setiap ada move:
-                 * cek move status move --> cek target
-                 * target masukin ke parameter target
-                 * 
-                 * 2 player pilih move:
-                 * cek prio --> cek speed
-                 * misalnya player1 dulu -->
-                 * 
-                 * 
-                 */
+                
 
                 // CEK STATUS CONDITION
 

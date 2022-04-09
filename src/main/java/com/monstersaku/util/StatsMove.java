@@ -64,7 +64,7 @@ public class StatsMove extends AbsMove {
             System.out.printf("Status condition monster %s menjadi %s%n", enemy.getName(), this.getmovecondition());
         }else{
             this.changeHP(attacker);
-            System.out.printf("HP monster %s bertambah menjadi %.2f%n", attacker.getName(), this.getmoveeffect());
+            System.out.printf("HP monster %s bertambah menjadi %f%n", attacker.getName(), this.getmoveeffect());
         }
     }
 }
