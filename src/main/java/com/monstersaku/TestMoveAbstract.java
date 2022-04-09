@@ -17,6 +17,7 @@ import com.monstersaku.util.ElementEffectivity;
 import com.monstersaku.util.NormalMove;
 import com.monstersaku.util.SpecialMove;
 import com.monstersaku.util.StatsMove;
+import com.monstersaku.util.StatusCondition;
 import com.monstersaku.util.Target;
 import com.monstersaku.util.Stats;
 import com.monstersaku.util.Player;
@@ -26,7 +27,7 @@ public class TestMoveAbstract{
         DefaultMove defmove = new DefaultMove();
         NormalMove normalmove = new NormalMove(1,MoveType.NORMAL,"Punch",ElementType.NORMAL,90,1,10,Target.ENEMY,10.0);
         SpecialMove specialmove = new SpecialMove(2,MoveType.SPECIAL,"Special Punch",ElementType.NORMAL,90,1,0,Target.ENEMY,10.0);
-        StatsMove statusmove = new StatsMove(3,MoveType.STATUS,"Burn",ElementType.FIRE,90,1,10,Target.ENEMY,"BURN");
+        StatsMove statusmove = new StatsMove(3,MoveType.STATUS,"Burn",ElementType.FIRE,90,1,10,Target.ENEMY,StatusCondition.BURN);
         StatsMove statusmove2 = new StatsMove(4,MoveType.STATUS,"Heal",ElementType.FIRE,90,1,10,Target.ENEMY,25.0);
         // defmove.printMove();
         // System.out.println();
@@ -70,14 +71,14 @@ public class TestMoveAbstract{
                     arreffectivity.add(eleffectivity); 
                     }
         
-        Monster mons = new Monster(1, "AAAAAA", lists, stats, moves, "-");
-        Monster mons1 = new Monster(2, "BBBBBB", lists1, stats1, moves1, "-");
+        Monster mons = new Monster(1, "AAAAAA", lists, stats, moves, null);
+        Monster mons1 = new Monster(2, "BBBBBB", lists1, stats1, moves1, null);
         
         ArrayList<Monster> arrmonster = new ArrayList<>();
         arrmonster.add(mons);
         arrmonster.add(mons1);
         mons.getMoves().get(0).printMove();
-        mons.getMoves().get(0).useDefaultMove(mons, mons1, arreffectivity, arrmonster);
+        mons.getMoves().get(0).useMove(mons, mons1, arreffectivity, arrmonster);
         mons1.printMonster();
         mons.getMoves().get(1).changeHP(mons);
         mons.getMoves().get(0).printMove();
