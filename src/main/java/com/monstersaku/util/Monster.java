@@ -124,18 +124,18 @@ public class Monster {
             if (finalhp <0 ) {
                 finalhp = 0.0;
             }
-            this.getBaseStats().setHealthPoint(finalhp);
-            System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
-            System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
+            this.getBaseStats().setHealthPoint((double) Math.round(finalhp));
+            System.out.printf("HP Monster %s berkurang sebesar %.0f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
+            System.out.printf("HP Monster %s saat ini menjadi %.0f%n", getName(), finalhp);
         } else if (getStatusCondition().equals("POISON")) {
             afterdamage = basehp*0.0625;
             Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
             if (finalhp <0 ) {
                 finalhp = 0.0;
             }
-            this.getBaseStats().setHealthPoint(finalhp);
-            System.out.printf("HP Monster %s berkurang sebesar %f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
-            System.out.printf("HP Monster %s saat ini menjadi %f%n", getName(), finalhp);
+            this.getBaseStats().setHealthPoint((double) Math.round(finalhp));
+            System.out.printf("HP Monster %s berkurang sebesar %.0f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
+            System.out.printf("HP Monster %s saat ini menjadi %.0f%n", getName(), finalhp);
         } else if (getStatusCondition().equals("SLEEP")) {
             this.extendCondition--;
             System.out.printf("Monster %s memiliki sisa sleep sebanyak %d%n", this.getName(), this.getExtendCondition());

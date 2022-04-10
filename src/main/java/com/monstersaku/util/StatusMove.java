@@ -1,6 +1,5 @@
 package com.monstersaku.util;
 
-import com.monstersaku.util.*;
 import java.util.*;
 
 public class StatusMove extends Move {
