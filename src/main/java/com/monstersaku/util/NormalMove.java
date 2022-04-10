@@ -41,7 +41,7 @@ public class NormalMove extends Move {
         Random rand = new Random();
         int accuracy = rand.nextInt(100)+1;
         if (accuracy > this.getaccuracy()) {
-            System.out.printf("Move %s miss", this.getmovename());
+            System.out.printf("Move %s miss%n", this.getmovename());
         } else {
             Double burn = 1.0;
             if (attacker.getStatusCondition().equals("-")) {

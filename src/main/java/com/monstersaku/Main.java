@@ -2,6 +2,7 @@ package com.monstersaku;
 
 import com.monstersaku.util.*;
 import java.util.*;
+import java.io.EOFException;
 import java.io.File;
 
 public class Main {
@@ -19,7 +20,9 @@ public class Main {
             "configs/movepool.csv",
             "configs/element-type-effectivity-chart.csv"));
 
-    //semacam prosedur dan fungsi
+    // ============================================ SEMACAM PROSEDUR DAN FUNGSI ============================================
+
+    // ============================================ PILIH MENU ============================================
     private static int chooseGameMenu() {
         String menu[] = { "Start Game", "Help", "Exit" };
 
@@ -29,165 +32,194 @@ public class Main {
             System.out.printf("%d. %s%n", i + 1, menu[i]);
         }
         System.out.println(ANSI_RED + "----------------------------------------------" + ANSI_RESET);
-
-        Scanner scan = new Scanner(System.in);
         System.out.println();
         System.out.print("Masukkan nomor menu: ");
-        int pilihanMenu = scan.nextInt();
-        
-        boolean invalidinput = false;
-        if (pilihanMenu < 1 || pilihanMenu >3) {
-            invalidinput = true;
-        }
-
-        while (invalidinput) {
-            System.out.println(ANSI_RED + "ERROR: nomor di luar range!" + ANSI_RESET);
-            System.out.print("Masukkan nomor menu: ");
-            pilihanMenu = scan.nextInt();
-            if (pilihanMenu > 0 && pilihanMenu<=3) {
-                invalidinput = false;
+        return inputPlayermenu();
+    }
+    
+    private static int inputPlayermenu() {
+        Scanner scan = new Scanner(System.in);
+        String input = scan.next();
+        try {
+            int pilihanMenu = Integer.parseInt(input);
+            if (pilihanMenu < 1 || pilihanMenu > 3) {
+                throw new Exception("ERROR: nomor di luar range!");
             }
+            return pilihanMenu;
+        } catch (NumberFormatException e) {
+            System.out.println(ANSI_RED + "ERROR: input tidak valid!" + ANSI_RESET);
+            System.out.print("Masukkan nomor menu: ");
+        } catch (Exception e) {
+            System.out.println(ANSI_RED + e.getMessage() + ANSI_RESET);
+            System.out.print("Masukkan nomor menu: ");
         }
-        return pilihanMenu;
+        return inputPlayermenu();
     }
 
+    // ============================================ HELP ============================================
     private static void help() {
         System.out.println();
         System.out.println("================ HELP ===============");
-        System.out.println("Pilih menu Start Game dengan cara memasukkan angka 1 ketika memasuki permainan untuk mulai bermain");
+        System.out.println(
+                "Pilih menu Start Game dengan cara memasukkan angka 1 ketika memasuki permainan untuk mulai bermain");
         System.out.println("");
     }
 
+    // ============================================ PILIH MONSTER ============================================
     private static int chooseMonster(Player player, Monster monsterPlayer) {
         System.out.println(ANSI_YELLOW + "====== Pilih monster yang akan dimainkan =====\n" + ANSI_RESET);
-                    System.out.println("No; Name; ElType; HP; Condition");
-                    for (int i = 0; i< player.getListOfMonster().size(); i++) {
-                        System.out.println(ANSI_CYAN + (i+1)+"; "+player.getListOfMonster().get(i).infoListOfMonster() + ANSI_RESET);
-                    }
-                    System.out.println();
-                    System.out.print("Masukkan nomor monster: ");
-                    Scanner scan = new Scanner(System.in);
-                    int switchMonster = scan.nextInt();
-                    while ((switchMonster > player.getListOfMonster().size() || switchMonster<1) || monsterPlayer == player.getListOfMonster().get(switchMonster - 1)) {
-                        if (switchMonster > player.getListOfMonster().size() || switchMonster<1) {
-                            System.out.println(ANSI_RED +"ERROR: Input di luar range!"+ ANSI_RESET);
-                        } else {
-                            System.out.println(ANSI_RED +"ERROR: Monster yang kamu pilih tidak berbeda dengan monster yang sedang dimainkan!"+ ANSI_RESET);
-                        }
-                        System.out.print("Masukkan nomor monster: ");
-                        switchMonster = scan.nextInt();
-                    }
-                    return switchMonster-1;
-    }
 
-    private static int chooseMove(Monster monster) {
-        try {
-            Scanner scan = new Scanner(System.in);
-            System.out.println(ANSI_YELLOW + "======= Pilih move yang akan digunakan =======\n" + ANSI_RESET);
-            for (int i = 0; i <= monster.getMoves().size()-1; i++) {
-                System.out.println(ANSI_GREEN + "MOVE NOMOR " + (i + 1) + ANSI_RESET);
-                monster.getMoves().get(i).printmonsMove();
-                System.out.println();
-            }
-            System.out.print("Masukkan nomor move: ");
-            String input = scan.next();
-            int monsterMove = Integer.parseInt(input);
-            while (monsterMove > monster.getMoves().size() || monsterMove < 1) {
-                System.out.println(ANSI_RED +"ERROR: Input di luar range!"+ ANSI_RESET);
-                System.out.print("Masukkan nomor move: ");
-                monsterMove = scan.nextInt();
-            }
-            return monsterMove-1;
-        } catch (NumberFormatException e) {
-            System.out.println(ANSI_RED +"ERROR: INPUT TIDAK VALID!"+ ANSI_RESET);
-            System.out.println("MASUKIN ANGKA");
+        System.out.println("No; Name; ElType; HP; Condition");
+        for (int i = 0; i < player.getListOfMonster().size(); i++) {
+            System.out.println((i + 1) + "; " + player.getListOfMonster().get(i).infoListOfMonster());
         }
-        return 0;
+        System.out.println();
+        System.out.print("Masukkan nomor monster: ");
+        return inputPlayer(player, monsterPlayer);
     }
 
+    private static int inputPlayer(Player player, Monster monsterPlayer) {
+        Scanner scan = new Scanner(System.in);
+        String input = scan.next();
+        try {
+            int switchMonster = Integer.parseInt(input);
+            if (switchMonster > player.getListOfMonster().size() || switchMonster < 1) {
+                throw new Exception("ERROR: Input di luar range!");
+            } else if (monsterPlayer == player.getListOfMonster().get(switchMonster - 1)) {
+                throw new Exception("ERROR: Monster yang kamu pilih tidak berbeda dengan monster yang sedang dimainkan!");
+            }
+            return switchMonster-1;
+        } catch (NumberFormatException e) {
+            System.out.println(ANSI_RED + "ERROR: input tidak valid!" + ANSI_RESET);
+            System.out.print("Masukkan nomor monster: ");
+        } catch (Exception e) {
+            System.out.println(ANSI_RED + e.getMessage() + ANSI_RESET);
+            System.out.print("Masukkan nomor monster: ");
+        }
+        return inputPlayer(player, monsterPlayer);
+    }
+
+    // ============================================ PILIH MOVE ============================================
+    private static int chooseMove(Monster monster) {
+        System.out.println(ANSI_YELLOW + "======= Pilih move yang akan digunakan =======\n" + ANSI_RESET);
+        for (int i = 0; i <= monster.getMoves().size() - 1; i++) {
+            System.out.println(ANSI_GREEN+"MOVE NOMOR " + (i + 1) +ANSI_RESET);
+            monster.getMoves().get(i).printmonsMove();
+            System.out.println();
+        }
+        System.out.print("Masukkan nomor move: ");
+
+        return inputPlayer(monster);
+    }
+
+    private static int inputPlayer(Monster monster) {
+        Scanner scan = new Scanner(System.in);
+        String input = scan.next();
+        try {
+            int monsterMove = Integer.parseInt(input);
+            if (monsterMove > monster.getMoves().size() || monsterMove < 1) {
+                throw new Exception("ERROR: Input di luar range!");
+            }
+            return monsterMove - 1;
+        } catch (NumberFormatException e) {
+            System.out.println(ANSI_RED+"ERROR: input tidak valid!"+ANSI_RESET);
+            System.out.print("Masukkan nomor move: ");
+        } catch (Exception e) {
+            System.out.println(ANSI_RED+e.getMessage()+ANSI_RESET);
+            System.out.print("Masukkan nomor move: ");
+        }
+        return inputPlayer(monster);
+    }
+
+    // ============================================ PILIH MENU IN GAME ============================================
     private static void menuInGame(Player player, Monster monster, int turn, ArrayList<Monster> arrmonster) {
                 System.out.println(ANSI_YELLOW + "==================== Menu ====================" + ANSI_RESET);
                 System.out.println("1.View Monster Info\n2.View Game Info");
                 System.out.println();
                 System.out.print("Masukkan nomor menu (ketik 0 untuk kembali ke permainan): ");
-                
-                Scanner scan = new Scanner(System.in);
-                int pilihanMenuInGame = scan.nextInt();
-
-                while (pilihanMenuInGame!=0) {
-                    boolean invalidinput = false;
-                    
-                    if (pilihanMenuInGame < 0 || pilihanMenuInGame >2) {
-                        invalidinput = true;
-                    }
-            
-                    while (invalidinput) {
-                        System.out.println(ANSI_RED +"ERROR: nomor di luar range!"+ ANSI_RESET);
-                        System.out.print("Masukkan nomor menu(ketik 0 untuk kembali ke permainan): ");
-                        pilihanMenuInGame = scan.nextInt();
-                        if (pilihanMenuInGame >= 0 && pilihanMenuInGame<=2) {
-                            invalidinput = false;
+                int pilihanMenuInGame = inputPlayerMenuingame();
+                if (pilihanMenuInGame == 1) {
+                    // menampilkan informasi setiap atribut dari monster-monster yang ada saat permainan
+                    System.out.println(ANSI_YELLOW + "\n============== VIEW MONSTERS INFO ============" + ANSI_RESET);
+                    player.showListOfMonster(arrmonster);
+                    menuInGame(player, monster, turn, arrmonster);
+                } else if (pilihanMenuInGame == 2) {
+                    // menampilkan informasi turn, informasi monster yang sedang bertarung, beserta informasi monster yang tidak sedang digunakan
+                    System.out.println(ANSI_YELLOW + "\n=============== VIEW GAME INFO ===============" + ANSI_RESET);
+                    System.out.printf("Permainan saat ini adalah putaran ke-" + ANSI_RED + "%d" + ANSI_RESET +"%n%n", turn);
+                    System.out.printf("Monster yang saat ini sedang bertarung: " + ANSI_CYAN + "%s"+ ANSI_RESET + "%n%n", monster.infoListOfMonster());
+                    System.out.println("Monster yang tidak sedang digunakan: ");
+                    System.out.println("Name; ElType; HP; Condition");
+                    for (int i = 0; i< player.getListOfMonster().size(); i++) {
+                        if (player.getListOfMonster().get(i) != monster) {
+                            System.out.println(ANSI_CYAN + player.getListOfMonster().get(i).infoListOfMonster() + ANSI_RESET);
                         }
                     }
-                    if (pilihanMenuInGame == 1) {
-                        // menampilkan informasi setiap atribut dari monster-monster yang ada saat permainan
-                        System.out.println(ANSI_YELLOW + "\n============== VIEW MONSTERS INFO ============" + ANSI_RESET);
-                        player.showListOfMonster(arrmonster);
-                    } else if (pilihanMenuInGame == 2) {
-                        // menampilkan informasi turn, informasi monster yang sedang bertarung, beserta informasi monster yang tidak sedang digunakan
-                        System.out.println(ANSI_YELLOW + "\n=============== VIEW GAME INFO ===============" + ANSI_RESET);
-                        System.out.printf("Permainan saat ini adalah putaran ke-" + ANSI_RED + "%d" + ANSI_RESET +"%n%n", turn);
-                        System.out.printf("Monster yang saat ini sedang bertarung: " + ANSI_CYAN + "%s"+ ANSI_RESET + "%n%n", monster.infoListOfMonster());
-                        System.out.println("Monster yang tidak sedang digunakan: ");
-                        System.out.println("Name; ElType; HP; Condition");
-                        for (int i = 0; i< player.getListOfMonster().size(); i++) {
-                            if (player.getListOfMonster().get(i) != monster) {
-                                System.out.println(ANSI_CYAN + player.getListOfMonster().get(i).infoListOfMonster() + ANSI_RESET);
-                            }
-                        }
-                        System.out.println(); 
-                    }
-                    System.out.println(ANSI_YELLOW + "==================== Menu ====================" + ANSI_RESET);
-                    System.out.println("1.View Monster Info\n2.View Game Info");
-                    System.out.println();
-                    System.out.print("Masukkan nomor menu (ketik 0 untuk kembali ke permainan): ");
-                    
-                    scan = new Scanner(System.in);
-                    pilihanMenuInGame = scan.nextInt();
+                    System.out.println(); 
+                    menuInGame(player, monster, turn, arrmonster);
                 }
     }
 
-    private static int inputPlayer(int op) {
-        boolean invalidinput = false;
-        
+    private static int inputPlayerMenuingame() {
         Scanner scan = new Scanner(System.in);
-        if (op < 1 || op >2) {
-            invalidinput = true;
-        }
-            
-        while (invalidinput) {
-            System.out.println(ANSI_RED +"ERROR: nomor di luar range!"+ ANSI_RESET);
-            System.out.print("Masukkan nomor: ");
-            op = scan.nextInt();
-            if (op > 0 && op<=2) {
-                invalidinput = false;
+        String input = scan.next();
+        try {
+            int op = Integer.parseInt(input);
+
+            if (op < 0 || op > 2) {
+                throw new Exception("ERROR: nomor di luar range!");
             }
+            return op;
+        } catch (NumberFormatException e) {
+            System.out.print(ANSI_RED+"ERROR: input tidak valid!"+ANSI_RESET);
+            System.out.print("Masukkan nomor menu (ketik 0 untuk kembali ke permainan): ");
+        } catch (Exception e) {
+            System.out.println(ANSI_RED+e.getMessage()+ANSI_RESET);
+            System.out.print("Masukkan nomor menu (ketik 0 untuk kembali ke permainan): ");
         }
-        return op;
+        return inputPlayerMenuingame();
     }
 
-    private static void monstermovement(Move move, Monster attacker, Monster enemy, String condition, ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster) {
+    // ============================================ PILIH SWITCH/MOVE ============================================
+    private static int inputPlayer() {
+        Scanner scan = new Scanner(System.in);
+        String input = scan.next();
+        try {
+            int op = Integer.parseInt(input);
+
+            if (op < 1 || op > 2) {
+                throw new Exception("ERROR: nomor di luar range!");
+            }
+            return op;
+        } catch (NumberFormatException e) {
+            System.out.println(ANSI_RED+"ERROR: input tidak valid!"+ANSI_RESET);
+            System.out.print("Masukkan nomor: ");
+        } catch (Exception e) {
+            System.out.println(ANSI_RED+e.getMessage()+ANSI_RESET);
+            System.out.print("Masukkan nomor: ");
+        }
+        return inputPlayer();
+    }
+
+    // ============================================ EKSEKUSI MOVE MONSTER ============================================
+    private static void monstermovement(Move move, Monster attacker, Monster enemy, String condition,
+            ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster, Player player) {
         if (condition.equals("SLEEP")) {
-            System.out.printf("Monster %s gagal mengeksekusi Move karena sedang dalam status condition SLEEP%n", attacker.getName());
-        } else if (condition.equals("PARALYZE") && attacker.getExtendCondition()==1) {
-            System.out.printf("Monster %s gagal mengeksekusi Move karena tidak bisa bergerak satu round akibat status condition PARALIZE%n", attacker.getName());
+            System.out.printf("Monster %s gagal mengeksekusi Move karena sedang dalam status condition SLEEP%n",
+                    attacker.getName());
+        } else if (condition.equals("PARALYZE") && attacker.getExtendCondition() == 1) {
+            System.out.printf(
+                    "Monster %s gagal mengeksekusi Move karena tidak bisa bergerak satu round akibat status condition PARALIZE%n",
+                    attacker.getName());
             attacker.setExtendCondition(0);
         } else {
-            if (attacker.getBaseStats().getHealthPoint() !=0) {
+            if (attacker.getBaseStats().getHealthPoint() != 0) {
+                System.out.printf("Hasil Eksekusi Move %s oleh Monster %s milik %s:%n", move.getmovename(), attacker.getName(), player.getName());
                 move.useMove(attacker, enemy, arreffectivity, arrmonster);
             }
         }
     }
+
     // ============================================ MAIN ========================================================================================
     public static void main(String[] args) {
         // Creating ArrayList Move, Monster, and Effectivity
@@ -216,7 +248,7 @@ public class Main {
             List<String[]> monlines = monreader.read();
             List<String[]> movlines = movreader.read();
             // Creating Move Pool
-            for(String[] movline : movlines){
+            for (String[] movline : movlines) {
                 Integer idmove = Integer.parseInt(movline[0]);
                 MoveType movetaip = MoveType.valueOf(movline[1]);
                 String movename = movline[2];
@@ -227,20 +259,23 @@ public class Main {
                 Target target = Target.valueOf(movline[7]);
                 if (movetaip.equals(MoveType.NORMAL)) {
                     Double damage = Double.parseDouble(movline[8]);
-                    NormalMove mov = new NormalMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, damage);
+                    NormalMove mov = new NormalMove(idmove, movetaip, movename, moveelementType, accuracy, priority,
+                            ammunition, target, damage);
                     arrmove.add(mov);
                 } else if (movetaip.equals(MoveType.SPECIAL)) {
                     Double damage = Double.parseDouble(movline[8]);
-                    SpecialMove mov = new SpecialMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, damage);
+                    SpecialMove mov = new SpecialMove(idmove, movetaip, movename, moveelementType, accuracy, priority,
+                            ammunition, target, damage);
                     arrmove.add(mov);
-                } else if (movetaip.equals(MoveType.STATUS)){
+                } else if (movetaip.equals(MoveType.STATUS)) {
                     String condition = movline[8];
                     Double effect = Double.parseDouble(movline[9]);
-                    StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority, ammunition, target, condition, effect);
+                    StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority,
+                            ammunition, target, condition, effect);
                     arrmove.add(mov);
                 }
             }
-            
+
             for (String[] monline : monlines) {
                 // Parsing for monster constructor, creating monster object and adding to
                 // arraylist monster
@@ -274,12 +309,12 @@ public class Main {
                 Stats<Double> basestats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3),
                         stats.get(4), stats.get(5));
                 // Creating element type arraylist
-                
+
                 String mov = monline[4];
                 String[] arrofmov = mov.split(",");
                 ArrayList<Integer> movesid = new ArrayList<>();
                 // Adding move object to listofmove monster
-                for(String a: arrofmov){
+                for (String a : arrofmov) {
                     Integer i = Integer.parseInt(a) - 1;
                     movesid.add(i);
                 }
@@ -300,10 +335,10 @@ public class Main {
             List<String[]> movlines = movreader.read();
             // Random Monster
             for (int i = 0; i < 6; i++) {
-                int id1 = rand.nextInt(arrmonster.size()) ;
-                int id2 = rand.nextInt(arrmonster.size()) ;
+                int id1 = rand.nextInt(arrmonster.size());
+                int id2 = rand.nextInt(arrmonster.size());
 
-                int j = 0 ;
+                int j = 0;
                 for (String[] monline : monlines) {
                     if (j == id1) {
                         String stat = monline[3];
@@ -314,11 +349,12 @@ public class Main {
                             Double d = Double.parseDouble(a);
                             stats.add(d);
                         }
-                        Stats<Double> newstats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3), stats.get(4), stats.get(5));
+                        Stats<Double> newstats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2),
+                                stats.get(3), stats.get(4), stats.get(5));
 
                         Monster monster1 = new Monster(arrmonster.get(id1), newstats);
 
-                        player1mons.add(monster1) ;
+                        player1mons.add(monster1);
 
                         DefaultMove mov = new DefaultMove();
                         monster1.getMoves().add(mov);
@@ -328,18 +364,19 @@ public class Main {
                             for (String[] movline : movlines) {
                                 if (move == Integer.parseInt(movline[0]) - 1) {
 
-                                    int ammunition = Integer.parseInt(movline[6]) ;
+                                    int ammunition = Integer.parseInt(movline[6]);
 
                                     if (movline[1].equals("NORMAL")) {
-                                        NormalMove normalMove = new NormalMove((NormalMove)arrmove.get(move), ammunition);
+                                        NormalMove normalMove = new NormalMove((NormalMove) arrmove.get(move),
+                                                ammunition);
                                         monster1.getMoves().add(normalMove);
-                                    }
-                                    else if (movline[1].equals("SPECIAL")) {
-                                        SpecialMove specialMove = new SpecialMove((SpecialMove)arrmove.get(move), ammunition);
+                                    } else if (movline[1].equals("SPECIAL")) {
+                                        SpecialMove specialMove = new SpecialMove((SpecialMove) arrmove.get(move),
+                                                ammunition);
                                         monster1.getMoves().add(specialMove);
-                                    }
-                                    else if (movline[1].equals("STATUS")){ 
-                                        StatusMove statusMove = new StatusMove((StatusMove)arrmove.get(move), ammunition);
+                                    } else if (movline[1].equals("STATUS")) {
+                                        StatusMove statusMove = new StatusMove((StatusMove) arrmove.get(move),
+                                                ammunition);
                                         monster1.getMoves().add(statusMove);
                                     }
                                 }
@@ -355,40 +392,42 @@ public class Main {
                             Double d = Double.parseDouble(a);
                             stats.add(d);
                         }
-                        Stats<Double> newstats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2), stats.get(3), stats.get(4), stats.get(5));
-                        
-                        Monster monster2 = new Monster(arrmonster.get(id2), newstats) ;
-                        
+                        Stats<Double> newstats = new Stats<Double>(stats.get(0), stats.get(1), stats.get(2),
+                                stats.get(3), stats.get(4), stats.get(5));
+
+                        Monster monster2 = new Monster(arrmonster.get(id2), newstats);
+
                         player2mons.add(monster2);
 
                         DefaultMove mov = new DefaultMove();
                         monster2.getMoves().add(mov);
 
                         for (int move : monster2.getmovesid()) {
-    
+
                             for (String[] movline : movlines) {
                                 if (move == Integer.parseInt(movline[0]) - 1) {
-    
-                                    int ammunition = Integer.parseInt(movline[6]) ;
-    
+
+                                    int ammunition = Integer.parseInt(movline[6]);
+
                                     if (movline[1].equals("NORMAL")) {
-                                        NormalMove normalMove = new NormalMove((NormalMove)arrmove.get(move), ammunition) ;
-                                        monster2.getMoves().add(normalMove) ;
-                                    }
-                                    else if (movline[1].equals("SPECIAL")) {
-                                        SpecialMove specialMove = new SpecialMove((SpecialMove)arrmove.get(move), ammunition) ;
-                                        monster2.getMoves().add(specialMove) ;
-                                    }
-                                    else {  // TAMBAH EXCEPTION
-                                        StatusMove statusMove = new StatusMove((StatusMove)arrmove.get(move), ammunition) ;
-                                        monster2.getMoves().add(statusMove) ;
+                                        NormalMove normalMove = new NormalMove((NormalMove) arrmove.get(move),
+                                                ammunition);
+                                        monster2.getMoves().add(normalMove);
+                                    } else if (movline[1].equals("SPECIAL")) {
+                                        SpecialMove specialMove = new SpecialMove((SpecialMove) arrmove.get(move),
+                                                ammunition);
+                                        monster2.getMoves().add(specialMove);
+                                    } else { // TAMBAH EXCEPTION
+                                        StatusMove statusMove = new StatusMove((StatusMove) arrmove.get(move),
+                                                ammunition);
+                                        monster2.getMoves().add(statusMove);
                                     }
                                 }
                             }
                         }
                     }
 
-                    j++ ;
+                    j++;
                 }
             }
         } catch (Exception e) {
@@ -412,9 +451,9 @@ public class Main {
         System.out.println(ANSI_YELLOW + "=========== PERMAINAN MONSTER SAKU ===========" + ANSI_RESET);
         System.out.println(ANSI_GREEN + "Halo! Selamat datang di permainan Monster Saku" + ANSI_RESET);
         Scanner scan = new Scanner(System.in);
-        
+
         int pilihanMenu = chooseGameMenu();
-        
+
         while (pilihanMenu == 2) {
             help();
             System.out.println("Back to menu...\n");
@@ -463,8 +502,8 @@ public class Main {
             // }
 
             int turn = 1;
-            while (player1.getNumberOfMonster() != 0 || player2.getNumberOfMonster() != 0) {
-                System.out.println();          
+            while (player1.getNumberOfMonster() != 0 && player2.getNumberOfMonster() != 0) {
+                System.out.println();
 
                 // System.out.println();
                 // System.out.println("============ PUTARAN KE-"+turn+" ===========");
@@ -477,8 +516,12 @@ public class Main {
                 System.out.println(ANSI_YELLOW + "======= Pilih aksi yang akan dilakukan =======\n" + ANSI_RESET + "1.Switch (mengganti monster) \n2.Move (melakukan pergerakan)");
                 System.out.println();
                 System.out.print("Masukkan nomor: ");
-                int op1 = scan.nextInt();
-                op1 = inputPlayer(op1);
+                int op1 = inputPlayer();
+                while (player1.getListOfMonster().size()==1 && op1==1) {
+                    System.out.println(ANSI_RED+"Monster tersisa satu, tidak bisa melakukan switch"+ANSI_RESET);
+                    System.out.print("Masukkan nomor: ");
+                    op1 = inputPlayer();
+                }
                 System.out.println();
                 if (op1 == 1) {
                     switchMonster = chooseMonster(player1, monsterPlayer1);
@@ -486,7 +529,6 @@ public class Main {
                 } else if (op1 == 2) {
                     inputmove1idx = chooseMove(monsterPlayer1);
                 }
-
 
                 // ========================================= GILIRAN PLAYER 2 =========================================
                 System.out.println();
@@ -498,8 +540,12 @@ public class Main {
                 System.out.println(ANSI_YELLOW + "======= Pilih aksi yang akan dilakukan =======\n" + ANSI_RESET + "1.Switch (mengganti monster) \n2.Move (melakukan pergerakan)");
                 System.out.println();
                 System.out.print("Masukkan nomor: ");
-                int op2 = scan.nextInt();
-                op2 = inputPlayer(op2);
+                int op2 = inputPlayer();
+                while (player2.getListOfMonster().size()==1 && op2==1) {
+                    System.out.println(ANSI_RED+"Monster tersisa satu, tidak bisa melakukan switch"+ANSI_RESET);
+                    System.out.print("Masukkan nomor: ");
+                    op2 = inputPlayer();
+                }
                 System.out.println();
                 if (op2 == 1) {
                     switchMonster = chooseMonster(player2, monsterPlayer2);
@@ -508,12 +554,10 @@ public class Main {
                     inputmove2idx = chooseMove(monsterPlayer2);
                 }
 
-
                 // ====================================================== RESOLUSI ======================================================
 
                 System.out.println();
                 System.out.println(ANSI_YELLOW + "================= Resolution =================" + ANSI_RESET);
-
 
                 String conditionMonster1 = monsterPlayer1.getStatusCondition();
                 String conditionMonster2 = monsterPlayer2.getStatusCondition();
@@ -531,7 +575,7 @@ public class Main {
                         System.out.println();
                         System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
                         System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
-                        monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                        monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
                     } else if (op2 == 1 && op1 == 2) {
                         Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
                         System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
@@ -539,7 +583,7 @@ public class Main {
                         System.out.println();
                         System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
                         System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
-                        monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                        monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
                     } else if (op1 == 2 && op2 == 2) {
                         Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
                         Move moveMonster2 = monsterPlayer2.getMoves().get(inputmove2idx);
@@ -549,26 +593,19 @@ public class Main {
                         System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
                         System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
                         if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
-                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
-                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
-                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
-                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
-                        } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {
-                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
-                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
-                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
-                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
+                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
+                        } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {                          
+                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
+                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
                         } else {
-                            if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
-                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
-                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
-                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
-                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                            if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {                                
+                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);                                
+                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
                             } else {
-                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
-                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
-                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
-                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                               
+                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);                                
+                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
                             }
                         }
                     }
@@ -606,15 +643,15 @@ public class Main {
                 if (monsterPlayer1.isEliminated()) {
                     System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan, pilih monster lain%n" + ANSI_RESET, monsterPlayer1.getName(), player1.getName());
                     player1.getListOfMonster().remove(monsterPlayer1);
-                    if (player1.getListOfMonster().size()!=0) {
+                    if (player1.getListOfMonster().size() != 0) {
                         switchMonster = chooseMonster(player1, null);
                         monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
                     }
-                } 
+                }
                 if (monsterPlayer2.isEliminated()) {
-                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan, pilih monster lain%n" + ANSI_RED, monsterPlayer2.getName(), player2.getName());
+                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan, pilih monster lain%n" + ANSI_RESET, monsterPlayer2.getName(), player2.getName());
                     player2.getListOfMonster().remove(monsterPlayer2);
-                    if (player2.getListOfMonster().size()!=0) {
+                    if (player2.getListOfMonster().size() != 0) {
                         switchMonster = chooseMonster(player2, null);
                         monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
                     }
@@ -622,7 +659,7 @@ public class Main {
 
                 turn++;
                 if (player1.getListOfMonster().size()!=0 && player2.getListOfMonster().size()!=0) {
-                    System.out.println("================= END OF TURN ================");
+                    System.out.println(ANSI_YELLOW+"================= END OF TURN ================"+ANSI_RESET);
                 }
             }
             System.out.println(ANSI_RED + "============== GAME OVER ============" + ANSI_RESET);
@@ -635,7 +672,7 @@ public class Main {
             }
 
         } else {
-            //exit
+            // exit
             scan.close();
             System.out.println(ANSI_RED + "Keluar dari Permainan Monster Saku..." + ANSI_RESET);
             return;
