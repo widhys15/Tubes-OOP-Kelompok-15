@@ -5,6 +5,15 @@ import java.util.*;
 import java.io.File;
 
 public class Main {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
     private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(
             "configs/monsterpool.csv",
             "configs/movepool.csv",
@@ -14,10 +23,12 @@ public class Main {
     private static int chooseGameMenu() {
         String menu[] = { "Start Game", "Help", "Exit" };
 
+        System.out.println(ANSI_RED + "----------------------------------------------" + ANSI_RESET);
         System.out.println("Menu Permainan: ");
         for (int i = 0; i <= 2; i++) {
             System.out.printf("%d. %s%n", i + 1, menu[i]);
         }
+        System.out.println(ANSI_RED + "----------------------------------------------" + ANSI_RESET);
 
         Scanner scan = new Scanner(System.in);
         System.out.println();
@@ -30,7 +41,7 @@ public class Main {
         }
 
         while (invalidinput) {
-            System.out.println("ERROR: nomor di luar range!");
+            System.out.println(ANSI_RED + "ERROR: nomor di luar range!" + ANSI_RESET);
             System.out.print("Masukkan nomor menu: ");
             pilihanMenu = scan.nextInt();
             if (pilihanMenu > 0 && pilihanMenu<=3) {
@@ -48,10 +59,10 @@ public class Main {
     }
 
     private static int chooseMonster(Player player, Monster monsterPlayer) {
-        System.out.println("== Pilih monster yang akan dimainkan ==\n");
+        System.out.println(ANSI_YELLOW + "====== Pilih monster yang akan dimainkan =====\n" + ANSI_RESET);
                     System.out.println("No; Name; ElType; HP; Condition");
                     for (int i = 0; i< player.getListOfMonster().size(); i++) {
-                        System.out.println((i+1)+"; "+player.getListOfMonster().get(i).infoListOfMonster());
+                        System.out.println(ANSI_CYAN + (i+1)+"; "+player.getListOfMonster().get(i).infoListOfMonster() + ANSI_RESET);
                     }
                     System.out.println();
                     System.out.print("Masukkan nomor monster: ");
@@ -59,9 +70,9 @@ public class Main {
                     int switchMonster = scan.nextInt();
                     while ((switchMonster > player.getListOfMonster().size() || switchMonster<1) || monsterPlayer == player.getListOfMonster().get(switchMonster - 1)) {
                         if (switchMonster > player.getListOfMonster().size() || switchMonster<1) {
-                            System.out.println("ERROR: Input di luar range!");
+                            System.out.println(ANSI_RED +"ERROR: Input di luar range!"+ ANSI_RESET);
                         } else {
-                            System.out.println("ERROR: Monster yang kamu pilih tidak berbeda dengan monster yang sedang dimainkan!");
+                            System.out.println(ANSI_RED +"ERROR: Monster yang kamu pilih tidak berbeda dengan monster yang sedang dimainkan!"+ ANSI_RESET);
                         }
                         System.out.print("Masukkan nomor monster: ");
                         switchMonster = scan.nextInt();
@@ -72,9 +83,9 @@ public class Main {
     private static int chooseMove(Monster monster) {
         try {
             Scanner scan = new Scanner(System.in);
-            System.out.println("== Pilih move yang akan digunakan ==\n");
+            System.out.println(ANSI_YELLOW + "======= Pilih move yang akan digunakan =======\n" + ANSI_RESET);
             for (int i = 0; i <= monster.getMoves().size()-1; i++) {
-                System.out.println("MOVE NOMOR " + (i + 1));
+                System.out.println(ANSI_GREEN + "MOVE NOMOR " + (i + 1) + ANSI_RESET);
                 monster.getMoves().get(i).printmonsMove();
                 System.out.println();
             }
@@ -82,20 +93,20 @@ public class Main {
             String input = scan.next();
             int monsterMove = Integer.parseInt(input);
             while (monsterMove > monster.getMoves().size() || monsterMove < 1) {
-                System.out.println("ERROR: Input di luar range!");
+                System.out.println(ANSI_RED +"ERROR: Input di luar range!"+ ANSI_RESET);
                 System.out.print("Masukkan nomor move: ");
                 monsterMove = scan.nextInt();
             }
             return monsterMove-1;
         } catch (NumberFormatException e) {
-            System.out.println("ERROR: INPUT TIDAK VALID!");
+            System.out.println(ANSI_RED +"ERROR: INPUT TIDAK VALID!"+ ANSI_RESET);
             System.out.println("MASUKIN ANGKA");
         }
         return 0;
     }
 
-    private static void menuInGame(Player player, Monster monster, int turn) {
-                System.out.println("Menu:");
+    private static void menuInGame(Player player, Monster monster, int turn, ArrayList<Monster> arrmonster) {
+                System.out.println(ANSI_YELLOW + "==================== Menu ====================" + ANSI_RESET);
                 System.out.println("1.View Monster Info\n2.View Game Info");
                 System.out.println();
                 System.out.print("Masukkan nomor menu (ketik 0 untuk kembali ke permainan): ");
@@ -111,7 +122,7 @@ public class Main {
                     }
             
                     while (invalidinput) {
-                        System.out.println("ERROR: nomor di luar range!");
+                        System.out.println(ANSI_RED +"ERROR: nomor di luar range!"+ ANSI_RESET);
                         System.out.print("Masukkan nomor menu(ketik 0 untuk kembali ke permainan): ");
                         pilihanMenuInGame = scan.nextInt();
                         if (pilihanMenuInGame >= 0 && pilihanMenuInGame<=2) {
@@ -120,23 +131,23 @@ public class Main {
                     }
                     if (pilihanMenuInGame == 1) {
                         // menampilkan informasi setiap atribut dari monster-monster yang ada saat permainan
-                        System.out.println("\nVIEW Monster INFO ...");
-                        player.showListOfMonster();
+                        System.out.println(ANSI_YELLOW + "\n============== VIEW MONSTERS INFO ============" + ANSI_RESET);
+                        player.showListOfMonster(arrmonster);
                     } else if (pilihanMenuInGame == 2) {
                         // menampilkan informasi turn, informasi monster yang sedang bertarung, beserta informasi monster yang tidak sedang digunakan
-                        System.out.println("\nVIEW GAME INFO ...");
-                        System.out.printf("Permainan saat ini adalah putaran ke-%d%n", turn);
-                        System.out.printf("Monster yang saat ini sedang bertarung: %s%n", monster.infoListOfMonster());
+                        System.out.println(ANSI_YELLOW + "\n=============== VIEW GAME INFO ===============" + ANSI_RESET);
+                        System.out.printf("Permainan saat ini adalah putaran ke-" + ANSI_RED + "%d" + ANSI_RESET +"%n%n", turn);
+                        System.out.printf("Monster yang saat ini sedang bertarung: " + ANSI_CYAN + "%s"+ ANSI_RESET + "%n%n", monster.infoListOfMonster());
                         System.out.println("Monster yang tidak sedang digunakan: ");
                         System.out.println("Name; ElType; HP; Condition");
                         for (int i = 0; i< player.getListOfMonster().size(); i++) {
                             if (player.getListOfMonster().get(i) != monster) {
-                                System.out.println(player.getListOfMonster().get(i).infoListOfMonster());
+                                System.out.println(ANSI_CYAN + player.getListOfMonster().get(i).infoListOfMonster() + ANSI_RESET);
                             }
                         }
                         System.out.println(); 
                     }
-                    System.out.println("Menu:");
+                    System.out.println(ANSI_YELLOW + "==================== Menu ====================" + ANSI_RESET);
                     System.out.println("1.View Monster Info\n2.View Game Info");
                     System.out.println();
                     System.out.print("Masukkan nomor menu (ketik 0 untuk kembali ke permainan): ");
@@ -155,7 +166,7 @@ public class Main {
         }
             
         while (invalidinput) {
-            System.out.println("ERROR: nomor di luar range!");
+            System.out.println(ANSI_RED +"ERROR: nomor di luar range!"+ ANSI_RESET);
             System.out.print("Masukkan nomor: ");
             op = scan.nextInt();
             if (op > 0 && op<=2) {
@@ -186,7 +197,6 @@ public class Main {
 
         // ============================================ TRY READING MONSTER POOL AND MOVE POOL ============================================
         try {
-            System.out.println("READING FILE");
             CSVReader efreader = new CSVReader(new File(Main.class.getResource("configs/elementeffectivity.csv").toURI()),";");
                 efreader.setSkipHeader(true);
                 List<String[]> eflines = efreader.read();
@@ -281,9 +291,7 @@ public class Main {
         Random rand = new Random();
         ArrayList<Monster> player1mons = new ArrayList<Monster>();
         ArrayList<Monster> player2mons = new ArrayList<Monster>();
-        System.out.println("JUMLAH MONSTER :" + arrmonster.size());
         try {
-            System.out.println("READING FILE");
             CSVReader monreader = new CSVReader(new File(Main.class.getResource("configs/monsterpool.csv").toURI()), ";");
             CSVReader movreader = new CSVReader(new File(Main.class.getResource("configs/movepool.csv").toURI()), ";");
             monreader.setSkipHeader(true);
@@ -401,8 +409,8 @@ public class Main {
         // satmove.printmonsMove();
 
         // ============================================ MAIN PROGRAM ============================================
-        System.out.println("=========== PERMAINAN MONSTER SAKU ===========");
-        System.out.println("Halo! Selamat datang di permainan Monster Saku");
+        System.out.println(ANSI_YELLOW + "=========== PERMAINAN MONSTER SAKU ===========" + ANSI_RESET);
+        System.out.println(ANSI_GREEN + "Halo! Selamat datang di permainan Monster Saku" + ANSI_RESET);
         Scanner scan = new Scanner(System.in);
         
         int pilihanMenu = chooseGameMenu();
@@ -416,38 +424,31 @@ public class Main {
         // ============================================ START GAME ============================================
         if (pilihanMenu == 1) {
             System.out.println();
-            System.out.println("=========== GAME STARTED ============");
+            System.out.println(ANSI_GREEN + "================ GAME STARTED ================" + ANSI_RESET);
+            System.out.println();
             System.out.print("Enter player 1 name: ");
             String player1name = scan.next();
             System.out.print("Enter player 2 name: ");
             String player2name = scan.next();
 
             System.out.println();
-            System.out.println("============== MONSTER ==============");
+            System.out.println(ANSI_CYAN + "=================== MONSTER ==================" + ANSI_RESET);
             // System.out.println("Player 1 name: " + player1name);
             // System.out.println("Player 2 name: " + player2name);
 
             Player player1 = new Player(player1name, player1mons);
             Player player2 = new Player(player2name, player2mons);
-            System.out.println("List of Monster Player " + player1name);
-            player1.showListOfMonster();
-            System.out.println("=====================================");
-            System.out.println("List of Monster Player " + player2name);
-            player2.showListOfMonster();
-            System.out.println("============= GAME PLAY =============");
-
-            // Testing akses elemen dari monster di player
-            // player2.getListOfMonster().get(0).getMoves().get(0).useammunition();
-            // player2.getListOfMonster().get(0).printMonster();
-
-            // for (Monster m : arrmonster) {
-            // System.out.println(m.getName());
-            // }
+            System.out.println(ANSI_PURPLE + "List of Monster Player " + player1name + ANSI_RESET);
+            player1.showListOfMonster(arrmonster);
+            System.out.println("==============================================");
+            System.out.println(ANSI_PURPLE + "List of Monster Player " + player2name + ANSI_RESET);
+            player2.showListOfMonster(arrmonster);
+            System.out.println(ANSI_GREEN + "================= GAME PLAY ==================" + ANSI_RESET);
 
             Monster monsterPlayer1 = player1.getListOfMonster().get(0);
             Monster monsterPlayer2 = player2.getListOfMonster().get(0);
-            System.out.printf("%s akan memainkan Monster %s di awal permainan%n", player1.getName(), monsterPlayer1.getName());
-            System.out.printf("%s akan memainkan Monster %s di awal permainan%n", player2.getName(), monsterPlayer2.getName());
+            System.out.printf(ANSI_PURPLE + "%s" + ANSI_RESET + " akan memainkan " + ANSI_CYAN +"Monster %s" + ANSI_RESET + " di awal permainan%n", player1.getName(), monsterPlayer1.getName());
+            System.out.printf(ANSI_PURPLE + "%s" + ANSI_RESET + " akan memainkan " + ANSI_CYAN +"Monster %s" + ANSI_RESET + " di awal permainan%n", player2.getName(), monsterPlayer2.getName());
 
             int inputmove2idx = 0;
             int inputmove1idx = 0;
@@ -469,11 +470,11 @@ public class Main {
                 // System.out.println("============ PUTARAN KE-"+turn+" ===========");
 
                 // ========================================= GILIRAN PLAYER 1 =========================================
-                System.out.printf("Giliran : %s %n", player1.getName());
+                System.out.printf("Giliran : " + ANSI_PURPLE + "%s" + ANSI_RESET + "%n", player1.getName() + ANSI_RESET);
                 System.out.println();
-                menuInGame(player1, monsterPlayer1, turn);
+                menuInGame(player1, monsterPlayer1, turn, arrmonster);
                 System.out.println();
-                System.out.println("Pilih aksi yang akan dilakukan: \n1.Switch (mengganti monster) \n2.Move (melakukan pergerakan)");
+                System.out.println(ANSI_YELLOW + "======= Pilih aksi yang akan dilakukan =======\n" + ANSI_RESET + "1.Switch (mengganti monster) \n2.Move (melakukan pergerakan)");
                 System.out.println();
                 System.out.print("Masukkan nomor: ");
                 int op1 = scan.nextInt();
@@ -490,11 +491,11 @@ public class Main {
                 // ========================================= GILIRAN PLAYER 2 =========================================
                 System.out.println();
                 // System.out.printf(("Giliran : %s %nKetik 1 untuk melakukan Switch%nKetik 2 untuk melakukan Move%n"), player2.getName());
-                System.out.printf("Giliran : %s %n", player2.getName());
+                System.out.printf("Giliran " + ANSI_PURPLE + "%s" + ANSI_RESET + " %n", player2.getName());
                 System.out.println();
-                menuInGame(player2, monsterPlayer2, turn);
+                menuInGame(player2, monsterPlayer2, turn, arrmonster);
                 System.out.println();
-                System.out.println("Pilih aksi yang akan dilakukan: \n1.Switch (mengganti monster) \n2.Move (melakukan pergerakan)");
+                System.out.println(ANSI_YELLOW + "======= Pilih aksi yang akan dilakukan =======\n" + ANSI_RESET + "1.Switch (mengganti monster) \n2.Move (melakukan pergerakan)");
                 System.out.println();
                 System.out.print("Masukkan nomor: ");
                 int op2 = scan.nextInt();
@@ -511,7 +512,7 @@ public class Main {
                 // ====================================================== RESOLUSI ======================================================
 
                 System.out.println();
-                System.out.println("============= RESOLUTION ============");
+                System.out.println(ANSI_YELLOW + "================= Resolution =================" + ANSI_RESET);
 
 
                 String conditionMonster1 = monsterPlayer1.getStatusCondition();
@@ -519,83 +520,91 @@ public class Main {
 
 
                  // ================================================== DAMAGE CALCULATION ===============================================
-                if (op1 == 1 && op2 == 1) {
-                    System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player1.getName(), monsterPlayer1.getName());
-                    System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player2.getName(), monsterPlayer2.getName());
-                } else if (op1 == 1 && op2 == 2) {
-                    Move moveMonster2 = monsterPlayer2.getMoves().get(inputmove2idx);
-                    System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player1.getName(), monsterPlayer1.getName());
-                    System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), moveMonster2.getmovename());
-                    System.out.println();
-                    System.out.println("Damage Calculation");
-                    System.out.println("Calculating...");
-                    monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
-                } else if (op2 == 1 && op1 == 2) {
-                    Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
-                    System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
-                    System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player2.getName(), monsterPlayer2.getName());
-                    System.out.println();
-                    System.out.println("Damage Calculation");
-                    System.out.println("Calculating...");
-                    monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
-                } else if (op1 == 2 && op2 == 2) {
-                    Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
-                    Move moveMonster2 = monsterPlayer2.getMoves().get(inputmove2idx);
-                    System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
-                    System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), moveMonster2.getmovename());
-                    System.out.println();
-                    System.out.println("Damage Calculation");
-                    System.out.println("Calculating...");
-                    if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
-                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
-                        monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
-                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
+                try {
+                    if (op1 == 1 && op2 == 1) {
+                        System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player1.getName(), monsterPlayer1.getName());
+                        System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player2.getName(), monsterPlayer2.getName());
+                    } else if (op1 == 1 && op2 == 2) {
+                        Move moveMonster2 = monsterPlayer2.getMoves().get(inputmove2idx);
+                        System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player1.getName(), monsterPlayer1.getName());
+                        System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), moveMonster2.getmovename());
+                        System.out.println();
+                        System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
+                        System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
                         monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
-                    } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {
-                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
-                        monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
-                        System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
+                    } else if (op2 == 1 && op1 == 2) {
+                        Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
+                        System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
+                        System.out.printf("%s mengganti monster yang dimainkan menjadi %s%n", player2.getName(), monsterPlayer2.getName());
+                        System.out.println();
+                        System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
+                        System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
                         monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
-                    } else {
-                        if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
+                    } else if (op1 == 2 && op2 == 2) {
+                        Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
+                        Move moveMonster2 = monsterPlayer2.getMoves().get(inputmove2idx);
+                        System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
+                        System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer2.getName(), player2.getName(), moveMonster2.getmovename());
+                        System.out.println();
+                        System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
+                        System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
+                        if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
                             System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
                             monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
                             System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
                             monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                        } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {
+                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
+                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
+                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
                         } else {
-                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
-                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
-                            System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
-                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                            if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {
+                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
+                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
+                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                            } else {
+                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster2.getmovename(), monsterPlayer2.getName(), player2.getName());
+                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster);
+                                System.out.printf("Eksekusi Move %s oleh Monster %s milik %s:%n", moveMonster1.getmovename(), monsterPlayer1.getName(), player1.getName());
+                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster);
+                            }
                         }
                     }
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
                 }
 
                 // ================================================== AFTER DAMAGE CALCULATION ===================================================
                 System.out.println();
-                System.out.println("After Damage Calculation");
-                System.out.println("Calculating...");
-                if (!monsterPlayer1.isEliminated()) {
-                    if (!monsterPlayer1.isStatusConditionNull()) {
-                        System.out.printf("After damage untuk Monster %s milik %s: %n", monsterPlayer1.getName(), player1.getName());
-                        monsterPlayer1.afterDamage(arrmonster);
-                    } else {
-                        System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal)%n", monsterPlayer1.getName(), player1.getName());
-                    } 
-                }
-                if (!monsterPlayer2.isEliminated()) {
-                    if (!monsterPlayer2.isStatusConditionNull()) {
-                        System.out.printf("After damage untuk Monster %s milik %s: %n", monsterPlayer2.getName(), player2.getName());
-                        monsterPlayer2.afterDamage(arrmonster);
-                    } else {
-                        System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal)%n", monsterPlayer2.getName(), player2.getName());
+                System.out.println(ANSI_YELLOW + "=========== After Damage Calculation =========" + ANSI_RESET);
+                System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
+                try {
+                    if (!monsterPlayer1.isEliminated()) {
+                        if (!monsterPlayer1.isStatusConditionNull()) {
+                            System.out.printf("After damage untuk Monster %s milik %s: %n", monsterPlayer1.getName(), player1.getName());
+                            monsterPlayer1.afterDamage(arrmonster);
+                        } else {
+                            System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal)%n", monsterPlayer1.getName(), player1.getName());
+                        } 
                     }
+                    if (!monsterPlayer2.isEliminated()) {
+                        if (!monsterPlayer2.isStatusConditionNull()) {
+                            System.out.printf("After damage untuk Monster %s milik %s: %n", monsterPlayer2.getName(), player2.getName());
+                            monsterPlayer2.afterDamage(arrmonster);
+                        } else {
+                            System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal)%n", monsterPlayer2.getName(), player2.getName());
+                        }
+                    }
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
                 }
 
                 // ================================================== AFTER EFFECT ===================================================
                 System.out.println();
                 if (monsterPlayer1.isEliminated()) {
-                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer1.getName(), player1.getName());
+                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan, pilih monster lain%n" + ANSI_RESET, monsterPlayer1.getName(), player1.getName());
                     player1.getListOfMonster().remove(monsterPlayer1);
                     if (player1.getListOfMonster().size()!=0) {
                         switchMonster = chooseMonster(player1, null);
@@ -603,7 +612,7 @@ public class Main {
                     }
                 } 
                 if (monsterPlayer2.isEliminated()) {
-                    System.out.printf("Monster %s milik %s telah dikalahkan, pilih monster lain%n", monsterPlayer2.getName(), player2.getName());
+                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan, pilih monster lain%n" + ANSI_RED, monsterPlayer2.getName(), player2.getName());
                     player2.getListOfMonster().remove(monsterPlayer2);
                     if (player2.getListOfMonster().size()!=0) {
                         switchMonster = chooseMonster(player2, null);
@@ -612,24 +621,23 @@ public class Main {
                 }
 
                 turn++;
-                System.out.println();
                 if (player1.getListOfMonster().size()!=0 && player2.getListOfMonster().size()!=0) {
-                    System.out.println("============= END OF TURN ===========");
+                    System.out.println("================= END OF TURN ================");
                 }
             }
-            System.out.println("============== GAME OVER ============");
+            System.out.println(ANSI_RED + "============== GAME OVER ============" + ANSI_RESET);
             if (player1.getListOfMonster().size()!=0) {
-                System.out.printf("Player1: %s menang yey%n", player1.getName());
+                System.out.printf(ANSI_YELLOW + "Congratulations !!! " + ANSI_PURPLE + " %s Wins%n" + ANSI_RESET, player1.getName());
             } else if (player2.getListOfMonster().size()!=0){
-                System.out.printf("Player2: %s menang yey%n", player2.getName());
+                System.out.printf(ANSI_YELLOW + "Congratulations !!! " + ANSI_PURPLE + " %s Wins%n" + ANSI_RESET, player2.getName());
             } else {
-                System.out.println("Semua monster milik kedua player tereliminasi -- hasil akhir game DRAW");
+                System.out.println(ANSI_YELLOW + "Semua monster milik kedua player tereliminasi -- hasil akhir game DRAW" + ANSI_RESET);
             }
 
         } else {
             //exit
             scan.close();
-            System.out.println("Keluar dari Permainan Monster Saku...");
+            System.out.println(ANSI_RED + "Keluar dari Permainan Monster Saku..." + ANSI_RESET);
             return;
         }
         scan.close();

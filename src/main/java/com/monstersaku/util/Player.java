@@ -25,10 +25,14 @@ public class Player {
     public int getNumberOfMonster(){
         return this.listOfMonster.size();
     }
-    public void showListOfMonster(){
+    public void showListOfMonster(ArrayList<Monster> arrmonster){
         for(Monster m: listOfMonster){
-            m.printMonster();
-            System.out.println();
+            try {
+                m.printMonsterCompact(arrmonster);
+                System.out.println();
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
         }
     }
 

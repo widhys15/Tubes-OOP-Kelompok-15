@@ -161,6 +161,14 @@ public class Monster {
         System.out.println("Status Condition    : " + condition);
     }
 
+    public void printMonsterCompact(ArrayList<Monster> arrmonster) {
+        System.out.println(nama + " : " + baseStats.getHealthPoint() + "/" + this.getBaseHP(arrmonster) + " : " + elementTypes + " : " + condition);
+        System.out.println("Available Moves");
+        for(Move m : moves){
+            System.out.println("    " + m.getmovename() + ": " + m.getammunition());
+        }
+    }
+
     public String infoListOfMonster() {
         return this.nama + "; " + this.elementTypes + "; " + this.baseStats.getHealthPoint() + "; " + this.condition;
     }
