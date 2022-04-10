@@ -2,7 +2,6 @@ package com.monstersaku;
 
 import com.monstersaku.util.*;
 import java.util.*;
-import java.io.EOFException;
 import java.io.File;
 
 public class Main {
@@ -15,10 +14,7 @@ public class Main {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-    private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(
-            "configs/monsterpool.csv",
-            "configs/movepool.csv",
-            "configs/element-type-effectivity-chart.csv"));
+    static Scanner scan = new Scanner(System.in);
 
     // ============================================ SEMACAM PROSEDUR DAN FUNGSI ============================================
 
@@ -38,7 +34,6 @@ public class Main {
     }
     
     private static int inputPlayermenu() {
-        Scanner scan = new Scanner(System.in);
         String input = scan.next();
         try {
             int pilihanMenu = Integer.parseInt(input);
@@ -79,7 +74,6 @@ public class Main {
     }
 
     private static int inputPlayer(Player player, Monster monsterPlayer) {
-        Scanner scan = new Scanner(System.in);
         String input = scan.next();
         try {
             int switchMonster = Integer.parseInt(input);
@@ -113,7 +107,6 @@ public class Main {
     }
 
     private static int inputPlayer(Monster monster) {
-        Scanner scan = new Scanner(System.in);
         String input = scan.next();
         try {
             int monsterMove = Integer.parseInt(input);
@@ -161,7 +154,6 @@ public class Main {
     }
 
     private static int inputPlayerMenuingame() {
-        Scanner scan = new Scanner(System.in);
         String input = scan.next();
         try {
             int op = Integer.parseInt(input);
@@ -182,7 +174,6 @@ public class Main {
 
     // ============================================ PILIH SWITCH/MOVE ============================================
     private static int inputPlayer() {
-        Scanner scan = new Scanner(System.in);
         String input = scan.next();
         try {
             int op = Integer.parseInt(input);
