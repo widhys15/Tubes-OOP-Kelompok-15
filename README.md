@@ -1,4 +1,9 @@
-# IF2212 Project Template
+# Tugas Besar IF2212 Pemrograman Berorientasi Objek
+# Monster Saku
+# Kelompok 19 
+
+Cara Menjalankan game
+run dari vscode wkwkkwk
 
 Here is an example of project using gradle as the build tools.
 Try running these commands:
