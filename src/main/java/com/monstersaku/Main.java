@@ -163,7 +163,7 @@ public class Main {
             }
             return op;
         } catch (NumberFormatException e) {
-            System.out.print(ANSI_RED+"ERROR: input tidak valid!"+ANSI_RESET);
+            System.out.println(ANSI_RED+"ERROR: input tidak valid!"+ANSI_RESET);
             System.out.print("Masukkan nomor menu (ketik 0 untuk kembali ke permainan): ");
         } catch (Exception e) {
             System.out.println(ANSI_RED+e.getMessage()+ANSI_RESET);
