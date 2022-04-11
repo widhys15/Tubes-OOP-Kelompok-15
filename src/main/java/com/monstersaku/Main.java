@@ -207,6 +207,7 @@ public class Main {
             if (attacker.getBaseStats().getHealthPoint() != 0) {
                 System.out.printf("Hasil Eksekusi Move %s oleh Monster %s milik %s:%n", move.getmovename(), attacker.getName(), player.getName());
                 move.useMove(attacker, enemy, arreffectivity, arrmonster);
+                attacker.checkMoveAmmunition(move);
             }
         }
     }

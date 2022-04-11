@@ -181,7 +181,7 @@ public class Monster {
 
     public void checkMoveAmmunition(Move move) {
         if (move.getammunition() == 0) {
-            System.out.printf("Ammunition Move %s sudah habis, move akan dihapus dari daftar available move milik Monster %s%n", move.getmovename(), this.getName());
+            System.out.printf("Ammunition Move %s sudah habis, move akan dihapus dari daftar available move%n", move.getmovename());
             this.getMoves().remove(move);
         }
     }

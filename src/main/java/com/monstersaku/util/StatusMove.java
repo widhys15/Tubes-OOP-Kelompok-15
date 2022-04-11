@@ -87,8 +87,9 @@ public class StatusMove extends Move {
                     finalhp = attacker.getBaseHP(arrmonster);
                 }
                 attacker.getBaseStats().setHealthPoint(finalhp);
-                System.out.printf("HP monster %s bertambah menjadi %f%n", attacker.getName(), finalhp);
+                System.out.printf("HP monster %s bertambah menjadi %.0f%n", attacker.getName(), finalhp);
             }   
+            this.ammunition=this.ammunition-1;
         }
     }
 }
