@@ -79,7 +79,7 @@ public class StatusMove extends Move {
                         enemy.setExtendCondition(num);
                     }
                 } else {
-                    System.out.printf("Monster %s sudah memiliki status condition, move gagal dieksekusi%n", enemy.getName());
+                    System.out.printf("Monster %s sudah memiliki status condition, effect move gagal diberikan%n", enemy.getName());
                 }
             } else {
                 Double finalhp = attacker.getBaseStats().getHealthPoint()+this.getmoveeffect();
