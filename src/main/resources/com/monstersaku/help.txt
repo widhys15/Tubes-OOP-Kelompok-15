@@ -1,0 +1,40 @@
+Monster saku adalah sebuah permainan berjenis PVP (Player vs Player) yang dapat dimainkan oleh 2 pemain yang saling berlawanan. 
+Masing-masing pemain akan menerima kombinasi monster yang ditentukan secara acak oleh aplikasi pada saat permainan dimulai
+
+MENU PERMAINAN
+1. Start Game: memulai permainan
+2. Help: deskripsi dan panduan permainan
+3. Exit: keluar dari aplikasi Monster saku
+
+GAME STARTED
+- setelah permainan dimulai, pemain diminta menginput nama player 1 dan player 2
+- masing-masing player akan diberikan 6 monster secara acak dalam sebuah saku
+- monster yang akan dimainkan pada putaran pertama adalah monster nomor 1 dalam saku
+- permainan akan dilakukan bergiliran mulai dari player 1 kemudian player 2
+- dalam setiap giliran player, akan ditampilkan menu in game yaitu:
+   1. View Monster Info: menampilkan informasi atribut dari monster-monster yang ada saat permainan
+   2. View Game Info: menampilkan informasi turn, monster yang sedang bertarung, dan monster yang tidak sedang digunakan 
+- player menginput nomor menu untuk melihat informasi
+- ketik 0 untuk kembali ke permainan
+
+MEKANISME PERMAINAN
+- untuk setiap giliran player dalam permainan, akan ditampilkan list of action yaitu:
+   1. Switch: mengganti monster yang akan dimainkan
+   2. Move: melakukan move 
+- player menginput nomor action untuk melakukan aksi
+- aplikasi akan melakukan resolusi di setiap putaran
+- jika monster tereliminasi, player akan diminta untuk memilih monster lainnya untuk dimainkan
+- permainan berlanjut hingga salah satu player sudah tidak memiliki monster untuk dimainkan
+- pemenang permainan adalah player yang berhasil mengeliminasi seluruh monster milik lawan
+- jika seluruh monster milik kedua player tereliminasi, hasil akhir seri (DRAW)
+
+ACTION 
+1. Switch
+   - akan ditampilkan daftar monster yang dimiliki player
+   - player menginput nomor monster yang akan digunakan
+   - monster sebelumnya akan disimpan ke dalam saku
+   - monster pilihan player akan dimainkan
+2. Move
+   - akan ditampilkan daftar move yang dimiliki monster yang sedang dimainkan
+   - player menginput nomor move yang akan digunakan
+   - move akan dieksekusi sesuai dengan kalkulasi program

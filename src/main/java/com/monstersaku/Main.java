@@ -2,7 +2,7 @@ package com.monstersaku;
 
 import com.monstersaku.util.*;
 import java.util.*;
-import java.io.File;
+import java.io.*;
 
 public class Main {
     public static final String ANSI_RESET = "\u001B[0m";
@@ -54,10 +54,16 @@ public class Main {
     // ============================================ HELP ============================================
     private static void help() {
         System.out.println();
-        System.out.println("================ HELP ===============");
-        System.out.println(
-                "Pilih menu Start Game dengan cara memasukkan angka 1 ketika memasuki permainan untuk mulai bermain");
-        System.out.println("");
+        System.out.println(ANSI_YELLOW + "===================== HELP ==================="+ANSI_RESET);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("src\\main\\resources\\com\\monstersaku\\help.txt"));
+            String s;
+            while ((s=br.readLine()) != null) {
+                System.out.println(s);
+            }
+            br.close();
+        } catch (Exception e) {
+        }
     }
 
     // ============================================ PILIH MONSTER ============================================
@@ -448,6 +454,7 @@ public class Main {
 
         while (pilihanMenu == 2) {
             help();
+            System.out.println();
             System.out.println("Back to menu...\n");
             pilihanMenu = chooseGameMenu();
         }
@@ -456,7 +463,6 @@ public class Main {
         if (pilihanMenu == 1) {
             System.out.println();
             System.out.println(ANSI_GREEN + "================ GAME STARTED ================" + ANSI_RESET);
-            System.out.println();
             System.out.print("Enter player 1 name: ");
             String player1name = scan.next();
             System.out.print("Enter player 2 name: ");
@@ -633,20 +639,22 @@ public class Main {
                 // ================================================== AFTER EFFECT ===================================================
                 System.out.println();
                 if (monsterPlayer1.isEliminated()) {
-                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan, pilih monster lain%n" + ANSI_RESET, monsterPlayer1.getName(), player1.getName());
+                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan%n" + ANSI_RESET, monsterPlayer1.getName(), player1.getName());
                     player1.getListOfMonster().remove(monsterPlayer1);
                     if (player1.getListOfMonster().size() != 0) {
                         switchMonster = chooseMonster(player1, null);
                         monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
                     }
+                    System.out.println();
                 }
                 if (monsterPlayer2.isEliminated()) {
-                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan, pilih monster lain%n" + ANSI_RESET, monsterPlayer2.getName(), player2.getName());
+                    System.out.printf(ANSI_RED + "Monster %s milik %s telah dikalahkan%n" + ANSI_RESET, monsterPlayer2.getName(), player2.getName());
                     player2.getListOfMonster().remove(monsterPlayer2);
                     if (player2.getListOfMonster().size() != 0) {
                         switchMonster = chooseMonster(player2, null);
                         monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
                     }
+                    System.out.println();
                 }
 
                 turn++;
@@ -654,7 +662,7 @@ public class Main {
                     System.out.println(ANSI_YELLOW+"================= END OF TURN ================"+ANSI_RESET);
                 }
             }
-            System.out.println(ANSI_RED + "============== GAME OVER ============" + ANSI_RESET);
+            System.out.println(ANSI_RED+"================== GAME OVER ================="+ANSI_RESET);
             if (player1.getListOfMonster().size()!=0) {
                 System.out.printf(ANSI_YELLOW + "Congratulations !!! " + ANSI_PURPLE + " %s Wins%n" + ANSI_RESET, player1.getName());
             } else if (player2.getListOfMonster().size()!=0){

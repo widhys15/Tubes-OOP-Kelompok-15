@@ -1,5 +1,5 @@
 id;name;elementTypes;baseStats;moves
-1;Charmander;FIRE,NORMAL;39,52,43,60,50,65;1,2,6,7,8
+1;Charmander;FIRE,NORMAL;39,52,43,60,50,65;1,2,3
 2;Bulbasaur;NORMAL,WATER;45,49,49,65,65,45;2,3,5,6,7,8
 3;Squirtle;WATER,GRASS;44,48,65,50,64,43;3,4,6,7,8
 4;Meowth;NORMAL;40,45,35,40,40,90;2,3,6,7,8
