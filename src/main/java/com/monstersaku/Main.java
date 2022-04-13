@@ -2,9 +2,6 @@ package com.monstersaku;
 
 import com.monstersaku.util.*;
 import java.util.*;
-
-import javax.swing.plaf.TextUI;
-
 import java.io.*;
 
 public class Main {

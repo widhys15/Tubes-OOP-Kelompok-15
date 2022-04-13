@@ -8,7 +8,8 @@ Masing-masing pemain akan menerima kombinasi monster yang ditentukan secara acak
 1. Pastikan gradle sudah terinstall pada komputer anda
 2. Clone repository ini dan extract ke dalam satu folder
 3. Buka folder ini di dalam command prompt
-4. Copy and paste ```gradlew -q --console plain run``` untuk menjalankan game
+4. Ketik ```gradlew build``` lalu enter
+4. Ketik ```gradlew -q --console plain run``` lalu enter untuk menjalankan game
 5. Selamat bermain
 
 ### Isi folder

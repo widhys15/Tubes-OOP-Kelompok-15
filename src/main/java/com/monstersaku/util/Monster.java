@@ -188,8 +188,9 @@ public class Monster {
         System.out.println("ID Monster          : " + idmonster);
         System.out.println("Nama                : " + nama);
         System.out.println("Element types       : " + elementTypes);
+        System.out.println("Available Moves");
         for(Move m : moves){
-            m.printmonsMove();
+            System.out.println("    " + m.getmovename() + ": " + m.getammunition());
         }
         baseStats.printStats();
         System.out.println("Status Condition    : " + condition);
@@ -197,10 +198,14 @@ public class Monster {
 
     public void printMonsterCompact(ArrayList<Monster> arrmonster) {
         System.out.println(nama + " : " + baseStats.getHealthPoint() + "/" + this.getBaseHP(arrmonster) + " : " + elementTypes + " : " + condition);
+        System.out.println("Stats");
+        this.baseStats.printStatsCompact();
         System.out.println("Available Moves");
         for(Move m : moves){
             System.out.println("    " + m.getmovename() + ": " + m.getammunition());
         }
+        System.out.println("Stats Buff");
+        statsBuff.printStatsBuff(baseStats);
     }
 
     public String infoListOfMonster() {

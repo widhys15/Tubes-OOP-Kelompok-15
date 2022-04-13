@@ -71,10 +71,18 @@ public class Stats <S> {
     //Method
     public void printStats(){
         System.out.println("HP                  : " + healthPoint.toString());
-        System.out.println("Attack              : " + this.attack);
+        System.out.println("Attack              : " + attack);
         System.out.println("Defense             : " + defense);
         System.out.println("Special Attack      : " + specialAttack);
         System.out.println("Special Defense     : " + specialDefense);
         System.out.println("Speed               : " + speed);
+    }
+
+    public void printStatsCompact(){
+        System.out.println("    " + "Attack             : " + attack.toString());
+        System.out.println("    " + "Defense            : " + defense.toString());
+        System.out.println("    " + "Special Attack     : " + specialAttack.toString());
+        System.out.println("    " + "Special Defense    : " + specialDefense.toString());
+        System.out.println("    " + "Speed              : " + speed.toString());
     }
 }

@@ -99,5 +99,11 @@ public class StatsBuff {
         return mult;
     }
 
-
+    public void printStatsBuff(Stats<Double> stat){
+        System.out.println("    " + "Attack Buff        : " + stat.getAttack()*getFactor(attackBuff));
+        System.out.println("    " + "Defense            : " + stat.getDefense()*getFactor(defenseBuff));
+        System.out.println("    " + "Special Attack     : " + stat.getSpecialAttack()*getFactor(specialAttackBuff));
+        System.out.println("    " + "Special Defense    : " + stat.getSpecialDefense()*getFactor(specialDefenseBuff));
+        System.out.println("    " + "Speed              : " + stat.getSpeed()*getFactor(speedBuff));
+    }
 }
