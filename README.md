@@ -1,27 +1,21 @@
 # Tugas Besar IF2212 Pemrograman Berorientasi Objek
-# Monster Saku
-# Kelompok 19 
+## Monster Saku - Kelompok 19 
 
-Cara Menjalankan game
-run dari vscode wkwkkwk
+Monster saku adalah sebuah permainan berjenis PVP (Player vs Player) yang dapat dimainkan oleh 2 pemain yang saling berlawanan. 
+Masing-masing pemain akan menerima kombinasi monster yang ditentukan secara acak oleh aplikasi pada saat permainan dimulai
 
-Here is an example of project using gradle as the build tools.
-Try running these commands:
+### Cara melakukan kompilasi dan menjalankan game
+1. Pastikan gradle sudah terinstall pada komputer anda
+2. Clone repository ini dan extract ke dalam satu folder
+3. Buka folder ini di dalam command prompt
+4. Copy and paste ```gradlew -q --console plain run``` untuk menjalankan game
+5. Selamat bermain
 
-On linux:
-```bash
-./gradlew run
-```
+### Isi folder
+- src\main\java\com\monstersaku berisi Main.java
+- src\main\java\com\monstersaku\util berisi file-file java yang menunjang keberjalan game
+- src\main\resources\com\monstersaku\configs berisi config-config file
+- tester berisi file-file sisa testing saat membuat game
+- bin berisi file-file class
 
-On windows:
-```cmd
-gradlew.bat run
-```
 
-Notice that it will run the `Main.java` inside the `com.monstersaku` package.
-In the command line you can see the data that is being read by `CSVReader.java`.
-
-What happen is when you use `./gradlew run`, it will start the main function in your app.
-For this app, the main function lives in `Main.java`.
-
-You can explore more about gradle [here](https://guides.gradle.org/creating-new-gradle-builds/)
