@@ -11,6 +11,7 @@ public class Monster {
     protected ArrayList<Move> moves;
     protected String condition;
     protected Integer extendCondition;
+    protected StatsBuff statsBuff = new StatsBuff();
 
     // KONSTRUKTOR
     public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats, ArrayList<Integer> movesid) {
@@ -67,6 +68,10 @@ public class Monster {
         this.extendCondition = num;
     }
 
+    public void setStatsBuff(StatsBuff buff) {
+        this.statsBuff = buff;
+    }
+
 	// GETTER
     public Integer getidmonster() {
         return idmonster;
@@ -100,6 +105,35 @@ public class Monster {
         return this.extendCondition;
     }
 
+    public StatsBuff getStatsBuff() {
+        return this.statsBuff;
+    }
+
+    //GETTER STATS MONSTER (BONUS)
+    public Double getHealthPoint() {
+        return this.getBaseStats().getHealthPoint();
+    }
+
+    public Double getAttack() {
+        return this.getBaseStats().getAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getAttackBuff());
+    }
+
+    public Double getDefense() {
+        return this.getBaseStats().getDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getDefenseBuff());
+    }
+
+    public Double getSpecialAttack() {
+        return this.getBaseStats().getSpecialAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialAttackBuff());
+    }
+
+    public Double getSpecialDefense() {
+        return this.getBaseStats().getSpecialDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialDefenseBuff());
+    }
+
+    public Double getSpeed() {
+        return this.getBaseStats().getSpeed()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpeedBuff());
+    }
+
     //METHOD
     public boolean isStatusConditionNull() {
         return this.condition.equals("-");
@@ -130,7 +164,7 @@ public class Monster {
         } else if (getStatusCondition().equals("POISON")) {
             afterdamage = basehp*0.0625;
             Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
-            if (finalhp <0 ) {
+            if (finalhp < 0 ) {
                 finalhp = 0.0;
             }
             this.getBaseStats().setHealthPoint((double) Math.round(finalhp));
@@ -138,7 +172,7 @@ public class Monster {
             System.out.printf("HP Monster %s saat ini menjadi %.0f%n", getName(), finalhp);
         } else if (getStatusCondition().equals("SLEEP")) {
             this.extendCondition--;
-            System.out.printf("Monster %s memiliki sisa sleep sebanyak %d%n", this.getName(), this.getExtendCondition());
+            System.out.printf("Monster %s memiliki sisa sleep sebanyak %d turn%n", this.getName(), this.getExtendCondition());
             if (extendCondition == 0) {
                 this.setCondition("-");
                 System.out.printf("Sleep monster %s sudah habis, status condition monster kembali normal%n", this.getName());

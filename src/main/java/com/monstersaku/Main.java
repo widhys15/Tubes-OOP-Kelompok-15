@@ -2,6 +2,9 @@ package com.monstersaku;
 
 import com.monstersaku.util.*;
 import java.util.*;
+
+import javax.swing.plaf.TextUI;
+
 import java.io.*;
 
 public class Main {
@@ -63,6 +66,7 @@ public class Main {
             }
             br.close();
         } catch (Exception e) {
+            System.out.println("Mohon maaf terjadi kesalahan membaca dokumen bantuan");
         }
     }
 
@@ -225,6 +229,8 @@ public class Main {
         ArrayList<Monster> arrmonster = new ArrayList<Monster>();
         ArrayList<ElementEffectivity> arreffectivity = new ArrayList<ElementEffectivity>();
 
+        boolean exception = false;
+
         // ============================================ TRY READING MONSTER POOL AND MOVE POOL ============================================
         try {
             CSVReader efreader = new CSVReader(new File(Main.class.getResource("configs/elementeffectivity.csv").toURI()),";");
@@ -267,9 +273,17 @@ public class Main {
                     arrmove.add(mov);
                 } else if (movetaip.equals(MoveType.STATUS)) {
                     String condition = movline[8];
-                    Double effect = Double.parseDouble(movline[9]);
+                    String statbuff = movline[9];
+                    String[] arrofstatbuff = statbuff.split(",");
+                    ArrayList<Integer> effect = new ArrayList<Integer>();
+                    for (String a : arrofstatbuff) {
+                        Integer num = Integer.parseInt(a);
+                        effect.add(num);
+                    }
+                    StatsBuff statsbuff = new StatsBuff(effect.get(0), effect.get(1), effect.get(2), effect.get(3), effect.get(4), effect.get(5));
+                    // StatsBuff effect = new StatsBuff(Double.parseDouble(arrofstatbuff[0]), Integer.parseInt(arrofstatbuff[1]), Integer.parseInt(arrofstatbuff[2]), Integer.parseInt(arrofstatbuff[3]), Integer.parseInt(arrofstatbuff[4]), Integer.parseInt(arrofstatbuff[5]));
                     StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority,
-                            ammunition, target, condition, effect);
+                            ammunition, target, condition, statsbuff);
                     arrmove.add(mov);
                 }
             }
@@ -320,6 +334,7 @@ public class Main {
                 arrmonster.add(mons);
             }
         } catch (Exception e) {
+            exception = true;
         }
         Random rand = new Random();
         ArrayList<Monster> player1mons = new ArrayList<Monster>();
@@ -429,6 +444,7 @@ public class Main {
                 }
             }
         } catch (Exception e) {
+            exception = true;
         }
 
         // for(Move mov : arrmove){
@@ -467,6 +483,18 @@ public class Main {
             String player1name = scan.next();
             System.out.print("Enter player 2 name: ");
             String player2name = scan.next();
+            System.out.println("loading...");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e1) {
+            }
+
+            if (exception ==true) {
+                System.out.println("\nMaaf, terjadi kesalahan pada aplikasi");
+                System.out.println(ANSI_RED + "Keluar dari Permainan Monster Saku..." + ANSI_RESET);
+                scan.close();
+                return;
+            }
 
             System.out.println();
             System.out.println(ANSI_CYAN + "=================== MONSTER ==================" + ANSI_RESET);
@@ -523,6 +551,7 @@ public class Main {
                 System.out.println();
                 if (op1 == 1) {
                     switchMonster = chooseMonster(player1, monsterPlayer1);
+                    monsterPlayer1.setStatsBuff(new StatsBuff()); //reset stats buff
                     monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
                 } else if (op1 == 2) {
                     inputmove1idx = chooseMove(monsterPlayer1);
@@ -547,6 +576,7 @@ public class Main {
                 System.out.println();
                 if (op2 == 1) {
                     switchMonster = chooseMonster(player2, monsterPlayer2);
+                    monsterPlayer2.setStatsBuff(new StatsBuff()); //reset stats buff
                     monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
                 } else if (op2 == 2) {
                     inputmove2idx = chooseMove(monsterPlayer2);
@@ -597,13 +627,21 @@ public class Main {
                             monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
                             monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
                         } else {
-                            if (monsterPlayer1.getBaseStats().getSpeed() >= monsterPlayer2.getBaseStats().getSpeed()) {                                
+                            if (monsterPlayer1.getSpeed() > monsterPlayer2.getSpeed()) {                                
                                 monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);                                
                                 monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
-                            } else {
-                               
+                            } else if (monsterPlayer1.getSpeed() < monsterPlayer2.getSpeed()) {
                                 monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);                                
                                 monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
+                            } else {
+                                int urutan = rand.nextInt(2)+1;
+                                if (urutan==1) {
+                                    monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);                                
+                                    monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
+                                } else {
+                                    monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);                                
+                                    monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
+                                }
                             }
                         }
                     }
@@ -621,7 +659,7 @@ public class Main {
                             System.out.printf("After damage untuk Monster %s milik %s: %n", monsterPlayer1.getName(), player1.getName());
                             monsterPlayer1.afterDamage(arrmonster);
                         } else {
-                            System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal)%n", monsterPlayer1.getName(), player1.getName());
+                            System.out.printf("After damage untuk Monster %s milik %s: %nTidak ada (Status Condition Normal) %n", monsterPlayer1.getName(), player1.getName());
                         } 
                     }
                     if (!monsterPlayer2.isEliminated()) {

@@ -36,7 +36,7 @@ public class DefaultMove extends Move {
                 burn = 0.5;
             }
             Double eff = findEffectivity(enemy, arreffectivity);
-            Double calculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * eff * burn;
+            Double calculation = Math.floor(damage * (attacker.getAttack()/enemy.getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * eff * burn;
             System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + Math.round(calculation));
             Double finaldamage = enemy.getBaseStats().getHealthPoint() - calculation;
             if (finaldamage < 0) {

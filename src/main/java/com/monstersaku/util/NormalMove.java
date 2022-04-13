@@ -49,7 +49,7 @@ public class NormalMove extends Move {
             } else if (attacker.getStatusCondition().equals("BURN")) {
                 burn = 0.5;
             }
-            Double damagecalculation = Math.floor(damage * (attacker.getBaseStats().getAttack()/enemy.getBaseStats().getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity) * burn;
+            Double damagecalculation = Math.floor(damage * (attacker.getAttack()/enemy.getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity) * burn;
             System.out.println("Damage " + movename + " yang diberikan kepada " + enemy.getName() + " sebesar " + Math.round(damagecalculation));
             Double finaldamage = enemy.getBaseStats().getHealthPoint() - damagecalculation;
             if (finaldamage < 0) {
