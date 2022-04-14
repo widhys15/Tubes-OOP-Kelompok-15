@@ -77,7 +77,7 @@ public class StatusMove extends Move {
                         if (chance>=1 && chance <=25) {
                             enemy.setExtendCondition(1);
                         }
-                        enemy.getBaseStats().setSpeed(enemy.getBaseStats().getSpeed()*0.5);
+                        enemy.getBaseStats().setSpeed(Math.floor(enemy.getBaseStats().getSpeed()*0.5));
                     } else if (this.getmovecondition().equals("SLEEP")) {
                         int num = rand.nextInt(7)+1;
                         enemy.setExtendCondition(num);

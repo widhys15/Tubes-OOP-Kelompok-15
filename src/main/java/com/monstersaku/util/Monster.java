@@ -115,23 +115,23 @@ public class Monster {
     }
 
     public Double getAttack() {
-        return this.getBaseStats().getAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getAttackBuff());
+        return Math.floor(this.getBaseStats().getAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getAttackBuff()));
     }
 
     public Double getDefense() {
-        return this.getBaseStats().getDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getDefenseBuff());
+        return Math.floor(this.getBaseStats().getDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getDefenseBuff()));
     }
 
     public Double getSpecialAttack() {
-        return this.getBaseStats().getSpecialAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialAttackBuff());
+        return Math.floor(this.getBaseStats().getSpecialAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialAttackBuff()));
     }
 
     public Double getSpecialDefense() {
-        return this.getBaseStats().getSpecialDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialDefenseBuff());
+        return Math.floor(this.getBaseStats().getSpecialDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialDefenseBuff()));
     }
 
     public Double getSpeed() {
-        return this.getBaseStats().getSpeed()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpeedBuff());
+        return Math.floor(this.getBaseStats().getSpeed()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpeedBuff()));
     }
 
     //METHOD
@@ -153,7 +153,7 @@ public class Monster {
         Double basehp = getBaseHP(arrmonster);
         Double afterdamage = 0.0;
         if (getStatusCondition().equals("BURN")) {
-            afterdamage = basehp*0.125;
+            afterdamage = Math.floor(basehp*0.125);
             Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
             if (finalhp <0 ) {
                 finalhp = 0.0;
@@ -162,7 +162,7 @@ public class Monster {
             System.out.printf("HP Monster %s berkurang sebesar %.0f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
             System.out.printf("HP Monster %s saat ini menjadi %.0f%n", getName(), finalhp);
         } else if (getStatusCondition().equals("POISON")) {
-            afterdamage = basehp*0.0625;
+            afterdamage = Math.floor(basehp*0.0625);
             Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
             if (finalhp < 0 ) {
                 finalhp = 0.0;
@@ -177,6 +177,8 @@ public class Monster {
                 this.setCondition("-");
                 System.out.printf("Sleep monster %s sudah habis, status condition monster kembali normal%n", this.getName());
             }
+        } else if (getStatusCondition().equals("PARALYZE")) {
+            System.out.println("Tidak ada (Status Condition PARALYZE)");
         }
     }
 
