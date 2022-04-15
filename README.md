@@ -1,5 +1,5 @@
 # Tugas Besar IF2212 Pemrograman Berorientasi Objek
-## Monster Saku - Kelompok 19 
+## Monster Saku - Kelompok 15
 
 Monster saku adalah sebuah permainan berjenis PVP (Player vs Player) yang dapat dimainkan oleh 2 pemain yang saling berlawanan. 
 Masing-masing pemain akan menerima kombinasi monster yang ditentukan secara acak oleh aplikasi pada saat permainan dimulai
