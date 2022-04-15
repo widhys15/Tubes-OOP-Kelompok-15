@@ -85,4 +85,36 @@ public class Stats <S> {
         System.out.println("    " + "Special Defense    : " + specialDefense.toString());
         System.out.println("    " + "Speed              : " + speed.toString());
     }
+
+    public void printStatsBuff(Monster monster){
+        System.out.println("    " + "Attack Buff        : " + monster.getAttack());
+        System.out.println("    " + "Defense            : " + monster.getDefense());
+        System.out.println("    " + "Special Attack     : " + monster.getSpecialAttack());
+        System.out.println("    " + "Special Defense    : " + monster.getSpecialDefense());
+        System.out.println("    " + "Speed              : " + monster.getSpeed());
+    }
+
+    public double getFactor(int buff) {
+        double mult;
+        if (buff==-4) {
+            mult=(double)2/6;
+        } else if (buff==-3) {
+            mult=(double)2/5;
+        } else if (buff==-2) {
+            mult=(double)2/4;
+        } else if (buff==-1) {
+            mult=(double)2/3;
+        } else if (buff==0) {
+            mult=1.0;
+        } else if (buff==1) {
+            mult=(double)3/2;
+        } else if (buff==2) {
+            mult=(double)4/2;
+        } else if (buff==3) {
+            mult=(double)5/2;
+        } else { //buff==4
+            mult=(double)6/2;
+        }
+        return mult;
+    }
 }

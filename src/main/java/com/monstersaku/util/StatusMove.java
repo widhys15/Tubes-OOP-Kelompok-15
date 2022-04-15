@@ -4,10 +4,10 @@ import java.util.*;
 
 public class StatusMove extends Move {
     protected String condition;
-    protected StatsBuff effect;
+    protected Stats<Integer> effect;
     
     //Konstruktor
-    public StatusMove(Integer idmove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String condition, StatsBuff effect){
+    public StatusMove(Integer idmove, MoveType movetype, String movename, ElementType moveelementType, Integer accuracy, Integer priority, Integer ammunition, Target target, String condition, Stats<Integer> effect){
         super(idmove, movetype, moveelementType, movename, accuracy, priority, ammunition, target);
         this.condition = condition;     
         this.effect = effect;
@@ -31,7 +31,7 @@ public class StatusMove extends Move {
         return condition;
     }
     
-    public StatsBuff getmoveeffect(){
+    public Stats<Integer> getmoveeffect(){
         return effect;
     }
 
@@ -40,7 +40,7 @@ public class StatusMove extends Move {
         this.condition = condition;
     }
 
-    public void setmoveeffect(StatsBuff effect){
+    public void setmoveeffect(Stats<Integer> effect){
         this.effect = effect;
     }
     
@@ -73,25 +73,29 @@ public class StatusMove extends Move {
                     System.out.printf("Status condition monster %s menjadi %s%n", enemy.getName(), this.getmovecondition());
         
                     if (this.getmovecondition().equals("PARALYZE")) {
+                        enemy.getBaseStats().setSpeed(Math.floor(enemy.getBaseStats().getSpeed()*0.5)); //asumsi dibulatkan ke-bawah
+                        System.out.println("Base Speed berkurang menjadi "+ enemy.getBaseStats().getSpeed());
                         int chance = rand.nextInt(100)+1;
                         if (chance>=1 && chance <=25) {
                             enemy.setExtendCondition(1);
+                            System.out.println("Monster tidak bisa bergerak satu giliran");
                         }
-                        enemy.getBaseStats().setSpeed(Math.floor(enemy.getBaseStats().getSpeed()*0.5));
+                        
                     } else if (this.getmovecondition().equals("SLEEP")) {
                         int num = rand.nextInt(7)+1;
                         enemy.setExtendCondition(num);
+                        System.out.println("Monster tidak bisa bergerak sebanyak "+num+" giliran");
                     }
                 } else {
                     System.out.printf("Monster %s sudah memiliki status condition, effect move gagal diberikan%n", enemy.getName());
                 }
                 }                
             } else {
-                if (this.getmoveeffect().getHeal()==0) {
+                if (this.getmoveeffect().getHealthPoint()==0) {
                     attacker.setStatsBuff(this.getmoveeffect());
                     System.out.printf("Status Buff monster %s berubah%n", attacker.getName());
                 } else {
-                    Double finalhp = attacker.getBaseStats().getHealthPoint()+((double)this.getmoveeffect().getHeal());
+                    Double finalhp = attacker.getBaseStats().getHealthPoint()+((double)this.getmoveeffect().getHealthPoint());
                     if (finalhp > attacker.getBaseHP(arrmonster)) {
                         finalhp = attacker.getBaseHP(arrmonster);
                     }

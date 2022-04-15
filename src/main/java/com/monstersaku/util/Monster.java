@@ -11,7 +11,7 @@ public class Monster {
     protected ArrayList<Move> moves;
     protected String condition;
     protected Integer extendCondition;
-    protected StatsBuff statsBuff = new StatsBuff();
+    protected Stats<Integer> statsBuff = new Stats(0,0,0,0,0,0);
 
     // KONSTRUKTOR
     public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats, ArrayList<Integer> movesid) {
@@ -68,7 +68,7 @@ public class Monster {
         this.extendCondition = num;
     }
 
-    public void setStatsBuff(StatsBuff buff) {
+    public void setStatsBuff(Stats<Integer> buff) {
         this.statsBuff = buff;
     }
 
@@ -105,7 +105,7 @@ public class Monster {
         return this.extendCondition;
     }
 
-    public StatsBuff getStatsBuff() {
+    public Stats<Integer> getStatsBuff() {
         return this.statsBuff;
     }
 
@@ -115,23 +115,23 @@ public class Monster {
     }
 
     public Double getAttack() {
-        return Math.floor(this.getBaseStats().getAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getAttackBuff()));
+        return Math.floor(this.getBaseStats().getAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getAttack()));
     }
 
     public Double getDefense() {
-        return Math.floor(this.getBaseStats().getDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getDefenseBuff()));
+        return Math.floor(this.getBaseStats().getDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getDefense()));
     }
 
     public Double getSpecialAttack() {
-        return Math.floor(this.getBaseStats().getSpecialAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialAttackBuff()));
+        return Math.floor(this.getBaseStats().getSpecialAttack()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialAttack()));
     }
 
     public Double getSpecialDefense() {
-        return Math.floor(this.getBaseStats().getSpecialDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialDefenseBuff()));
+        return Math.floor(this.getBaseStats().getSpecialDefense()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpecialDefense()));
     }
 
     public Double getSpeed() {
-        return Math.floor(this.getBaseStats().getSpeed()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpeedBuff()));
+        return Math.floor(this.getBaseStats().getSpeed()*this.getStatsBuff().getFactor(this.getStatsBuff().getSpeed()));
     }
 
     //METHOD
@@ -150,7 +150,7 @@ public class Monster {
     }
 
     public void afterDamage(ArrayList<Monster> arrmonster) {
-        Double basehp = getBaseHP(arrmonster);
+        Double basehp = this.getBaseHP(arrmonster);
         Double afterdamage = 0.0;
         if (getStatusCondition().equals("BURN")) {
             afterdamage = Math.floor(basehp*0.125);
@@ -207,7 +207,7 @@ public class Monster {
             System.out.println("    " + m.getmovename() + ": " + m.getammunition());
         }
         System.out.println("Stats Buff");
-        statsBuff.printStatsBuff(baseStats);
+        statsBuff.printStatsBuff(this);
     }
 
     public String infoListOfMonster() {

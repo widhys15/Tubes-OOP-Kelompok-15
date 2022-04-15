@@ -30,9 +30,7 @@ public class DefaultMove extends Move {
             System.out.printf("Move %s miss%n", this.getmovename());
         } else {
             Double burn = 1.0;
-            if (attacker.getStatusCondition().equals("-")) {
-                burn = 1.0;
-            } else if (attacker.getStatusCondition().equals("BURN")) {
+            if (attacker.getStatusCondition().equals("BURN")) {
                 burn = 0.5;
             }
             Double eff = findEffectivity(enemy, arreffectivity);
@@ -54,7 +52,7 @@ public class DefaultMove extends Move {
             if (finalhp < 0) {
                 finalhp = 0.0;
             }
-            attacker.getBaseStats().setHealthPoint((double) Math.round(finalhp));
+            attacker.getBaseStats().setHealthPoint((double) Math.floor(finalhp));
             System.out.println("HP akhir dari " + attacker.getName() + " adalah " + Math.round(finalhp));
         }
         this.ammunition = this.ammunition - 1;

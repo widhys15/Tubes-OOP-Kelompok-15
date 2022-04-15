@@ -200,15 +200,15 @@ public class Main {
     }
 
     // ============================================ EKSEKUSI MOVE MONSTER ============================================
-    private static void monstermovement(Move move, Monster attacker, Monster enemy, String condition,
+    private static void monstermovement(Move move, Monster attacker, Monster enemy,
             ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster, Player player) {
-        if (condition.equals("SLEEP")) {
-            System.out.printf("Monster %s gagal mengeksekusi Move karena sedang dalam status condition SLEEP%n",
-                    attacker.getName());
-        } else if (condition.equals("PARALYZE") && attacker.getExtendCondition() == 1) {
+        if (attacker.getStatusCondition().equals("SLEEP")) {
+            System.out.printf("Monster %s milik % s gagal mengeksekusi Move karena sedang dalam status condition SLEEP%n",
+                    attacker.getName(), player.getName());
+        } else if (attacker.getStatusCondition().equals("PARALYZE") && attacker.getExtendCondition() == 1) {
             System.out.printf(
-                    "Monster %s gagal mengeksekusi Move karena tidak bisa bergerak satu round akibat status condition PARALIZE%n",
-                    attacker.getName());
+                    "Monster %s milik %s gagal mengeksekusi Move karena tidak bisa bergerak satu round akibat status condition PARALIZE%n",
+                    attacker.getName(), player.getName());
             attacker.setExtendCondition(0);
         } else {
             if (attacker.getBaseStats().getHealthPoint() != 0) {
@@ -277,7 +277,7 @@ public class Main {
                         Integer num = Integer.parseInt(a);
                         effect.add(num);
                     }
-                    StatsBuff statsbuff = new StatsBuff(effect.get(0), effect.get(1), effect.get(2), effect.get(3), effect.get(4), effect.get(5));
+                    Stats<Integer> statsbuff = new Stats(effect.get(0), effect.get(1), effect.get(2), effect.get(3), effect.get(4), effect.get(5));
                     // StatsBuff effect = new StatsBuff(Double.parseDouble(arrofstatbuff[0]), Integer.parseInt(arrofstatbuff[1]), Integer.parseInt(arrofstatbuff[2]), Integer.parseInt(arrofstatbuff[3]), Integer.parseInt(arrofstatbuff[4]), Integer.parseInt(arrofstatbuff[5]));
                     StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority,
                             ammunition, target, condition, statsbuff);
@@ -548,7 +548,7 @@ public class Main {
                 System.out.println();
                 if (op1 == 1) {
                     switchMonster = chooseMonster(player1, monsterPlayer1);
-                    monsterPlayer1.setStatsBuff(new StatsBuff()); //reset stats buff
+                    monsterPlayer1.setStatsBuff(new Stats(0,0,0,0,0,0)); //reset stats buff
                     monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
                 } else if (op1 == 2) {
                     inputmove1idx = chooseMove(monsterPlayer1);
@@ -573,7 +573,7 @@ public class Main {
                 System.out.println();
                 if (op2 == 1) {
                     switchMonster = chooseMonster(player2, monsterPlayer2);
-                    monsterPlayer2.setStatsBuff(new StatsBuff()); //reset stats buff
+                    monsterPlayer2.setStatsBuff(new Stats(0,0,0,0,0,0)); //reset stats buff
                     monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
                 } else if (op2 == 2) {
                     inputmove2idx = chooseMove(monsterPlayer2);
@@ -600,7 +600,7 @@ public class Main {
                         System.out.println();
                         System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
                         System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
-                        monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
+                        monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster, player2);
                     } else if (op2 == 1 && op1 == 2) {
                         Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
                         System.out.printf("Monster %s milik %s melakukan move %s%n", monsterPlayer1.getName(), player1.getName(), moveMonster1.getmovename());
@@ -608,7 +608,7 @@ public class Main {
                         System.out.println();
                         System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
                         System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
-                        monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
+                        monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);
                     } else if (op1 == 2 && op2 == 2) {
                         Move moveMonster1 = monsterPlayer1.getMoves().get(inputmove1idx);
                         Move moveMonster2 = monsterPlayer2.getMoves().get(inputmove2idx);
@@ -618,26 +618,26 @@ public class Main {
                         System.out.println(ANSI_RED + "Damage Calculation" + ANSI_RESET);
                         System.out.println(ANSI_RED + "Calculating..." + ANSI_RESET);
                         if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
-                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
-                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
+                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);
+                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster, player2);
                         } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {                          
-                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
-                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
+                            monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1,arreffectivity, arrmonster, player2);
+                            monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);
                         } else {
                             if (monsterPlayer1.getSpeed() > monsterPlayer2.getSpeed()) {                                
-                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);                                
-                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
+                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);                                
+                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster, player2);
                             } else if (monsterPlayer1.getSpeed() < monsterPlayer2.getSpeed()) {
-                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);                                
-                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
+                                monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster, player2);                                
+                                monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2,  arreffectivity, arrmonster, player1);
                             } else {
                                 int urutan = rand.nextInt(2)+1;
                                 if (urutan==1) {
-                                    monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);                                
-                                    monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);
+                                    monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);                                
+                                    monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster, player2);
                                 } else {
-                                    monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, conditionMonster2, arreffectivity, arrmonster, player2);                                
-                                    monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, conditionMonster1, arreffectivity, arrmonster, player1);
+                                    monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster, player2);                                
+                                    monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);
                                 }
                             }
                         }

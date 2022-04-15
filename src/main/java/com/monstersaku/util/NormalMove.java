@@ -44,9 +44,7 @@ public class NormalMove extends Move {
             System.out.printf("Move %s miss%n", this.getmovename());
         } else {
             Double burn = 1.0;
-            if (attacker.getStatusCondition().equals("-")) {
-                burn = 1.0;
-            } else if (attacker.getStatusCondition().equals("BURN")) {
+            if (attacker.getStatusCondition().equals("BURN")) {
                 burn = 0.5;
             }
             Double damagecalculation = Math.floor(damage * (attacker.getAttack()/enemy.getDefense()) + 2.0) * (Math.random() * (1-0.85) + 0.85) * findEffectivity(enemy, arreffectivity) * burn;
