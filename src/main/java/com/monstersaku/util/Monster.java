@@ -11,7 +11,7 @@ public class Monster {
     protected ArrayList<Move> moves;
     protected String condition;
     protected Integer extendCondition;
-    protected Stats<Integer> statsBuff = new Stats(0,0,0,0,0,0);
+    protected Stats<Integer> statsBuff = new Stats<Integer>(0,0,0,0,0,0);
 
     // KONSTRUKTOR
     public Monster(Integer idmonster, String nama, List<ElementType> elementTypes, Stats<Double> baseStats, ArrayList<Integer> movesid) {
@@ -155,7 +155,7 @@ public class Monster {
         if (getStatusCondition().equals("BURN")) {
             afterdamage = Math.floor(basehp*0.125);
             Double finalhp = this.getBaseStats().getHealthPoint()-afterdamage;
-            if (finalhp <0 ) {
+            if (finalhp < 0 ) {
                 finalhp = 0.0;
             }
             this.getBaseStats().setHealthPoint((double) Math.round(finalhp));
@@ -171,12 +171,7 @@ public class Monster {
             System.out.printf("HP Monster %s berkurang sebesar %.0f akibat efek status %s%n", getName(), afterdamage, getStatusCondition());
             System.out.printf("HP Monster %s saat ini menjadi %.0f%n", getName(), finalhp);
         } else if (getStatusCondition().equals("SLEEP")) {
-            this.extendCondition--;
-            System.out.printf("Monster %s memiliki sisa sleep sebanyak %d turn%n", this.getName(), this.getExtendCondition());
-            if (extendCondition == 0) {
-                this.setCondition("-");
-                System.out.printf("Sleep monster %s sudah habis, status condition monster kembali normal%n", this.getName());
-            }
+            System.out.println("Tidak ada (Status Condition SLEEP)");
         } else if (getStatusCondition().equals("PARALYZE")) {
             System.out.println("Tidak ada (Status Condition PARALYZE)");
         }

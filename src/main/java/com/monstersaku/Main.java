@@ -203,8 +203,14 @@ public class Main {
     private static void monstermovement(Move move, Monster attacker, Monster enemy,
             ArrayList<ElementEffectivity> arreffectivity, ArrayList<Monster> arrmonster, Player player) {
         if (attacker.getStatusCondition().equals("SLEEP")) {
-            System.out.printf("Monster %s milik % s gagal mengeksekusi Move karena sedang dalam status condition SLEEP%n",
+            System.out.printf("Monster %s milik %s gagal mengeksekusi Move karena sedang dalam status condition SLEEP%n",
                     attacker.getName(), player.getName());
+            attacker.setExtendCondition(attacker.getExtendCondition()-1);
+            System.out.printf("Sisa SLEEP monster %s %d turn %n", attacker.getName() ,attacker.getExtendCondition());
+            if (attacker.getExtendCondition() == 0) {
+                attacker.setCondition("-");
+                System.out.printf("Sleep monster %s sudah habis, status condition monster kembali normal%n", attacker.getName());
+            }
         } else if (attacker.getStatusCondition().equals("PARALYZE") && attacker.getExtendCondition() == 1) {
             System.out.printf(
                     "Monster %s milik %s gagal mengeksekusi Move karena tidak bisa bergerak satu round akibat status condition PARALIZE%n",
@@ -277,7 +283,7 @@ public class Main {
                         Integer num = Integer.parseInt(a);
                         effect.add(num);
                     }
-                    Stats<Integer> statsbuff = new Stats(effect.get(0), effect.get(1), effect.get(2), effect.get(3), effect.get(4), effect.get(5));
+                    Stats<Integer> statsbuff = new Stats<Integer>(effect.get(0), effect.get(1), effect.get(2), effect.get(3), effect.get(4), effect.get(5));
                     // StatsBuff effect = new StatsBuff(Double.parseDouble(arrofstatbuff[0]), Integer.parseInt(arrofstatbuff[1]), Integer.parseInt(arrofstatbuff[2]), Integer.parseInt(arrofstatbuff[3]), Integer.parseInt(arrofstatbuff[4]), Integer.parseInt(arrofstatbuff[5]));
                     StatusMove mov = new StatusMove(idmove, movetaip, movename, moveelementType, accuracy, priority,
                             ammunition, target, condition, statsbuff);
@@ -292,20 +298,9 @@ public class Main {
                 String monstername = monline[1];
                 ArrayList<ElementType> eltype = new ArrayList<ElementType>();
                 String eltaip = monline[2];
-                String[] arrofeltaip = eltaip.split(",", 7);
+                String[] arrofeltaip = eltaip.split(",");
                 for (String a : arrofeltaip) {
-                    if (a.equals("FIRE")) {
-                        eltype.add(ElementType.FIRE);
-                    }
-                    if (a.equals("NORMAL")) {
-                        eltype.add(ElementType.NORMAL);
-                    }
-                    if (a.equals("GRASS")) {
-                        eltype.add(ElementType.GRASS);
-                    }
-                    if (a.equals("WATER")) {
-                        eltype.add(ElementType.WATER);
-                    }
+                    eltype.add(ElementType.valueOf(a));
                 }
                 String stat = monline[3];
                 String[] arrofstats = stat.split(",");
@@ -427,7 +422,7 @@ public class Main {
                                         SpecialMove specialMove = new SpecialMove((SpecialMove) arrmove.get(move),
                                                 ammunition);
                                         monster2.getMoves().add(specialMove);
-                                    } else { // TAMBAH EXCEPTION
+                                    } else {
                                         StatusMove statusMove = new StatusMove((StatusMove) arrmove.get(move),
                                                 ammunition);
                                         monster2.getMoves().add(statusMove);
@@ -443,20 +438,6 @@ public class Main {
         } catch (Exception e) {
             exception = true;
         }
-
-        // for(Move mov : arrmove){
-        // mov.printMove();
-        // System.out.println();
-        // }
-        // for(Monster mons : arrmonster){
-        // mons.printMonster();
-        // }
-        // Debug status move
-        // StatusMove satmove = new StatusMove(1, MoveType.STATUS, "Satmove",
-        // ElementType.FIRE, 90, 1, 10, Target.ENEMY, "-", 90.0, 90.0, 90.0, 90.0, 90.0,
-        // 90.0);
-        // satmove.printMove();
-        // satmove.printmonsMove();
 
         // ============================================ MAIN PROGRAM ============================================
         System.out.println(ANSI_YELLOW + "=========== PERMAINAN MONSTER SAKU ===========" + ANSI_RESET);
@@ -507,8 +488,10 @@ public class Main {
             player2.showListOfMonster(arrmonster);
             System.out.println(ANSI_GREEN + "================= GAME PLAY ==================" + ANSI_RESET);
 
-            Monster monsterPlayer1 = player1.getListOfMonster().get(0);
-            Monster monsterPlayer2 = player2.getListOfMonster().get(0);
+            Integer rand1 = rand.nextInt(6) + 1;
+            Integer rand2 = rand.nextInt(6) + 1;
+            Monster monsterPlayer1 = player1.getListOfMonster().get(rand1);
+            Monster monsterPlayer2 = player2.getListOfMonster().get(rand2);
             System.out.printf(ANSI_PURPLE + "%s" + ANSI_RESET + " akan memainkan " + ANSI_CYAN +"Monster %s" + ANSI_RESET + " di awal permainan%n", player1.getName(), monsterPlayer1.getName());
             System.out.printf(ANSI_PURPLE + "%s" + ANSI_RESET + " akan memainkan " + ANSI_CYAN +"Monster %s" + ANSI_RESET + " di awal permainan%n", player2.getName(), monsterPlayer2.getName());
 
@@ -516,20 +499,9 @@ public class Main {
             int inputmove1idx = 0;
             int switchMonster = 0;
 
-            // player1.getListOfMonster().remove(monsterPlayer1);
-
-            // System.out.println("----------------------------------------------------------------");
-            // for(int i = 0; i < player1.getNumberOfMonster(); i++){
-            // player1.getListOfMonster().get(i).printMonster();
-            // System.out.println();
-            // }
-
             int turn = 1;
             while (player1.getNumberOfMonster() != 0 && player2.getNumberOfMonster() != 0) {
                 System.out.println();
-
-                // System.out.println();
-                // System.out.println("============ PUTARAN KE-"+turn+" ===========");
 
                 // ========================================= GILIRAN PLAYER 1 =========================================
                 System.out.printf("Giliran : " + ANSI_PURPLE + "%s" + ANSI_RESET + "%n", player1.getName() + ANSI_RESET);
@@ -548,7 +520,7 @@ public class Main {
                 System.out.println();
                 if (op1 == 1) {
                     switchMonster = chooseMonster(player1, monsterPlayer1);
-                    monsterPlayer1.setStatsBuff(new Stats(0,0,0,0,0,0)); //reset stats buff
+                    monsterPlayer1.setStatsBuff(new Stats<Integer>(0,0,0,0,0,0)); //reset stats buff
                     monsterPlayer1 = player1.getListOfMonster().get(switchMonster);
                 } else if (op1 == 2) {
                     inputmove1idx = chooseMove(monsterPlayer1);
@@ -556,7 +528,6 @@ public class Main {
 
                 // ========================================= GILIRAN PLAYER 2 =========================================
                 System.out.println();
-                // System.out.printf(("Giliran : %s %nKetik 1 untuk melakukan Switch%nKetik 2 untuk melakukan Move%n"), player2.getName());
                 System.out.printf("Giliran " + ANSI_PURPLE + "%s" + ANSI_RESET + " %n", player2.getName());
                 System.out.println();
                 menuInGame(player2, monsterPlayer2, turn, arrmonster);
@@ -573,7 +544,7 @@ public class Main {
                 System.out.println();
                 if (op2 == 1) {
                     switchMonster = chooseMonster(player2, monsterPlayer2);
-                    monsterPlayer2.setStatsBuff(new Stats(0,0,0,0,0,0)); //reset stats buff
+                    monsterPlayer2.setStatsBuff(new Stats<Integer>(0,0,0,0,0,0)); //reset stats buff
                     monsterPlayer2 = player2.getListOfMonster().get(switchMonster);
                 } else if (op2 == 2) {
                     inputmove2idx = chooseMove(monsterPlayer2);
@@ -583,10 +554,6 @@ public class Main {
 
                 System.out.println();
                 System.out.println(ANSI_YELLOW + "================= Resolution =================" + ANSI_RESET);
-
-                String conditionMonster1 = monsterPlayer1.getStatusCondition();
-                String conditionMonster2 = monsterPlayer2.getStatusCondition();
-
 
                  // ================================================== DAMAGE CALCULATION ===============================================
                 try {
@@ -620,7 +587,7 @@ public class Main {
                         if (moveMonster1.getpriority() > moveMonster2.getpriority()) {
                             monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);
                             monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1, arreffectivity, arrmonster, player2);
-                        } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {                          
+                        } else if (moveMonster1.getpriority() < moveMonster2.getpriority()) {                      
                             monstermovement(moveMonster2, monsterPlayer2, monsterPlayer1,arreffectivity, arrmonster, player2);
                             monstermovement(moveMonster1, monsterPlayer1, monsterPlayer2, arreffectivity, arrmonster, player1);
                         } else {

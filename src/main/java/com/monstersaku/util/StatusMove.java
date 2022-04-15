@@ -43,11 +43,12 @@ public class StatusMove extends Move {
     public void setmoveeffect(Stats<Integer> effect){
         this.effect = effect;
     }
-    
-    //Method
+
     public void changeCondition(Monster monster) {
         monster.setCondition(condition);
     }
+    
+    //Method
     
     public void printMove(){
         super.printMove();
