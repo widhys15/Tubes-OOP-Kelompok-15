@@ -488,8 +488,8 @@ public class Main {
             player2.showListOfMonster(arrmonster);
             System.out.println(ANSI_GREEN + "================= GAME PLAY ==================" + ANSI_RESET);
 
-            Integer rand1 = rand.nextInt(6) + 1;
-            Integer rand2 = rand.nextInt(6) + 1;
+            Integer rand1 = rand.nextInt(5) + 1;
+            Integer rand2 = rand.nextInt(5) + 1;
             Monster monsterPlayer1 = player1.getListOfMonster().get(rand1);
             Monster monsterPlayer2 = player2.getListOfMonster().get(rand2);
             System.out.printf(ANSI_PURPLE + "%s" + ANSI_RESET + " akan memainkan " + ANSI_CYAN +"Monster %s" + ANSI_RESET + " di awal permainan%n", player1.getName(), monsterPlayer1.getName());
